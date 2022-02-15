@@ -23,6 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Http client generator
+  retrofit: ^3.0.1
+  # Http client Log
+  pretty_dio_logger: ^1.1.1
+  # Json generation
+  json_annotation: ^4.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -32,6 +38,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  # Http client generator
+  retrofit_generator: ^4.0.0
+  # Json serializable
+  json_serializable: ^6.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
