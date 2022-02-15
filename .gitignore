@@ -46,3 +46,6 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Build Runner
+*.g.dart
