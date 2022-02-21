@@ -4,6 +4,9 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sunac_flutter/utils/error_util.dart';
 
 Future<void> main() async {
+  // 确保初始化
+  WidgetsFlutterBinding.ensureInitialized();
+  // 统一管理错误上报
   await SentryFlutter.init((options) {
     options.dsn = ErrorUtil.getSentryDSN();
     options.tracesSampleRate = 1.0;
