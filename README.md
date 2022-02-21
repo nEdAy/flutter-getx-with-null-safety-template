@@ -17,10 +17,10 @@ see the [add-to-app documentation](https://flutter.dev/docs/development/add-to-a
 • release
     • allowed branch name: release/{projectKey}/{majorVersion}.{minorVersion}.0
     • example: release/zx/1.0.0, release/gx/1.0.0
-hotfix
+• hotfix
     • allowed branch name: hotfix/{projectKey}/{majorVersion}.{minorVersion}.{patchVersionInMasterBranch+1}
     • example: hotfix/zx/1.0.1, release/gx/1.0.1
-feature
+• feature
     • allowed branch name: feature/{projectKey}/{storyOrBugOrDefectOrIncidentName}/{domainAccountName}
     • example: feature/zx/add-flutter-to-android/sus12/
 
