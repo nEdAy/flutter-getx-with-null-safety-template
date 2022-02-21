@@ -49,5 +49,3 @@ app.*.map.json
 
 # Build Runner
 *.g.dart
-
-pubspec.lock
