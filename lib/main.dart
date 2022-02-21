@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sunac_flutter/utils/error_util.dart';
 
@@ -105,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 '${_.counter}',
                 style: Theme.of(context).textTheme.headline4,
               ),
-            )
+            ),
           ],
         ),
       ),
