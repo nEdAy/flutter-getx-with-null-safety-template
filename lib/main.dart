@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sunac_flutter/utils/error_util.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  await SentryFlutter.init((options) {
+    options.dsn = ErrorUtil.getSentryDSN();
+    options.tracesSampleRate = 1.0;
+  }, appRunner: () async {
+    runApp(DefaultAssetBundle(
+      bundle: SentryAssetBundle(),
+      child: const MyApp(),
+    ));
+  });
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -23,6 +36,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      navigatorObservers: [
+        SentryNavigatorObserver(),
+      ],
     );
   }
 }
@@ -46,19 +62,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -96,18 +99,30 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            GetBuilder<Controller>(
+              init: Controller(), // 首次启动
+              builder: (_) => Text(
+                '${_.counter}',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => Get.find<Controller>().increment(),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class Controller extends GetxController {
+  int counter = 0;
+
+  Future<void> increment() async {
+    counter++;
+    update(); // 当调用增量时，使用update()来更新用户界面上的计数器变量。
   }
 }
