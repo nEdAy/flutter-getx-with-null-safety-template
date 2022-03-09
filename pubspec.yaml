@@ -31,8 +31,6 @@ dependencies:
   pretty_dio_logger: ^1.1.1
   # Json generation
   json_annotation: ^4.4.0
-  # Toast
-  fluttertoast: ^8.0.9
   # Log
   logger: ^1.1.0
 
