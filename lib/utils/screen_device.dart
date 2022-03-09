@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// 设备屏幕高度
+/// 设备屏幕高度 Get.height
 double getDeviceHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }
 
-/// 设备屏幕宽度
+/// 设备屏幕宽度 Get.width
 double getDeviceWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
 }
