@@ -51,7 +51,7 @@ dev_dependencies:
   # Http client generator
   retrofit_generator: ^4.0.1
   # Json serializable
-  json_serializable: ^6.1.4
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
