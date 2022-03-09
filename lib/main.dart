@@ -3,20 +3,18 @@ import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sunac_flutter/utils/error_util.dart';
 
-Future<void> main() async {
-  // 确保初始化
-  WidgetsFlutterBinding.ensureInitialized();
-  // 统一管理错误上报
-  await SentryFlutter.init((options) {
-    options.dsn = ErrorUtil.getSentryDSN();
-    options.tracesSampleRate = 1.0;
-  }, appRunner: () async {
-    runApp(DefaultAssetBundle(
-      bundle: SentryAssetBundle(),
-      child: const MyApp(),
-    ));
-  });
-}
+import 'global.dart';
+
+void main() =>
+    Global.init().then((e) async => await SentryFlutter.init((options) {
+          options.dsn = ErrorUtil.getSentryDSN();
+          options.tracesSampleRate = 1.0;
+        }, appRunner: () async {
+          runApp(DefaultAssetBundle(
+            bundle: SentryAssetBundle(),
+            child: const MyApp(),
+          ));
+        }));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
