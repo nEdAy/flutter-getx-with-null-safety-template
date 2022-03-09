@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:sunac_flutter/utils/error_util.dart';
 
 import 'global.dart';
+import 'utils/utils.dart';
 
 void main() =>
     Global.init().then((e) async => await SentryFlutter.init((options) {
