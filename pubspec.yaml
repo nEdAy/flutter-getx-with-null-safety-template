@@ -25,10 +25,13 @@ dependencies:
     sdk: flutter
   # GetX
   get: ^4.6.1
+  # Http client
+  dio: ^4.0.4
   # Http client generator
   retrofit: ^3.0.1+1
   # Http client Log
-  pretty_dio_logger: ^1.1.1
+  dio_log: ^2.0.2
+  dio_http_formatter: ^2.1.0
   # Json generation
   json_annotation: ^4.4.0
   # Log
