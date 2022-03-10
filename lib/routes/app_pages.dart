@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:sunac_flutter/pages/unknown/unknown_view.dart';
 
-import '../pages/home/bindings/home_binding.dart';
-import '../pages/home/views/home_view.dart';
+import '../pages/home/home_binding.dart';
+import '../pages/home/home_view.dart';
 
 part 'app_routes.dart';
 
