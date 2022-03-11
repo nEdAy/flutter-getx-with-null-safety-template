@@ -36,6 +36,8 @@ dependencies:
   json_annotation: ^4.4.0
   # Log
   logger: ^1.1.0
+  # Loading
+  flutter_easyloading: ^3.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
