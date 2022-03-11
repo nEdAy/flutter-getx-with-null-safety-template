@@ -1,1 +1,1 @@
-const ENV = 'DEV';
+const env = 'PROD';
