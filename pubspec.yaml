@@ -30,8 +30,9 @@ dependencies:
   # Http client generator
   retrofit: ^3.0.1+1
   # Http client Log
-  dio_log: ^2.0.2
   dio_http_formatter: ^2.1.0
+  # Dio network inspector
+  network_inspector: ^1.0.1
   # Json generation
   json_annotation: ^4.4.0
   # Log

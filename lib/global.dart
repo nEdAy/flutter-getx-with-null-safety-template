@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:network_inspector/network_inspector.dart';
 
 /// 全局配置
 class Global {
@@ -22,11 +23,11 @@ class Global {
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
 
-    // 等待服务初始化.
-    _initServices();
+    // 网络拦截器初始化
+    NetworkInspector.initialize();
 
-    // // 显示悬浮按钮
-    // showDebugBtn(Get.overlayContext!, btnColor: Colors.blue);
+    // 等待服务初始化
+    _initServices();
   }
 
   /// 在你运行Flutter应用之前，让你的服务初始化是一个明智之举。

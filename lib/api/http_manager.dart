@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
-import 'package:dio_log/interceptor/dio_log_interceptor.dart';
+import 'package:network_inspector/common/utils/dio_interceptor.dart';
+import 'package:network_inspector/network_inspector.dart';
 
 import '../config/config.dart';
 import 'interceptors/interceptors.dart';
@@ -69,7 +70,10 @@ class HttpManager {
   void _addDioLogger(Dio dio, {bool printResponseBody = true}) {
     dio.interceptors.addAll([
       HttpFormatter(includeResponseBody: printResponseBody),
-      DioLogInterceptor()
+      DioInterceptor(
+        logIsAllowed: true,
+        networkInspector: NetworkInspector(),
+      ),
     ]);
   }
 }
