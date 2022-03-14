@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:network_inspector/network_inspector.dart';
 
+import 'config/flavor.dart';
+
 /// 全局配置
 class Global {
   /// 是否 release
@@ -37,16 +39,17 @@ class Global {
     Logger().i('starting services ...');
     /// 这里是你放get_storage、hive、shared_pref初始化的地方。
     /// 或者moor连接，或者其他什么异步的东西。
-    await Get.putAsync(() => DbService().init());
+    await Get.putAsync(() => FlavorService().init());
     Logger().i('All services started...');
   }
 }
 
-class DbService extends GetxService {
-  Future<DbService> init() async {
-    Logger().i('$runtimeType delays 2 sec');
-    await 2.delay();
-    Logger().i('$runtimeType ready!');
+class FlavorService extends GetxService {
+  Future<FlavorService> init() async {
+    final flavorInfoMap = {}; // await GetFlavorInfo.getFlavorInfo();
+    final flavor = flavorInfoMap['flavor'] ?? prod;
+    final baseUrl = flavorInfoMap['baseUrl'] ?? prodBaseUrl;
+    FlavorConfig(flavor: flavor, values: FlavorValues(baseUrl: baseUrl));
     return this;
   }
 }

@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sunac_flutter/widgets/developer_widget.dart';
 
 import 'global.dart';
 import 'routes/app_pages.dart';
@@ -32,24 +33,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+    return DeveloperWidget(
+      child: GetMaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
+          // counter didn't reset back to zero; the application is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: AppPages.initial,
+        unknownRoute: AppPages.unknownRoute,
+        getPages: AppPages.routes,
+        builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
       ),
-      initialRoute: AppPages.initial,
-      unknownRoute: AppPages.unknownRoute,
-      getPages: AppPages.routes,
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
     );
   }
 }
