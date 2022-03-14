@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
-import '../../api/http_manager.dart';
+import '../../api/rest_client.dart';
 
 class HomeController extends GetxController {
   final count = 0.obs;
@@ -11,6 +11,10 @@ class HomeController extends GetxController {
   final from = "".obs;
 
   void increment() => count.value++;
+
+  final RestClient client;
+
+  HomeController({required this.client});
 
   @override
   void onInit() {
@@ -23,7 +27,7 @@ class HomeController extends GetxController {
   }
 
   _getHitokoto() {
-    HttpManager().client.getHitokoto("json", "utf-8").then((value) {
+    client.getHitokoto("json", "utf-8").then((value) {
       hitokoto.value = value.hitokoto ?? "";
       from.value = value.from ?? "";
     }).catchError((Object obj) {
