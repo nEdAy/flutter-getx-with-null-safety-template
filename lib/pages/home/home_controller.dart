@@ -18,7 +18,7 @@ class HomeController extends GetxController {
     _getHitokoto();
   }
 
-  onRefresh(){
+  onRefresh() {
     _getHitokoto();
   }
 
@@ -30,7 +30,7 @@ class HomeController extends GetxController {
       // non-200 error goes here.
       switch (obj.runtimeType) {
         case DioError:
-        // Here's the sample to get the failed response error code and message
+          // Here's the sample to get the failed response error code and message
           final res = (obj as DioError).response;
           Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
           break;

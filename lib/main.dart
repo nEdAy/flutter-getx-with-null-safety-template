@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initial,
       unknownRoute: AppPages.unknownRoute,
       getPages: AppPages.routes,
-      builder: BotToastInit(), //1.调用BotToastInit
+      builder: BotToastInit(),
+      //1.调用BotToastInit
       navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
     );
   }
