@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -56,6 +57,22 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                    child: const Text('Show Notification'),
+                    onPressed: () =>
+                        BotToast.showSimpleNotification(title: "init")),
+                TextButton(
+                    child: const Text('Show Toast'),
+                    onPressed: () => BotToast.showText(text: "Text One")),
+                OutlinedButton(
+                  child: const Text('Jump Page'),
+                  onPressed: () => Get.toNamed('/next'),
+                ),
+              ],
             ),
           ],
         ),

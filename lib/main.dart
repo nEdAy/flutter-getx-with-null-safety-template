@@ -1,5 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import 'global.dart';
@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initial,
       unknownRoute: AppPages.unknownRoute,
       getPages: AppPages.routes,
-      builder: EasyLoading.init(),
+      builder: BotToastInit(), //1.调用BotToastInit
+      navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
     );
   }
 }
