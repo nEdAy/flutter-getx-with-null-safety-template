@@ -37,6 +37,7 @@ class Global {
   /// 所以GetMaterialApp()不需要重建，可以直接取值。
   static void _initServices() async {
     Logger().i('starting services ...');
+
     /// 这里是你放get_storage、hive、shared_pref初始化的地方。
     /// 或者moor连接，或者其他什么异步的东西。
     await Get.putAsync(() => FlavorService().init());
