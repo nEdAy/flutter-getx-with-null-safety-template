@@ -1,5 +1,5 @@
 class ChannelKeys {
-  static const packageKey = 'com.homecredit.hccn.smt';
+  static const packageKey = 'com.sunac.flutter';
 
   static const goBackToNative = packageKey + '/goBackToNative';
 
