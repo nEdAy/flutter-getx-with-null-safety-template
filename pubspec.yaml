@@ -52,8 +52,6 @@ dev_dependencies:
   flutter_lints: ^1.0.4
   # Build Runner
   build_runner: ^2.1.8
-  # Flutter gen runner:
-  flutter_gen_runner: ^4.1.6
   # Http client generator
   retrofit_generator: ^4.0.1
   # Json serializable

@@ -2,7 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../gen/assets.gen.dart';
+import '../../res.dart';
 import 'home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -33,7 +33,10 @@ class HomeView extends GetView<HomeController> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10.0),
                 child: ListTile(
-                  leading: Assets.images.flutterLogo.image(),
+                  leading: const ImageIcon(
+                    AssetImage(Res.flutter_logo),
+                    color: Colors.blue,
+                  ),
                   title: Obx(() => Text(
                         '${controller.hitokoto}',
                         textAlign: TextAlign.left,
