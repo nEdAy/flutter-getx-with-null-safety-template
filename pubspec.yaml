@@ -26,7 +26,7 @@ dependencies:
   # GetX
   get: ^4.6.1
   # Http client
-  dio: ^4.0.5
+  dio: ^4.0.6
   # Http client generator
   retrofit: ^3.0.1+1
   # Http client Log
