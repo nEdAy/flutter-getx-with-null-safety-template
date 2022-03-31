@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
 import 'package:network_inspector/common/utils/dio_interceptor.dart';
 import 'package:network_inspector/network_inspector.dart';
-import 'package:sunac_flutter/config/flavor.dart';
 
+import '../config/flavor.dart';
 import 'interceptors/interceptors.dart';
 import 'rest_client.dart';
 

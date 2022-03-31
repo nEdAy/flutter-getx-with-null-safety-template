@@ -4,10 +4,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry/sentry.dart';
-import 'package:sunac_flutter/widgets/developer_widget.dart';
 
 import 'global.dart';
 import 'routes/app_pages.dart';
+import 'widgets/developer_widget.dart';
 
 void main() {
   runZonedGuarded(() async {
