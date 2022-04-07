@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'eba_report_controller.dart';
 
@@ -37,11 +38,19 @@ class EbaReportView extends GetView<EbaReportController> {
                 ),
               ),
               const Text('查看巡检报表'),
-              const Text('一键巡检表'),
+              ElevatedButton(
+                onPressed: _launchURL,
+                child: const Text('一键巡检表'),
+              ),
             ],
           ),
         ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
+  }
+
+  void _launchURL() async {
+    const String _url = 'https://flutter.dev';
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 }
