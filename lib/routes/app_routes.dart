@@ -6,6 +6,10 @@ abstract class Routes {
 
   static const home = _Paths.home;
   static const notFound = _Paths.notFound;
+
+  static const ebaHome = _Paths.ebaHome;
+  static const ebaAlarm = _Paths.ebaAlarm;
+  static const ebaReport = _Paths.ebaReport;
 }
 
 abstract class _Paths {
@@ -13,4 +17,8 @@ abstract class _Paths {
 
   static const home = '/home';
   static const notFound = '/unknown';
+
+  static const ebaHome = '/eba/home';
+  static const ebaAlarm = '/eba/alarm';
+  static const ebaReport = '/eba/report';
 }
