@@ -3,15 +3,15 @@ import 'package:logger/logger.dart';
 
 import 'channel_keys.dart';
 
-class BackToNativeChannel {
+class GoToNativeChannel {
   static const MethodChannel _channel =
-      MethodChannel(ChannelKeys.backToNative);
+      MethodChannel(ChannelKeys.goToNative);
 
-  static const _backToNative = 'backToNative';
+  static const _goToNative = 'goToNative';
 
-  static Future<void> backToNative() async {
+  static Future<void> goToNative() async {
     try {
-      await _channel.invokeMethod(_backToNative);
+      await _channel.invokeMethod(_goToNative);
     } on PlatformException catch (e) {
       Logger().e(e);
     }
