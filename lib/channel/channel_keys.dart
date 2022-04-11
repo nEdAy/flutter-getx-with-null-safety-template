@@ -1,5 +1,5 @@
 class ChannelKeys {
-  static const packageKey = 'com.sunac.flutter';
+  static const packageKey = 'com.sunacwy.staff';
 
   static const backToNative = packageKey + '/backToNative';
 

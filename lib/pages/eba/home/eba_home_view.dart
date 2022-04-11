@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sunac_flutter/channel/back_to_native.dart';
+import 'package:sunac_flutter/channel/go_to_native.dart';
 
 import '../../../routes/app_pages.dart';
 import 'eba_home_controller.dart';
@@ -30,6 +32,17 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   TextButton(
                       child: const Text('一键巡检'),
                       onPressed: () => Get.toNamed(Routes.ebaReport)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                      child: const Text('backToNative'),
+                      onPressed: () => BackToNativeChannel.backToNative()),
+                  TextButton(
+                      child: const Text('goToNative'),
+                      onPressed: () => GoToNativeChannel.goToNative()),
                 ],
               ),
             ],
