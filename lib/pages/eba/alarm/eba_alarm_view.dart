@@ -10,8 +10,17 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EBA - 告警'),
+        title: const Text('告警',
+            style: TextStyle(color: Colors.black, fontSize: 18)),
         centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(Icons.arrow_back_ios),
+          iconSize: 16,
+        ),
       ),
       body: SafeArea(
         child: Center(
