@@ -15,6 +15,14 @@ class $AssetsImagesGen {
   AssetGenImage get iconAlarm =>
       const AssetGenImage('assets/images/icon_alarm.png');
 
+  /// File path: assets/images/icon_arrow_drop_down.png
+  AssetGenImage get iconArrowDropDown =>
+      const AssetGenImage('assets/images/icon_arrow_drop_down.png');
+
+  /// File path: assets/images/icon_arrow_drop_down_active.png
+  AssetGenImage get iconArrowDropDownActive =>
+      const AssetGenImage('assets/images/icon_arrow_drop_down_active.png');
+
   /// File path: assets/images/icon_report.png
   AssetGenImage get iconReport =>
       const AssetGenImage('assets/images/icon_report.png');

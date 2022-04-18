@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,53 +10,6 @@ class EbaHomeView extends GetView<EbaHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> items = [
-      '天津融创中心',
-      '天津融创中心2',
-      '天津融创中心3',
-      '天津融创中心4',
-    ];
-    String? selectedValue = items[0];
-    List<DropdownMenuItem<String>> _addDividersAfterItems(List<String> items) {
-      List<DropdownMenuItem<String>> _menuItems = [];
-      for (var item in items) {
-        _menuItems.addAll(
-          [
-            DropdownMenuItem<String>(
-              value: item,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-            // If it's last item, we will not add Divider after it.
-            if (item != items.last)
-              const DropdownMenuItem<String>(
-                enabled: false,
-                child: Divider(),
-              ),
-          ],
-        );
-      }
-      return _menuItems;
-    }
-
-    List<int> _getDividersIndexes() {
-      List<int> _dividersIndexes = [];
-      for (var i = 0; i < (items.length * 2) - 1; i++) {
-        // Dividers indexes will be the odd indexes
-        if (i.isOdd) {
-          _dividersIndexes.add(i);
-        }
-      }
-      return _dividersIndexes;
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('EBA',
@@ -78,23 +30,29 @@ class EbaHomeView extends GetView<EbaHomeController> {
             Container(
               color: Colors.white,
               height: 54,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                    isExpanded: true,
-                    items: _addDividersAfterItems(items),
-                    customItemsIndexes: _getDividersIndexes(),
-                    customItemsHeight: 4,
-                    value: selectedValue,
-                    onChanged: (value) {},
-                    iconEnabledColor: Colors.blue,
-                    iconDisabledColor: Colors.red,
-                    dropdownMaxHeight: 160,
-                    selectedItemHighlightColor: Colors.yellow,
-                    scrollbarAlwaysShow: false,
-                    buttonHeight: 40,
-                    itemHeight: 40,
-                    style: const TextStyle(color: Color(0xFF434343)),
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 8.0)),
+              child: GestureDetector(
+                child: Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('${controller.projectName}',
+                          style: TextStyle(
+                              color: controller.isDropDownActive.value
+                                  ? const Color(0xFFD97F00)
+                                  : const Color(0xFF434343),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500)),
+                      controller.items.length > 1
+                          ? (controller.isDropDownActive.value
+                              ? Assets.images.iconArrowDropDownActive
+                                  .image(width: 16, height: 16)
+                              : Assets.images.iconArrowDropDown
+                                  .image(width: 16, height: 16))
+                          : Container()
+                    ],
+                  ),
+                ),
+                onTap: () => controller.onDropDownTap(),
               ),
             ),
             Container(

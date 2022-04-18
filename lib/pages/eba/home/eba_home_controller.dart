@@ -12,6 +12,10 @@ class EbaHomeController extends GetxController {
   final majorAlarm = 0.obs;
   final minorAlarm = 0.obs;
 
+  final isDropDownActive = false.obs;
+  final projectName = "".obs;
+  final List<String> items = [""].obs;
+
   final RestClient client;
 
   EbaHomeController({required this.client});
@@ -22,12 +26,19 @@ class EbaHomeController extends GetxController {
     _getHitokoto();
   }
 
-  onRefresh() {
-    _getHitokoto();
-  }
+  onDropDownTap() => isDropDownActive.value = !isDropDownActive.value;
 
   _getHitokoto() {
     client.getHitokoto("json", "utf-8").then((value) {
+      items.clear();
+      items.addAll([
+        '天津融创中心',
+        '天津融创中心2',
+        '天津融创中心3',
+        '天津融创中心4',
+      ]);
+      projectName.value = items.first;
+
       totalDevices.value = 98;
       faultDevices.value = 1;
       disableDevices.value = 3;
