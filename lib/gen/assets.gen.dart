@@ -10,6 +10,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/flutter_logo.png
   AssetGenImage get flutterLogo =>
       const AssetGenImage('assets/images/flutter_logo.png');
+
+  /// File path: assets/images/icon_alarm.png
+  AssetGenImage get iconAlarm =>
+      const AssetGenImage('assets/images/icon_alarm.png');
+
+  /// File path: assets/images/icon_report.png
+  AssetGenImage get iconReport =>
+      const AssetGenImage('assets/images/icon_report.png');
 }
 
 class Assets {

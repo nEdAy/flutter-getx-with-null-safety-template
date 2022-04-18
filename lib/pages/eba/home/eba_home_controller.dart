@@ -5,12 +5,12 @@ import 'package:logger/logger.dart';
 import '../../../api/rest_client.dart';
 
 class EbaHomeController extends GetxController {
-  final count = 0.obs;
+  final totalDevices = 0.obs;
+  final faultDevices = 0.obs;
+  final disableDevices = 0.obs;
 
-  final hitokoto = "".obs;
-  final from = "".obs;
-
-  void increment() => count.value++;
+  final majorAlarm = 0.obs;
+  final minorAlarm = 0.obs;
 
   final RestClient client;
 
@@ -28,8 +28,11 @@ class EbaHomeController extends GetxController {
 
   _getHitokoto() {
     client.getHitokoto("json", "utf-8").then((value) {
-      hitokoto.value = value.hitokoto ?? "";
-      from.value = value.from ?? "";
+      totalDevices.value = 98;
+      faultDevices.value = 1;
+      disableDevices.value = 3;
+      majorAlarm.value = 98;
+      minorAlarm.value = 1;
     }).catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {
