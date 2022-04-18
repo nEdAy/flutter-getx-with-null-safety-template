@@ -1,16 +1,21 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import '../../../api/rest_client.dart';
 
-class EbaAlarmController extends GetxController {
+class EbaAlarmController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   final count = 0.obs;
 
   final hitokoto = "".obs;
   final from = "".obs;
 
   void increment() => count.value++;
+
+  final List<String> tabs = ['严重告警','一般告警'];
+  late TabController tabController;
 
   final RestClient client;
 
@@ -19,6 +24,7 @@ class EbaAlarmController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    tabController = TabController(vsync: this, length: tabs.length);
     _getHitokoto();
   }
 
