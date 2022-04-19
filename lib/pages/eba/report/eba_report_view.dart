@@ -24,7 +24,7 @@ class EbaReportView extends GetView<EbaReportController> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 50, width: Get.width),
+            SizedBox(height: 50, width: context.width),
             Obx(
               () => controller.isLoading.value
                   ? Container(
@@ -188,7 +188,7 @@ class EbaReportView extends GetView<EbaReportController> {
               () => Visibility(
                 visible: !controller.isLoading.value,
                 child: Container(
-                  width: Get.width,
+                  width: context.width,
                   height: 82,
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
