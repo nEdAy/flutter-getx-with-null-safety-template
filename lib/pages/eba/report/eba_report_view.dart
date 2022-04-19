@@ -44,28 +44,56 @@ class EbaReportView extends GetView<EbaReportController> {
             Container(height: 12),
             const Text('B2/-1层/生活水泵房：EBA设备-1',
                 style: TextStyle(color: Color(0xFF434343), fontSize: 16)),
+            Container(height: 24),
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(
-                    height: 40,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 12),
                     alignment: Alignment.center,
-                    child: Text(
-                      '$index',
-                      style: const TextStyle(fontSize: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '$index',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return const Divider();
+                  return Container(height: 12);
                 },
                 itemCount: 10,
               ),
             ),
-            const Text('查看巡检报表'),
-            ElevatedButton(
-              onPressed: _launchURL,
-              child: const Text('一键巡检表'),
+            Container(
+              width: Get.width,
+              height: 82,
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              color: Colors.white,
+              child: ElevatedButton(
+                onPressed: _launchURL,
+                child: const Text(
+                  '查看巡检报表',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                style:
+                    ElevatedButton.styleFrom(primary: const Color(0xFFFF9F08)),
+              ),
             ),
           ],
         ), // This trailing comma makes auto-formatting nicer for build methods.

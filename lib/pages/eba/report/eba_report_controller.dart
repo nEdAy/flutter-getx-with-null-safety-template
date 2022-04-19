@@ -5,12 +5,7 @@ import 'package:logger/logger.dart';
 import '../../../api/rest_client.dart';
 
 class EbaReportController extends GetxController {
-  final count = 0.obs;
-
-  final hitokoto = "".obs;
-  final from = "".obs;
-
-  void increment() => count.value++;
+  final invalidInspectionName= "".obs;
 
   final RestClient client;
 
@@ -28,8 +23,7 @@ class EbaReportController extends GetxController {
 
   _getHitokoto() {
     client.getHitokoto("json", "utf-8").then((value) {
-      hitokoto.value = value.hitokoto ?? "";
-      from.value = value.from ?? "";
+
     }).catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {
