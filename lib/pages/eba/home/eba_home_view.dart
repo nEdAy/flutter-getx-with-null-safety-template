@@ -131,7 +131,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                                   fontSize: 22),
                             )),
                         const Text(
-                          '验证告警',
+                          '严重告警',
                           style:
                               TextStyle(color: Color(0xFF999999), fontSize: 14),
                         )
