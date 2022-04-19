@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../gen/assets.gen.dart';
 import 'eba_report_controller.dart';
 
 class EbaReportView extends GetView<EbaReportController> {
@@ -25,25 +26,118 @@ class EbaReportView extends GetView<EbaReportController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(height: 50),
-            const SizedBox(
-              child: CircularProgressIndicator(
-                color: Color(0xFFFF9F08),
-                backgroundColor: Color(0xFFF0F0F0),
-                strokeWidth: 10,
-                semanticsLabel: 'Linear progress indicator',
-              ),
-              height: 80.0,
-              width: 80.0,
+            Obx(
+              () => controller.isLoading.value
+                  ? Container(
+                      child: const CircularProgressIndicator(
+                        color: Color(0xFFFF9F08),
+                        backgroundColor: Color(0xFFF0F0F0),
+                        strokeWidth: 10,
+                        semanticsLabel: 'Linear progress indicator',
+                      ),
+                      height: 100.0,
+                      width: 100.0,
+                      padding: const EdgeInsets.all(10.0),
+                    )
+                  : (controller.hasError()
+                      ? Assets.images.iconReportHasError
+                          .image(width: 100, height: 100)
+                      : Assets.images.iconReportNoError
+                          .image(width: 100, height: 100)),
             ),
-            Container(height: 30),
-            const Text('自动巡检中',
-                style: TextStyle(
+            Container(height: 20),
+            Obx(
+              () => Text(
+                controller.isLoading.value
+                    ? '自动巡检中'
+                    : (controller.hasError() ? '巡检完成，请关注异常' : '巡检完成，无异常'),
+                style: const TextStyle(
                     color: Color(0xFF000000),
                     fontSize: 20,
-                    fontWeight: FontWeight.w500)),
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
             Container(height: 12),
-            const Text('B2/-1层/生活水泵房：EBA设备-1',
-                style: TextStyle(color: Color(0xFF434343), fontSize: 16)),
+            Obx(
+              () => controller.isLoading.value
+                  ? Text('${controller.loadingInspectionName}',
+                      style: const TextStyle(
+                          color: Color(0xFF434343), fontSize: 16))
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 153,
+                          height: 64,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('设备房',
+                                  style: TextStyle(color: Color(0xFF767676))),
+                              Container(height: 8),
+                              Row(
+                                children: [
+                                  const Text('总计',
+                                      style:
+                                          TextStyle(color: Color(0xFF434343))),
+                                  Container(width: 4),
+                                  Text('${controller.totalDevicesRoom}',
+                                      style: const TextStyle(
+                                          color: Color(0xFF434343))),
+                                  Container(width: 16),
+                                  const Text('异常',
+                                      style:
+                                          TextStyle(color: Color(0xFF434343))),
+                                  Container(width: 4),
+                                  Text('${controller.faultDevicesRoom}',
+                                      style: const TextStyle(
+                                          color: Color(0xFF434343)))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                            width: 1,
+                            height: 34,
+                            color: const Color(0xFFE6E6E6),
+                            margin: const EdgeInsets.symmetric(horizontal: 18)),
+                        SizedBox(
+                          width: 153,
+                          height: 64,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('设备房',
+                                  style: TextStyle(color: Color(0xFF767676))),
+                              Container(height: 8),
+                              Row(
+                                children: [
+                                  const Text('总计',
+                                      style:
+                                          TextStyle(color: Color(0xFF434343))),
+                                  Container(width: 4),
+                                  Text('${controller.totalDevices}',
+                                      style: const TextStyle(
+                                          color: Color(0xFF434343))),
+                                  Container(width: 16),
+                                  const Text('异常',
+                                      style:
+                                          TextStyle(color: Color(0xFF434343))),
+                                  Container(width: 4),
+                                  Text('${controller.faultDevices}',
+                                      style: const TextStyle(
+                                          color: Color(0xFF434343)))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
             Container(height: 24),
             Expanded(
               child: ListView.separated(

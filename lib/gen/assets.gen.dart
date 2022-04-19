@@ -26,6 +26,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/icon_report.png
   AssetGenImage get iconReport =>
       const AssetGenImage('assets/images/icon_report.png');
+
+  /// File path: assets/images/icon_report_has_error.png
+  AssetGenImage get iconReportHasError =>
+      const AssetGenImage('assets/images/icon_report_has_error.png');
+
+  /// File path: assets/images/icon_report_item_has_error.png
+  AssetGenImage get iconReportItemHasError =>
+      const AssetGenImage('assets/images/icon_report_item_has_error.png');
+
+  /// File path: assets/images/icon_report_item_no_error.png
+  AssetGenImage get iconReportItemNoError =>
+      const AssetGenImage('assets/images/icon_report_item_no_error.png');
+
+  /// File path: assets/images/icon_report_no_error.png
+  AssetGenImage get iconReportNoError =>
+      const AssetGenImage('assets/images/icon_report_no_error.png');
 }
 
 class Assets {
