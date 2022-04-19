@@ -33,6 +33,7 @@ class EbaReportView extends GetView<EbaReportController> {
                     }
                     index -= 1;
                     var reportItem = controller.reportItems[index];
+                    var isUnfold = false.obs;
                     return Obx(
                       () => Visibility(
                         visible: !controller.isLoading.value,
@@ -91,54 +92,77 @@ class EbaReportView extends GetView<EbaReportController> {
                                                 fontWeight: FontWeight.w500),
                                           ),
                                           const SizedBox(width: 4),
-                                          const Icon(Icons.keyboard_arrow_up,
-                                              size: 16),
-                                          const Icon(Icons.keyboard_arrow_down,
-                                              size: 16)
+                                          Obx(() {
+                                            return GestureDetector(
+                                              child: isUnfold.value
+                                                  ? const Icon(
+                                                      Icons.keyboard_arrow_up,
+                                                      size: 16)
+                                                  : const Icon(
+                                                      Icons.keyboard_arrow_down,
+                                                      size: 16),
+                                              onTap: () => isUnfold.value =
+                                                  !isUnfold.value,
+                                            );
+                                          }),
                                         ],
                                       ),
-                                      Container(
-                                        height: 1,
-                                        width: context.width,
-                                        color: const Color(0xFFF0F0F0),
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 12),
-                                      ),
-                                      ListView.separated(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemBuilder: (context, subIndex) {
-                                          var faultDevices = reportItem
-                                              .faultDevices![subIndex];
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                faultDevices.faultDeviceName ??
-                                                    '',
-                                                maxLines: 1,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color(0xFF434343)),
-                                              ),
-                                              Text(
-                                                faultDevices
-                                                        .faultDeviceReason ??
-                                                    '',
-                                                style: const TextStyle(
-                                                    color: Color(0xFFD91D00)),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return const SizedBox(height: 12);
-                                        },
-                                        itemCount:
-                                            reportItem.faultDevices?.length ??
-                                                0,
+                                      Visibility(
+                                        visible: isUnfold.value,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 1,
+                                              width: context.width,
+                                              color: const Color(0xFFF0F0F0),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                            ),
+                                            ListView.separated(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder: (context, subIndex) {
+                                                var faultDevices = reportItem
+                                                    .faultDevices![subIndex];
+                                                return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      faultDevices
+                                                              .faultDeviceName ??
+                                                          '',
+                                                      maxLines: 1,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color(
+                                                              0xFF434343)),
+                                                    ),
+                                                    Text(
+                                                      faultDevices
+                                                              .faultDeviceReason ??
+                                                          '',
+                                                      style: const TextStyle(
+                                                          color: Color(
+                                                              0xFFD91D00)),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) {
+                                                return const SizedBox(
+                                                    height: 12);
+                                              },
+                                              itemCount: reportItem
+                                                      .faultDevices?.length ??
+                                                  0,
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
