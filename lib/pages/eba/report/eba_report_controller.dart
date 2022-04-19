@@ -15,6 +15,8 @@ class EbaReportController extends GetxController {
   final totalDevices = 0.obs;
   final faultDevices = 0.obs;
 
+  final List<String> reportItems = <String>[].obs;
+
   final RestClient client;
 
   bool hasError() {
@@ -35,14 +37,27 @@ class EbaReportController extends GetxController {
 
   _getHitokoto() {
     loadingInspectionName.value = 'B2/-1层/生活水泵房：EBA设备-1';
-    client.getHitokoto("json", "utf-8").then((value) {
-      Timer(const Duration(seconds: 5), () { //callback function
+    client.getHitokoto("json", "utf-8", noLoading: true).then((value) {
+      Timer(const Duration(seconds: 5), () {
+        //callback function
         isLoading.value = false;
       });
       totalDevicesRoom.value = 52;
       faultDevicesRoom.value = 1;
       totalDevices.value = 214;
       faultDevices.value = 3;
+      reportItems.clear();
+      reportItems.addAll([
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房',
+        'D1/-1层/生活水泵房'
+      ]);
     }).catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {

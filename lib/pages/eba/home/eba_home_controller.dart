@@ -14,7 +14,7 @@ class EbaHomeController extends GetxController {
 
   final isDropDownActive = false.obs;
   final projectName = "".obs;
-  final List<String> items = [""].obs;
+  final List<String> items = <String>[].obs;
 
   final RestClient client;
 

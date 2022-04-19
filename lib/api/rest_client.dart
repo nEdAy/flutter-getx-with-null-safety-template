@@ -12,7 +12,8 @@ abstract class RestClient {
 
   @GET("/")
   Future<HitokotoResponse> getHitokoto(
-      @Query("encode") String encode, @Query("charset") String charset);
+      @Query("encode") String encode, @Query("charset") String charset,
+      {@Header('noLoading') bool noLoading = false});
 
   @GET("/")
   Future<HttpResponse<BaseResponse<HitokotoResponse>>> getHitokotoHttpResponse(

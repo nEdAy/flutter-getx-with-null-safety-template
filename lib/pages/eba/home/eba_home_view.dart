@@ -65,7 +65,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                 children: <Widget>[
                   const Text('监控设备数量',
                       style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 16)),
-                  Container(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -115,10 +115,10 @@ class EbaHomeView extends GetView<EbaHomeController> {
                       ),
                     ],
                   ),
-                  Container(height: 32),
+                  const SizedBox(height: 32),
                   const Text('告警数量',
                       style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 16)),
-                  Container(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -152,8 +152,8 @@ class EbaHomeView extends GetView<EbaHomeController> {
                           )
                         ],
                       ),
-                      Container(),
-                      Container(),
+                      const SizedBox(),
+                      const SizedBox(),
                     ],
                   ),
                 ],

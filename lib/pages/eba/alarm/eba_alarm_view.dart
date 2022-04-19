@@ -64,7 +64,7 @@ class EbaAlarmItemView extends GetView<EbaAlarmController> {
                 ? controller.majorAlarmItems.isEmpty
                 : controller.minorAlarmItems.isEmpty)
             ? <Widget>[
-                Container(height: 120),
+                const SizedBox(height: 120),
                 const Text(
                   '暂无',
                   textAlign: TextAlign.center,
@@ -86,31 +86,33 @@ class EbaAlarmItemView extends GetView<EbaAlarmController> {
                             children: [
                               Text(
                                 (isMajor
-                                    ? controller.majorAlarmItems[index]
-                                    : controller.minorAlarmItems[index]) +
-                                        'EBA监控设备-42：A8天台液低水位告警',
+                                        ? controller.majorAlarmItems[index]
+                                        : controller.minorAlarmItems[index]) +
+                                    'EBA监控设备-42：A8天台液低水位告警',
                                 style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500),
                               ),
-                              Container(height: 8),
+                              const SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     (isMajor
-                                        ? controller.majorAlarmItems[index]
-                                        : controller.minorAlarmItems[index]) +
+                                            ? controller.majorAlarmItems[index]
+                                            : controller
+                                                .minorAlarmItems[index]) +
                                         '液位值<0.8',
                                     style: const TextStyle(
                                         fontSize: 16, color: Color(0xFF434343)),
                                   ),
                                   Text(
                                     (isMajor
-                                        ? controller.majorAlarmItems[index]
-                                        : controller.minorAlarmItems[index]) +
+                                            ? controller.majorAlarmItems[index]
+                                            : controller
+                                                .minorAlarmItems[index]) +
                                         '今天 16:13:25',
                                     style: const TextStyle(
                                         fontSize: 14, color: Color(0xFFAAAAAA)),

@@ -23,9 +23,8 @@ class EbaReportView extends GetView<EbaReportController> {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(height: 50),
+            SizedBox(height: 50, width: Get.width),
             Obx(
               () => controller.isLoading.value
                   ? Container(
@@ -45,7 +44,7 @@ class EbaReportView extends GetView<EbaReportController> {
                       : Assets.images.iconReportNoError
                           .image(width: 100, height: 100)),
             ),
-            Container(height: 20),
+            const SizedBox(height: 20),
             Obx(
               () => Text(
                 controller.isLoading.value
@@ -57,7 +56,7 @@ class EbaReportView extends GetView<EbaReportController> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            Container(height: 12),
+            const SizedBox(height: 12),
             Obx(
               () => controller.isLoading.value
                   ? Text('${controller.loadingInspectionName}',
@@ -75,21 +74,21 @@ class EbaReportView extends GetView<EbaReportController> {
                             children: [
                               const Text('设备房',
                                   style: TextStyle(color: Color(0xFF767676))),
-                              Container(height: 8),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   const Text('总计',
                                       style:
                                           TextStyle(color: Color(0xFF434343))),
-                                  Container(width: 4),
+                                  const SizedBox(width: 4),
                                   Text('${controller.totalDevicesRoom}',
                                       style: const TextStyle(
                                           color: Color(0xFF434343))),
-                                  Container(width: 16),
+                                  const SizedBox(width: 16),
                                   const Text('异常',
                                       style:
                                           TextStyle(color: Color(0xFF434343))),
-                                  Container(width: 4),
+                                  const SizedBox(width: 4),
                                   Text('${controller.faultDevicesRoom}',
                                       style: const TextStyle(
                                           color: Color(0xFF434343)))
@@ -112,21 +111,21 @@ class EbaReportView extends GetView<EbaReportController> {
                             children: [
                               const Text('设备房',
                                   style: TextStyle(color: Color(0xFF767676))),
-                              Container(height: 8),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   const Text('总计',
                                       style:
                                           TextStyle(color: Color(0xFF434343))),
-                                  Container(width: 4),
+                                  const SizedBox(width: 4),
                                   Text('${controller.totalDevices}',
                                       style: const TextStyle(
                                           color: Color(0xFF434343))),
-                                  Container(width: 16),
+                                  const SizedBox(width: 16),
                                   const Text('异常',
                                       style:
                                           TextStyle(color: Color(0xFF434343))),
-                                  Container(width: 4),
+                                  const SizedBox(width: 4),
                                   Text('${controller.faultDevices}',
                                       style: const TextStyle(
                                           color: Color(0xFF434343)))
@@ -138,55 +137,75 @@ class EbaReportView extends GetView<EbaReportController> {
                       ],
                     ),
             ),
-            Container(height: 24),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 12),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
+            const SizedBox(height: 24),
+            Obx(
+              () => Visibility(
+                visible: !controller.isLoading.value,
+                child: Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 12),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Column(
                           children: [
-                            Text(
-                              '$index',
-                              style: const TextStyle(fontSize: 20),
+                            Row(
+                              children: [
+                                controller.hasError()
+                                    ? Assets.images.iconReportItemHasError
+                                        .image(width: 16, height: 16)
+                                    : Assets.images.iconReportItemNoError
+                                        .image(width: 16, height: 16),
+                                const SizedBox(width: 10),
+                                Text(
+                                  controller.reportItems[index],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Container(height: 12);
-                },
-                itemCount: 10,
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Container(height: 12);
+                    },
+                    itemCount: controller.reportItems.length,
+                  ),
+                ),
               ),
             ),
-            Container(
-              width: Get.width,
-              height: 82,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              color: Colors.white,
-              child: ElevatedButton(
-                onPressed: _launchURL,
-                child: const Text(
-                  '查看巡检报表',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
+            Obx(
+              () => Visibility(
+                visible: !controller.isLoading.value,
+                child: Container(
+                  width: Get.width,
+                  height: 82,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  color: Colors.white,
+                  child: ElevatedButton(
+                    onPressed: _launchURL,
+                    child: const Text(
+                      '查看巡检报表',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFFFF9F08)),
+                  ),
                 ),
-                style:
-                    ElevatedButton.styleFrom(primary: const Color(0xFFFF9F08)),
               ),
             ),
           ],
