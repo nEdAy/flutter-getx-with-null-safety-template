@@ -304,7 +304,7 @@ class EbaReportView extends GetView<EbaReportController> {
                 ],
               ),
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: 12),
     ]);
   }
 }
