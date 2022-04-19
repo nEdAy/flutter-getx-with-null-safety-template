@@ -39,9 +39,9 @@ class $AssetsImagesGen {
   AssetGenImage get iconReportItemNoError =>
       const AssetGenImage('assets/images/icon_report_item_no_error.png');
 
-  /// File path: assets/images/icon_report_has_error.png
+  /// File path: assets/images/icon_report_no_error.png
   AssetGenImage get iconReportNoError =>
-      const AssetGenImage('assets/images/icon_report_has_error.png');
+      const AssetGenImage('assets/images/icon_report_no_error.png');
 }
 
 class Assets {
