@@ -19,6 +19,9 @@ class EbaAlarmController extends GetxController
 
   final RestClient client;
 
+  final List<String> majorAlarmItems = [''].obs;
+  final List<String> minorAlarmItems = [''].obs;
+
   EbaAlarmController({required this.client});
 
   @override
@@ -34,8 +37,8 @@ class EbaAlarmController extends GetxController
 
   _getHitokoto() {
     client.getHitokoto("json", "utf-8").then((value) {
-      hitokoto.value = value.hitokoto ?? "";
-      from.value = value.from ?? "";
+      majorAlarmItems.addAll(['','','','','']);
+      minorAlarmItems.addAll(['','','']);
     }).catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {

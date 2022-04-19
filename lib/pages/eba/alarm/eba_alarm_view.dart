@@ -44,7 +44,7 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
       body: SafeArea(
         child: TabBarView(
           controller: controller.tabController,
-          children: const [EbaAlarmItemView(), EbaAlarmItemView()],
+          children: const [EbaAlarmItemView(true), EbaAlarmItemView(false)],
         ),
       ),
     );
@@ -52,61 +52,86 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
 }
 
 class EbaAlarmItemView extends GetView<EbaAlarmController> {
-  const EbaAlarmItemView({Key? key}) : super(key: key);
+  const EbaAlarmItemView(this.isMajor, {Key? key}) : super(key: key);
+
+  final bool isMajor;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '$index EBA监控设备-42：A8天台液低水位告警',
-                          style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
+    return Obx(
+      () => Column(
+        children: (isMajor
+                ? controller.majorAlarmItems.isEmpty
+                : controller.minorAlarmItems.isEmpty)
+            ? <Widget>[
+                Container(height: 120),
+                const Text(
+                  '暂无',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xFF767676), fontSize: 16),
+                )
+              ]
+            : <Widget>[
+                Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                (isMajor
+                                    ? controller.majorAlarmItems[index]
+                                    : controller.minorAlarmItems[index]) +
+                                        'EBA监控设备-42：A8天台液低水位告警',
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Container(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    (isMajor
+                                        ? controller.majorAlarmItems[index]
+                                        : controller.minorAlarmItems[index]) +
+                                        '液位值<0.8',
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Color(0xFF434343)),
+                                  ),
+                                  Text(
+                                    (isMajor
+                                        ? controller.majorAlarmItems[index]
+                                        : controller.minorAlarmItems[index]) +
+                                        '今天 16:13:25',
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Color(0xFFAAAAAA)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Container(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '$index 液位值<0.8',
-                              style: const TextStyle(
-                                  fontSize: 16, color: Color(0xFF434343)),
-                            ),
-                            Text(
-                              '$index 今天 16:13:25',
-                              style: const TextStyle(
-                                  fontSize: 14, color: Color(0xFFAAAAAA)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider(
+                          height: 1, indent: 20, endIndent: 20);
+                    },
+                    itemCount: isMajor
+                        ? controller.majorAlarmItems.length
+                        : controller.minorAlarmItems.length,
                   ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(height: 1, indent: 20, endIndent: 20);
-              },
-              itemCount: 30,
-            ),
-          ),
-        ],
+                ),
+              ],
       ),
     );
   }
