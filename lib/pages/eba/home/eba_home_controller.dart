@@ -16,7 +16,7 @@ class EbaHomeController extends GetxController {
   final isDropDownActive = false.obs;
   final currentProjectName = "".obs;
   final List<String> filteredProjectItems = <String>[].obs;
-  final List<String> allProjectItems = <String>[];
+  final List<String> allProjectItems = <String>[].obs;
   final TextEditingController projectSearchController = TextEditingController();
 
   final FocusNode focusNode = FocusNode();

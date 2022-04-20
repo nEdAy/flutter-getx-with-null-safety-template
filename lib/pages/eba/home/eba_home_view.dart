@@ -77,7 +77,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
             ),
             Obx(
               () => Visibility(
-                visible: controller.allProjectItems.isNotEmpty,
+                visible: controller.allProjectItems.length > 1,
                 child: controller.isDropDownActive.value
                     ? Assets.images.iconArrowDropDownActive
                         .image(width: 16, height: 16)
