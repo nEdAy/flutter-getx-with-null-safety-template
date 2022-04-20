@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../routes/app_pages.dart';
+import '../../../widgets/highlight_text.dart';
 import 'eba_home_controller.dart';
 
 class EbaHomeView extends GetView<EbaHomeController> {
@@ -30,30 +31,37 @@ class EbaHomeView extends GetView<EbaHomeController> {
           children: <Widget>[
             Container(
               color: Colors.white,
-              height: 54,
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: GestureDetector(
-                child: Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('${controller.projectName}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: controller.isDropDownActive.value
-                                  ? const Color(0xFFD97F00)
-                                  : const Color(0xFF434343),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                      Visibility(
-                          visible: controller.items.length > 1,
-                          child: controller.isDropDownActive.value
-                              ? Assets.images.iconArrowDropDownActive
-                                  .image(width: 16, height: 16)
-                              : Assets.images.iconArrowDropDown
-                                  .image(width: 16, height: 16))
-                    ],
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(
+                      () => ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxWidth: context.width / 2),
+                        child: Text('${controller.currentProjectName}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: controller.isDropDownActive.value
+                                    ? const Color(0xFFD97F00)
+                                    : const Color(0xFF434343),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                    Obx(
+                      () => Visibility(
+                        visible: controller.allProjectItems.length > 1,
+                        child: controller.isDropDownActive.value
+                            ? Assets.images.iconArrowDropDownActive
+                                .image(width: 16, height: 16)
+                            : Assets.images.iconArrowDropDown
+                                .image(width: 16, height: 16),
+                      ),
+                    )
+                  ],
                 ),
                 onTap: () => controller.onDropDownTap(),
               ),
@@ -245,7 +253,6 @@ class DropdownSearchList extends GetView<EbaHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    FocusNode _focusNode = FocusNode();
     return Column(
       children: <Widget>[
         const Divider(
@@ -265,9 +272,14 @@ class DropdownSearchList extends GetView<EbaHomeController> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Obx(
                   () => TextField(
+                    controller: controller.projectSearchController,
                     focusNode: controller.focusNode,
                     cursorColor: const Color(0xFF767676),
                     cursorWidth: 1,
+                    style: const TextStyle(
+                        color: Color(0xFF434343),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
                     textAlignVertical: TextAlignVertical.bottom,
                     decoration: InputDecoration(
                       prefixIcon: Assets.images.iconProjectSearch
@@ -280,25 +292,82 @@ class DropdownSearchList extends GetView<EbaHomeController> {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       hintText: '${controller.projectSearchHintText}',
                       hintStyle: const TextStyle(
-                          color: Color(0xFF767676), fontSize: 16),
+                          color: Color(0xFF767676),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
                       hintMaxLines: 1,
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFFE6E6E6)),
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                     ),
                     onChanged: (value) {
-                      print(value);
+                      controller.onSearchInputChanged(value);
                     },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 462,
+                child: Obx(
+                  () => ListView.separated(
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          child: Obx(() {
+                            var projectName =
+                                controller.filteredProjectItems[index];
+                            var isCurrentProject = projectName ==
+                                controller.currentProjectName.value;
+                            return HighlightText(
+                              text: projectName,
+                              textStyle: TextStyle(
+                                color: isCurrentProject
+                                    ? const Color(0xFFD97F00)
+                                    : const Color(0xFF434343),
+                                fontWeight: isCurrentProject
+                                    ? FontWeight.w500
+                                    : FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                              lightText: controller.projectSearchKeyword.value,
+                              lightStyle: const TextStyle(
+                                color: Color(0xFFD97F00),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            );
+                          }),
+                        ),
+                        onTap: () => controller.onProjectSearchItemClick(
+                            controller.filteredProjectItems[index]),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: Color(0xFFF0F0F0),
+                        indent: 20,
+                        endIndent: 20,
+                      );
+                    },
+                    itemCount: controller.filteredProjectItems.length,
+                    physics: const ClampingScrollPhysics(),
                   ),
                 ),
               ),
             ],
           ),
         ),
-        Container(
-          width: context.width,
-          height: 148,
-          color: const Color(0x80000000),
+        GestureDetector(
+          child: Container(
+            width: context.width,
+            height: 154,
+            color: const Color(0x80000000),
+          ),
+          onTap: () => controller.switchDropDownToInactive(),
         ),
       ],
     );
