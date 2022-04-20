@@ -44,20 +44,16 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
       body: SafeArea(
         child: TabBarView(
           controller: controller.tabController,
-          children: const [EbaAlarmItemView(true), EbaAlarmItemView(false)],
+          children: [
+            _buildEbaAlarmItemView(true),
+            _buildEbaAlarmItemView(false)
+          ],
         ),
       ),
     );
   }
-}
 
-class EbaAlarmItemView extends GetView<EbaAlarmController> {
-  const EbaAlarmItemView(this.isMajor, {Key? key}) : super(key: key);
-
-  final bool isMajor;
-
-  @override
-  Widget build(BuildContext context) {
+  _buildEbaAlarmItemView(bool isMajor) {
     return Obx(
       () => Column(
         children: (isMajor

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/response/report_response/report_response.dart';
 import '../../../api/rest_client.dart';
@@ -22,6 +23,11 @@ class EbaReportController extends GetxController {
 
   bool hasError() {
     return faultDevicesRoom.value > 0 || faultDevices.value > 0;
+  }
+
+   launchURL() async {
+    const String _url = 'https://flutter.dev';
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 
   EbaReportController({required this.client});
