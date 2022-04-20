@@ -23,6 +23,10 @@ class $AssetsImagesGen {
   AssetGenImage get iconArrowDropDownActive =>
       const AssetGenImage('assets/images/icon_arrow_drop_down_active.png');
 
+  /// File path: assets/images/icon_project_search.png
+  AssetGenImage get iconProjectSearch =>
+      const AssetGenImage('assets/images/icon_project_search.png');
+
   /// File path: assets/images/icon_report.png
   AssetGenImage get iconReport =>
       const AssetGenImage('assets/images/icon_report.png');

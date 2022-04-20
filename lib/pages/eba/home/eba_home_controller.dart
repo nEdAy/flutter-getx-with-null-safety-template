@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -16,6 +17,9 @@ class EbaHomeController extends GetxController {
   final projectName = "".obs;
   final List<String> items = <String>[].obs;
 
+  FocusNode focusNode = FocusNode();
+  final projectSearchHintText = "搜索项目名称".obs;
+
   final RestClient client;
 
   EbaHomeController({required this.client});
@@ -23,6 +27,13 @@ class EbaHomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        projectSearchHintText.value ='搜索项目名称';
+      }else{
+        projectSearchHintText.value =' 搜索主机名称、编号、位置';
+      }
+    });
     _getHitokoto();
   }
 

@@ -59,6 +59,7 @@ class EbaReportView extends GetView<EbaReportController> {
                                   Text(
                                     reportItem.devicesRoomName ?? '',
                                     maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.black,
@@ -138,6 +139,7 @@ class EbaReportView extends GetView<EbaReportController> {
                                                               .faultDeviceName ??
                                                           '',
                                                       maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
                                                       style: const TextStyle(
                                                           fontSize: 16,
                                                           color: Color(
