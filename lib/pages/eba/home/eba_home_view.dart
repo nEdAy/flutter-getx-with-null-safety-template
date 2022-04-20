@@ -326,7 +326,6 @@ class EbaHomeView extends GetView<EbaHomeController> {
                       );
                     },
                     itemCount: controller.filteredProjectItems.length,
-                    physics: const ClampingScrollPhysics(),
                   ),
                 ),
               ),
