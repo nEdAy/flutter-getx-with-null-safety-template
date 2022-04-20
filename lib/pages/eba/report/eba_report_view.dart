@@ -302,7 +302,7 @@ class EbaReportView extends GetView<EbaReportController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('设备房',
+                        const Text('设备',
                             style: TextStyle(color: Color(0xFF767676))),
                         const SizedBox(height: 8),
                         Row(
