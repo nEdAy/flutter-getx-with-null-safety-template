@@ -97,9 +97,11 @@ class EbaReportView extends GetView<EbaReportController> {
                                               child: isUnfold.value
                                                   ? const Icon(
                                                       Icons.keyboard_arrow_up,
+                                                      color: Color(0xFF333333),
                                                       size: 16)
                                                   : const Icon(
                                                       Icons.keyboard_arrow_down,
+                                                      color: Color(0xFF333333),
                                                       size: 16),
                                               onTap: () => isUnfold.value =
                                                   !isUnfold.value,
@@ -154,8 +156,10 @@ class EbaReportView extends GetView<EbaReportController> {
                                               },
                                               separatorBuilder:
                                                   (context, index) {
-                                                return const SizedBox(
-                                                    height: 12);
+                                                return const Divider(
+                                                  height: 12,
+                                                  color: Colors.transparent,
+                                                );
                                               },
                                               itemCount: reportItem
                                                       .faultDevices?.length ??
@@ -175,7 +179,12 @@ class EbaReportView extends GetView<EbaReportController> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return const SizedBox(height: 12);
+                    return const Divider(
+                      height: 12,
+                      color: Colors.transparent,
+                      indent: 20,
+                      endIndent: 20,
+                    );
                   },
                   itemCount: controller.reportItems.isEmpty
                       ? 1
