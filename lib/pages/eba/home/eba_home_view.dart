@@ -36,21 +36,23 @@ class EbaHomeView extends GetView<EbaHomeController> {
         child: Column(
           children: <Widget>[
             _buildProjectDropDownButton(context),
-            Obx(
-              () => IndexedStack(
-                index: controller.isDropDownActive.value ? 1 : 0,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      _buildProjectDataDisplayBox(context),
-                      _buildClickableCardButton(Assets.images.iconAlarm, '告警',
-                          () => Get.toNamed(Routes.ebaAlarm)),
-                      _buildClickableCardButton(Assets.images.iconReport,
-                          '一键巡检', () => Get.toNamed(Routes.ebaReport)),
-                    ],
-                  ),
-                  _buildDropdownSearchList(context),
-                ],
+            Expanded(
+              child: Obx(
+                () => IndexedStack(
+                  index: controller.isDropDownActive.value ? 1 : 0,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        _buildProjectDataDisplayBox(context),
+                        _buildClickableCardButton(Assets.images.iconAlarm, '告警',
+                            () => Get.toNamed(Routes.ebaAlarm)),
+                        _buildClickableCardButton(Assets.images.iconReport,
+                            '一键巡检', () => Get.toNamed(Routes.ebaReport)),
+                      ],
+                    ),
+                    _buildDropdownSearchList(context),
+                  ],
+                ),
               ),
             ),
           ],
@@ -243,117 +245,111 @@ class EbaHomeView extends GetView<EbaHomeController> {
         ),
         Container(
           width: context.width,
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: context.width,
-                height: 70,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Obx(
-                  () => TextField(
-                    controller: controller.projectSearchController,
-                    focusNode: controller.focusNode,
-                    cursorColor: const Color(0xFF767676),
-                    cursorWidth: 1,
-                    style: const TextStyle(
-                        color: Color(0xFF434343),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                    textAlignVertical: TextAlignVertical.bottom,
-                    decoration: InputDecoration(
-                      prefixIcon: Assets.images.iconProjectSearch
-                          .image(width: 16, height: 16),
-                      prefixIconConstraints: const BoxConstraints(minWidth: 40),
-                      fillColor: Colors.white,
-                      filled: true,
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      hintText: '${controller.projectSearchHintText}',
-                      hintStyle: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                      hintMaxLines: 1,
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                    ),
-                    onChanged: (value) {
-                      controller.onSearchInputChanged(value);
-                    },
-                  ),
-                ),
+          child: Obx(
+            () => TextField(
+              controller: controller.projectSearchController,
+              focusNode: controller.focusNode,
+              cursorColor: const Color(0xFF767676),
+              cursorWidth: 1,
+              style: const TextStyle(
+                  color: Color(0xFF434343),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+              textAlignVertical: TextAlignVertical.bottom,
+              decoration: InputDecoration(
+                prefixIcon: Assets.images.iconProjectSearch
+                    .image(width: 16, height: 16),
+                prefixIconConstraints: const BoxConstraints(minWidth: 40),
+                fillColor: Colors.white,
+                filled: true,
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                hintText: '${controller.projectSearchHintText}',
+                hintStyle: const TextStyle(
+                    color: Color(0xFF767676),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+                hintMaxLines: 1,
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
               ),
-              SizedBox(
-                height: 462,
-                child: Obx(
-                  () => ListView.separated(
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
-                          child: Obx(() {
-                            var projectName =
-                                controller.filteredProjectItems[index];
-                            var isCurrentProject = projectName ==
-                                controller.currentProjectName.value;
-                            return HighlightText(
-                              text: projectName,
-                              textStyle: TextStyle(
-                                color: isCurrentProject
-                                    ? const Color(0xFFD97F00)
-                                    : const Color(0xFF434343),
-                                fontWeight: isCurrentProject
-                                    ? FontWeight.w500
-                                    : FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                              lightText: controller.projectSearchKeyword.value,
-                              lightStyle: const TextStyle(
-                                color: Color(0xFFD97F00),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                            );
-                          }),
-                        ),
-                        onTap: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          List projectList = controller.filteredProjectItems;
-                          String project = projectList[index];
-                          controller.onProjectSearchItemClick(project);
-                        },
-                        // onTap: () => controller.onProjectSearchItemClick(
-                        //     controller.filteredProjectItems[index]),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: Color(0xFFF0F0F0),
-                        indent: 20,
-                        endIndent: 20,
-                      );
-                    },
-                    itemCount: controller.filteredProjectItems.length,
-                  ),
-                ),
-              ),
-            ],
+              onChanged: (value) {
+                controller.onSearchInputChanged(value);
+              },
+            ),
           ),
         ),
-        GestureDetector(
-          child: Container(
-            width: context.width,
-            height: 154,
-            color: const Color(0x80000000),
+        Expanded(
+          flex: 3,
+          child: Obx(
+            () => ListView.separated(
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    child: Obx(
+                      () {
+                        var projectName =
+                            controller.filteredProjectItems[index];
+                        var isCurrentProject =
+                            projectName == controller.currentProjectName.value;
+                        return HighlightText(
+                          text: projectName,
+                          textStyle: TextStyle(
+                            color: isCurrentProject
+                                ? const Color(0xFFD97F00)
+                                : const Color(0xFF434343),
+                            fontWeight: isCurrentProject
+                                ? FontWeight.w500
+                                : FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                          lightText: controller.projectSearchKeyword.value,
+                          lightStyle: const TextStyle(
+                            color: Color(0xFFD97F00),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    List projectList = controller.filteredProjectItems;
+                    String project = projectList[index];
+                    controller.onProjectSearchItemClick(project);
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0xFFF0F0F0),
+                  indent: 20,
+                  endIndent: 20,
+                );
+              },
+              itemCount: controller.filteredProjectItems.length,
+            ),
           ),
-          onTap: () => controller.switchDropDownToInactive(),
+        ),
+        Expanded(
+          flex: 1,
+          child: GestureDetector(
+            child: Container(
+              width: context.width,
+              color: const Color(0x80000000),
+            ),
+            onTap: () => controller.switchDropDownToInactive(),
+          ),
         ),
       ],
     );
