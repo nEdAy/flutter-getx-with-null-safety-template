@@ -12,6 +12,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('EBA',
             style: TextStyle(color: Colors.black, fontSize: 18)),
