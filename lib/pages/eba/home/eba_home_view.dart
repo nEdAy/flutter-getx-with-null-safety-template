@@ -26,8 +26,13 @@ class EbaHomeView extends GetView<EbaHomeController> {
           iconSize: 16,
         ),
       ),
-      body: SafeArea(
-        bottom: false,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        // bottom: false,
         child: Column(
           children: <Widget>[
             _buildProjectDropDownButton(context),
@@ -88,7 +93,10 @@ class EbaHomeView extends GetView<EbaHomeController> {
             )
           ],
         ),
-        onTap: () => controller.onDropDownTap(),
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+          controller.onDropDownTap();
+        },
       ),
     );
   }
@@ -313,8 +321,14 @@ class EbaHomeView extends GetView<EbaHomeController> {
                             );
                           }),
                         ),
-                        onTap: () => controller.onProjectSearchItemClick(
-                            controller.filteredProjectItems[index]),
+                        onTap: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          List projectList = controller.filteredProjectItems;
+                          String project = projectList[index];
+                          controller.onProjectSearchItemClick(project);
+                        },
+                        // onTap: () => controller.onProjectSearchItemClick(
+                        //     controller.filteredProjectItems[index]),
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {
