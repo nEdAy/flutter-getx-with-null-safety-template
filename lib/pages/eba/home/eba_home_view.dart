@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../channel/back_to_native.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/highlight_text.dart';
@@ -21,7 +22,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
         elevation: 0.5,
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () => BackToNativeChannel.backToNative(),
           icon: const Icon(Icons.arrow_back_ios),
           iconSize: 16,
         ),
