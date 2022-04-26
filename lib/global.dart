@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:network_inspector/network_inspector.dart';
 
+import 'channel/get_flavor_info.dart';
 import 'config/flavor.dart';
 
 /// 全局配置
@@ -47,10 +48,12 @@ class Global {
 
 class FlavorService extends GetxService {
   Future<FlavorService> init() async {
-    final flavorInfoMap = {}; // await GetFlavorInfo.getFlavorInfo();
-    final flavor = flavorInfoMap['flavor'] ?? prod;
-    final baseUrl = flavorInfoMap['baseUrl'] ?? prodBaseUrl;
-    FlavorConfig(flavor: flavor, values: FlavorValues(baseUrl: baseUrl));
+    final flavorInfoMap = await GetFlavorInfo.getFlavorInfo();
+    final flavor = flavorInfoMap?['flavor'] ?? prod;
+    final baseUrl = flavorInfoMap?['baseUrl'] ?? prodBaseUrl;
+    final stage = flavorInfoMap?['stage'] ?? 'prodBaseUrl';
+    FlavorConfig(
+        flavor: flavor, values: FlavorValues(baseUrl: baseUrl, stage: stage));
     return this;
   }
 }

@@ -6,4 +6,6 @@ class ChannelKeys {
   static const goToNative = packageKey + '/goToNative';
 
   static const getFlavorInfo = packageKey + '/getFlavorInfo';
+
+  static const getUserInfo = packageKey + '/getUserInfo';
 }

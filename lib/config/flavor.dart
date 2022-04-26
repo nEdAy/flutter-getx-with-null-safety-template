@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 const String prod = 'prod';
-const String dev = 'dev';
+const String pre = 'pre';
 const String uat = 'uat';
+const String sit = 'sit';
 
-const devBaseUrl = "https://international.v1.hitokoto.cn";
-const prodBaseUrl = "https://v1.hitokoto.cn/";
+const uatBaseUrl = "https://zhsq-iot-api.sunac.com.cn";
+const prodBaseUrl = "https://zhsq-iot-uat-api.sunac.com.cn";
 
 class FlavorValues {
   final String baseUrl;
+  final String stage;
 
-  FlavorValues({required this.baseUrl});
+  FlavorValues({required this.baseUrl,required this.stage});
 }
 
 class FlavorConfig {
@@ -36,7 +38,9 @@ class FlavorConfig {
 
   static bool isProduction() => _instance.flavor == prod;
 
+  static bool isPreProduction() => _instance.flavor == pre;
+
   static bool isQA() => _instance.flavor == uat;
 
-  static bool isDevelopment() => _instance.flavor == dev;
+  static bool isDevelopment() => _instance.flavor == sit;
 }

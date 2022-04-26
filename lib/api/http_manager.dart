@@ -18,7 +18,8 @@ class HttpManager {
   static final Map<String, dynamic> _optHeader = {
     'accept-language': 'zh-cn',
     'content-type': 'application/json',
-    'accept': 'application/json'
+    'accept': 'application/json',
+    'stage': FlavorConfig.instance.values.stage
   };
 
   late RestClient client;
