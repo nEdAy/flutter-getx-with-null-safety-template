@@ -7,7 +7,7 @@ class HitokotoResponse {
   String? hitokoto;
   String? from;
 
-  HitokotoResponse({this.hitokoto,this.from});
+  HitokotoResponse({this.hitokoto, this.from});
 
   factory HitokotoResponse.fromJson(Map<String, dynamic> json) =>
       _$HitokotoResponseFromJson(json);

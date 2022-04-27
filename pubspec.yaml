@@ -26,13 +26,13 @@ dependencies:
   # GetX
   get: ^4.6.1
   # Http client
-  dio: ^4.0.4
+  dio: ^4.0.6
   # Http client generator
   retrofit: ^3.0.1+1
   # Http client Log
   dio_http_formatter: ^2.1.0
   # Dio network inspector
-  network_inspector: ^1.0.1
+  network_inspector: ^1.0.2
   # Json generation
   json_annotation: ^4.4.0
   # Log
@@ -40,7 +40,9 @@ dependencies:
   # Loading/Toast/Notification
   bot_toast: ^4.0.1
   # Sentry
-  sentry: ^6.3.0
+  sentry: ^6.5.1
+  # Launching URL
+  url_launcher: ^6.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,11 +53,13 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^1.0.4
   # Build Runner
-  build_runner: ^2.1.7
+  build_runner: ^2.1.10
+  # Flutter gen runner:
+  flutter_gen_runner: ^4.1.6
   # Http client generator
   retrofit_generator: ^4.0.1
   # Json serializable
-  json_serializable: ^6.1.5
+  json_serializable: ^6.1.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,7 +73,7 @@ flutter:
   # To add Flutter specific assets to your application, add an assets section,
   # like this:
   assets:
-    - assets/images/flutter_logo.png
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

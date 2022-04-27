@@ -11,9 +11,9 @@ import 'interceptors/interceptors.dart';
 import 'rest_client.dart';
 
 class HttpManager {
-  // 超时时间 120s
-  static const connectTimeout = 120000;
-  static const receiveTimeout = 120000;
+  // 超时时间 60s
+  static const connectTimeout = 60000;
+  static const receiveTimeout = 60000;
 
   static final Map<String, dynamic> _optHeader = {
     'accept-language': 'zh-cn',
@@ -41,7 +41,6 @@ class HttpManager {
         receiveTimeout: receiveTimeout,
         baseUrl: FlavorConfig.instance.values.baseUrl,
         headers: _optHeader,
-        setRequestContentTypeWhenNoPayload: true,
         validateStatus: (status) {
           return status != null && status < 500;
         });
