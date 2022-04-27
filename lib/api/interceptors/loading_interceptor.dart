@@ -2,33 +2,42 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 
 class LoadingInterceptor extends InterceptorsWrapper {
-  late CancelFunc cancel;
+  final Map<String, CancelFunc> _cancelMap = {};
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     if (!options.headers.containsKey('noLoading') ||
         options.headers['noLoading'] == false) {
-      cancel = BotToast.showLoading(); // 弹出一个加载动画
+      CancelFunc cancel = BotToast.showLoading();
+      _cancelMap.addAll({options.uri.toString(): cancel});
     }
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    if (!response.requestOptions.headers.containsKey('noLoading') ||
-        response.requestOptions.headers['noLoading'] == false) {
-      cancel();
-    }
+    cancelLoading(response.requestOptions);
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    if (!err.requestOptions.headers.containsKey('noLoading') ||
-        err.requestOptions.headers['noLoading'] == false) {
-      cancel();
-    }
+    cancelLoading(err.requestOptions);
     super.onError(err, handler);
+  }
+
+  void cancelLoading(RequestOptions requestOptions) {
+    if (!requestOptions.headers.containsKey('noLoading') ||
+        requestOptions.headers['noLoading'] == false) {
+      final requestKey = requestOptions.uri.toString();
+      if (_cancelMap.containsKey(requestKey)) {
+        CancelFunc? cancel = _cancelMap[requestKey];
+        if (cancel != null) {
+          cancel();
+          _cancelMap.remove(requestKey);
+        }
+      }
+    }
   }
 }
