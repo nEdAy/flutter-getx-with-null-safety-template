@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 class ResponseHeaderInterceptor extends InterceptorsWrapper {
-  final String tokenHeader = 'token';
+  final String tokenHeader = 'access-token';
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {

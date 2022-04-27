@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+import 'package:sunac_flutter/channel/get_user_info.dart';
 
+import '../../../api/response/eba/project_list_response/project_list_response.dart';
 import '../../../api/rest_client.dart';
 
 class EbaHomeController extends GetxController {
@@ -15,8 +15,8 @@ class EbaHomeController extends GetxController {
 
   final isDropDownActive = false.obs;
   final currentProjectName = "".obs;
-  final List<String> filteredProjectItems = <String>[].obs;
-  final List<String> allProjectItems = <String>[].obs;
+  final List<Project> filteredProjectItems = <Project>[].obs;
+  final List<Project> allProjectItems = <Project>[].obs;
   final TextEditingController projectSearchController = TextEditingController();
 
   final FocusNode focusNode = FocusNode();
@@ -54,10 +54,13 @@ class EbaHomeController extends GetxController {
     onSearchInputChanged('');
   }
 
-  onProjectSearchItemClick(String name) {
-    currentProjectName.value = name;
+  onProjectSearchItemClick(Project project) {
+    currentProjectName.value = project.name ?? '';
     switchDropDownToInactive();
-    _getProjectData(name);
+    var projectId = project.id;
+    if (projectId != null && projectId.isNotEmpty) {
+      _getProjectData(projectId);
+    }
   }
 
   void onSearchInputChanged(String value) {
@@ -66,9 +69,9 @@ class EbaHomeController extends GetxController {
     if (value.isBlank ?? true) {
       filteredProjectItems.addAll(allProjectItems);
     } else {
-      var newFilteredProjectItems = <String>[];
+      var newFilteredProjectItems = <Project>[];
       for (var element in allProjectItems) {
-        if (element.contains(value)) {
+        if (element.name?.contains(value) ?? false) {
           newFilteredProjectItems.add(element);
         }
       }
@@ -76,53 +79,53 @@ class EbaHomeController extends GetxController {
     }
   }
 
-  _getProjectNameList() {
-    client.getHitokoto("json", "utf-8").then((value) {
-      allProjectItems.addAll([
-        '天津融创中心',
-        '天津融创中心2',
-        '天津融创中心3天津融创中心3天津融创中心3天津融创中心3天津融创中心3',
-        '天津臻园',
-        '天津臻园2',
-        '天津东岸明郡',
-        '天津东岸明郡2',
-        '天津半湾半岛',
-        '天津半湾半岛2',
-      ]);
-      currentProjectName.value = allProjectItems.first;
-      _getProjectData(currentProjectName.value);
-      filteredProjectItems.addAll(allProjectItems);
-    }).catchError((Object obj) {
-      // non-200 error goes here.
-      switch (obj.runtimeType) {
-        case DioError:
-          // Here's the sample to get the failed response error code and message
-          final res = (obj as DioError).response;
-          Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
-          break;
-        default:
-          break;
+  _getProjectNameList() async {
+    var userInfo = await GetUserInfo.getUserInfo();
+    client.getProjectList(userInfo?['memberId'], 'AUTHORITY').then((value) {
+      if (value.status == 200) {
+        var projectList = value.data?.projectList;
+        if (projectList != null && projectList.isNotEmpty) {
+          allProjectItems.addAll(projectList);
+          var currentProject = allProjectItems.first;
+          currentProjectName.value = currentProject.name ?? '';
+          var currentProjectId = currentProject.projectId;
+          if (currentProjectId != null && currentProjectId.isNotEmpty) {
+            _getProjectData(currentProjectId);
+          }
+          filteredProjectItems.addAll(allProjectItems);
+        }
       }
     });
   }
 
-  _getProjectData(String name) {
-    client.getHitokoto("json", "utf-8").then((value) {
-      totalDevices.value = 98;
-      faultDevices.value = 1;
-      disableDevices.value = 3;
-      majorAlarm.value = 98;
-      minorAlarm.value = 1;
-    }).catchError((Object obj) {
-      // non-200 error goes here.
-      switch (obj.runtimeType) {
-        case DioError:
-          // Here's the sample to get the failed response error code and message
-          final res = (obj as DioError).response;
-          Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
-          break;
-        default:
-          break;
+  _getProjectData(String projectId) {
+    _getDeviceStatus(projectId);
+    _getAlarmLogs(projectId);
+  }
+
+  void _getDeviceStatus(String projectId) {
+    client.getDeviceStatus(projectId, "device_info").then((value) {
+      if (value.status == 200) {
+        var deviceStatus = value.data;
+        if (deviceStatus != null) {
+          totalDevices.value = (deviceStatus.onlineCount ?? 0) +
+              (deviceStatus.bugCount ?? 0) +
+              (deviceStatus.stopCount ?? 0);
+          faultDevices.value = deviceStatus.bugCount ?? 0;
+          disableDevices.value = deviceStatus.stopCount ?? 0;
+        }
+      }
+    });
+  }
+
+  void _getAlarmLogs(String projectId) {
+    client.getAlarmLogs(projectId, "device_alarm").then((value) {
+      if (value.status == 200) {
+        var alarmLogs = value.data;
+        if (alarmLogs != null) {
+          majorAlarm.value = alarmLogs.serious ?? 0;
+          minorAlarm.value = alarmLogs.commonly ?? 0;
+        }
       }
     });
   }

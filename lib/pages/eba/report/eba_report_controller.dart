@@ -25,9 +25,9 @@ class EbaReportController extends GetxController {
     return faultDevicesRoom.value > 0 || faultDevices.value > 0;
   }
 
-   launchURL() async {
-    const String _url = 'https://flutter.dev';
-    if (!await launch(_url)) throw 'Could not launch $_url';
+  launchURL() async {
+    Uri _uri = Uri.parse('https://flutter.dev');
+    if (!await launchUrl(_uri)) throw 'Could not launch $_uri';
   }
 
   EbaReportController({required this.client});
@@ -82,7 +82,7 @@ class EbaReportController extends GetxController {
       // non-200 error goes here.
       switch (obj.runtimeType) {
         case DioError:
-          // Here's the sample to get the failed response error code and message
+        // Here's the sample to get the failed response error code and message
           final res = (obj as DioError).response;
           Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
           break;

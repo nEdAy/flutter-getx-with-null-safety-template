@@ -6,17 +6,17 @@ part 'base_response.g.dart';
 class BaseResponse<T> {
   @JsonKey(name: 'code')
   int? code;
-  @JsonKey(name: 'message')
+  @JsonKey(name: 'status')
+  int? status;
+  @JsonKey(name: 'msg')
   String? message;
-  @JsonKey(name: 'success')
-  bool? success;
 
   T? data;
 
   BaseResponse({
     this.code,
+    this.status,
     this.message,
-    this.success,
     this.data,
   });
 

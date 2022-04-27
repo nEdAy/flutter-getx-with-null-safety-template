@@ -5,8 +5,11 @@ const String pre = 'pre';
 const String uat = 'uat';
 const String sit = 'sit';
 
-const uatBaseUrl = "https://zhsq-iot-api.sunac.com.cn";
-const prodBaseUrl = "https://zhsq-iot-uat-api.sunac.com.cn";
+const uatBaseUrl = "https://zhsq-iot-api2.sunac.com.cn";
+const prodBaseUrl = "https://zhsq-iot-uat-api2.sunac.com.cn";
+
+const uatStage = "PRE_RELEASE";
+const prodStage = "RELEASE";
 
 class FlavorValues {
   final String baseUrl;

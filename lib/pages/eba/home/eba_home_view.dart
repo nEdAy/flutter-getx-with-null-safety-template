@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../api/response/eba/project_list_response/project_list_response.dart';
 import '../../../channel/back_to_native.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../routes/app_pages.dart';
@@ -297,11 +298,11 @@ class EbaHomeView extends GetView<EbaHomeController> {
                     child: Obx(
                       () {
                         var projectName =
-                            controller.filteredProjectItems[index];
+                            controller.filteredProjectItems[index].name;
                         var isCurrentProject =
                             projectName == controller.currentProjectName.value;
                         return HighlightText(
-                          text: projectName,
+                          text: projectName ?? '',
                           textStyle: TextStyle(
                             color: isCurrentProject
                                 ? const Color(0xFFD97F00)
@@ -323,9 +324,8 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   ),
                   onTap: () {
                     FocusScope.of(context).requestFocus(FocusNode());
-                    List projectList = controller.filteredProjectItems;
-                    String project = projectList[index];
-                    controller.onProjectSearchItemClick(project);
+                    List<Project> projectList = controller.filteredProjectItems;
+                    controller.onProjectSearchItemClick(projectList[index]);
                   },
                 );
               },

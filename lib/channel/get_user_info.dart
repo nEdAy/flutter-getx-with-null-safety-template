@@ -13,9 +13,13 @@ class GetUserInfo {
   static Future<Map<String, dynamic>?> getUserInfo() async {
     try {
       final userInfo = await _channel.invokeMethod(_getUserInfo);
+      Logger().d("userInfo: " + userInfo);
       final userInfoMap = jsonDecode(userInfo);
       return userInfoMap;
     } on PlatformException catch (e) {
+      Logger().e(e);
+      return null;
+    } on MissingPluginException catch (e) {
       Logger().e(e);
       return null;
     }
