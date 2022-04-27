@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
         unknownRoute: AppPages.unknownRoute,
         getPages: AppPages.routes,
         builder: BotToastInit(),
+        debugShowCheckedModeBanner: false,
         navigatorObservers: [BotToastNavigatorObserver()],
       ),
     );
