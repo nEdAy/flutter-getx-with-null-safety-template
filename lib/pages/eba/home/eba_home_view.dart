@@ -64,10 +64,11 @@ class EbaHomeView extends GetView<EbaHomeController> {
   }
 
   _buildProjectDropDownButton(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: GestureDetector(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,11 +98,11 @@ class EbaHomeView extends GetView<EbaHomeController> {
             )
           ],
         ),
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-          controller.onDropDownTap();
-        },
       ),
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        controller.onDropDownTap();
+      },
     );
   }
 
@@ -292,6 +293,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
             () => ListView.separated(
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 20),
