@@ -19,12 +19,8 @@ class ProjectListResponse {
 class Project {
   String? id;
   String? name;
-  @JsonKey(name: 'project_id')
-  String? projectId;
-  @JsonKey(name: 'parent_id')
-  String? parentId;
 
-  Project({this.id, this.name, this.projectId, this.parentId});
+  Project({this.id, this.name});
 
   factory Project.fromJson(Map<String, dynamic> json) =>
       _$ProjectFromJson(json);

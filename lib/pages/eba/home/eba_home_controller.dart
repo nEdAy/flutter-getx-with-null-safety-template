@@ -88,7 +88,7 @@ class EbaHomeController extends GetxController {
           allProjectItems.addAll(projectList);
           var currentProject = allProjectItems.first;
           currentProjectName.value = currentProject.name ?? '';
-          var currentProjectId = currentProject.projectId;
+          var currentProjectId = currentProject.id;
           if (currentProjectId != null && currentProjectId.isNotEmpty) {
             _getProjectData(currentProjectId);
           }

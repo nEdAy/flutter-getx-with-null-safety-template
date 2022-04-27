@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import 'response/base/base_response.dart';
+import 'response/eba/alarm_logs_list_response/alarm_logs_list_response.dart';
 import 'response/eba/alarm_logs_response/alarm_logs_response.dart';
 import 'response/eba/device_status_response/device_status_response.dart';
 import 'response/eba/project_list_response/project_list_response.dart';
@@ -29,4 +30,8 @@ abstract class RestClient {
   @GET("/v2/service/device-manage/device-alarm/statistics/alarm-logs")
   Future<BaseResponse<AlarmLogsResponse>> getAlarmLogs(
       @Query("projectId") String projectId, @Header("group") String group);
+
+  @POST("/v2/service/device-manage/device-alarm/alarm-logs-list")
+  Future<BaseResponse<AlarmLogsListResponse>> getAlarmLogsList(
+      @Body() Map<String, dynamic> request, @Header("group") String group);
 }

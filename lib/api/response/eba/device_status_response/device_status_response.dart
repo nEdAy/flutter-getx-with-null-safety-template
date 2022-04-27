@@ -7,10 +7,8 @@ class DeviceStatusResponse {
   int? onlineCount = 0;
   int? bugCount = 0;
   int? stopCount = 0;
-  double? onlineRate = 0;
-  int? onlineDay = 0;
 
-  DeviceStatusResponse({this.onlineCount,this.bugCount,this.stopCount,this.onlineRate,this.onlineDay});
+  DeviceStatusResponse({this.onlineCount,this.bugCount,this.stopCount});
 
   factory DeviceStatusResponse.fromJson(Map<String, dynamic> json) =>
       _$DeviceStatusResponseFromJson(json);
