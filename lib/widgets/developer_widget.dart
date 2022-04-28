@@ -1,6 +1,6 @@
+import 'package:dio_log/http_log_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:network_inspector/presentation/pages/activity_page.dart';
 
 import '../config/flavor.dart';
 
@@ -52,7 +52,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   Widget _developerWidget() {
     return FloatingActionButton(
-      onPressed: () => Get.to(() => ActivityPage()),
+      onPressed: () => Get.to(() => HttpLogListWidget()),
       tooltip: 'Dio Log',
       child: const Icon(Icons.wifi),
     );

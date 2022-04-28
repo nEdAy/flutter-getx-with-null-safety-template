@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
-import 'package:network_inspector/common/utils/dio_interceptor.dart';
-import 'package:network_inspector/network_inspector.dart';
+import 'package:dio_log/interceptor/dio_log_interceptor.dart';
 import 'package:sunac_flutter/config/flavor.dart';
 
 import 'interceptors/interceptors.dart';
@@ -68,11 +67,8 @@ class HttpManager {
 
   void _addDioLogger(Dio dio, {bool printResponseBody = true}) {
     dio.interceptors.addAll([
+      DioLogInterceptor(),
       HttpFormatter(includeResponseBody: printResponseBody),
-      DioInterceptor(
-        logIsAllowed: true,
-        networkInspector: NetworkInspector(),
-      ),
     ]);
   }
 }
