@@ -32,7 +32,7 @@ dependencies:
   # Http client Log
   dio_http_formatter: ^2.1.0
   # Dio network inspector
-  network_inspector: ^1.0.2
+  dio_log : ^2.0.2
   # Json generation
   json_annotation: ^4.4.0
   # Log
