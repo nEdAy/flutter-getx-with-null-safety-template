@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:network_inspector/network_inspector.dart';
 
 import 'channel/get_flavor_info.dart';
 import 'config/flavor.dart';
@@ -25,9 +24,6 @@ class Global {
           const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
-
-    // 网络拦截器初始化
-    await NetworkInspector.initialize();
 
     // 等待服务初始化
     await _initServices();
