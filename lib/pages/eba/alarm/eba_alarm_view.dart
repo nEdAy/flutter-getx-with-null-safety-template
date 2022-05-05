@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../api/response/eba/alarm_logs_list_response/alarm_logs_list_response.dart';
 import '../../../widgets/round_underline_tab_indicator.dart';
 import 'eba_alarm_controller.dart';
 
@@ -54,82 +56,71 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
   }
 
   _buildEbaAlarmItemView(bool isMajor) {
+    final List<AlarmLogs>? alarmItems = controller.alarmItemsMap[isMajor];
     return Obx(
-      () => Column(
-        children: (isMajor
-                ? controller.majorAlarmItems.isEmpty
-                : controller.minorAlarmItems.isEmpty)
-            ? <Widget>[
-                const SizedBox(height: 120),
-                const Text(
-                  '暂无',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xFF767676), fontSize: 16),
-                )
-              ]
-            : <Widget>[
-                Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+      () => SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        onRefresh: () => controller.onRefresh(isMajor),
+        onLoading: () => controller.onLoading(isMajor),
+        controller: controller.refreshControllerMap[isMajor]!,
+        child: alarmItems?.isEmpty == true
+            ? Column(
+                children: const [
+                  SizedBox(height: 120),
+                  Text(
+                    '暂无',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Color(0xFF767676), fontSize: 16),
+                  )
+                ],
+              )
+            : ListView.separated(
+                itemBuilder: (context, index) {
+                  return Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            (alarmItems?[index].deviceName ?? '') +
+                                '：' +
+                                (alarmItems?[index].alarmContent ?? ''),
+                            style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                (isMajor
-                                        ? controller.majorAlarmItems[index]
-                                        : controller.minorAlarmItems[index]) +
-                                    'EBA监控设备-42：A8天台液低水位告警',
+                                alarmItems?[index].alarmCondition ?? '',
                                 style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: 16, color: Color(0xFF434343)),
                               ),
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    (isMajor
-                                            ? controller.majorAlarmItems[index]
-                                            : controller
-                                                .minorAlarmItems[index]) +
-                                        '液位值<0.8',
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Color(0xFF434343)),
-                                  ),
-                                  Text(
-                                    (isMajor
-                                            ? controller.majorAlarmItems[index]
-                                            : controller
-                                                .minorAlarmItems[index]) +
-                                        '今天 16:13:25',
-                                    style: const TextStyle(
-                                        fontSize: 14, color: Color(0xFFAAAAAA)),
-                                  ),
-                                ],
+                              Text(
+                                alarmItems?[index].alarmTime ?? '',
+                                style: const TextStyle(
+                                    fontSize: 14, color: Color(0xFFAAAAAA)),
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const Divider(
-                          height: 1, indent: 20, endIndent: 20);
-                    },
-                    itemCount: isMajor
-                        ? controller.majorAlarmItems.length
-                        : controller.minorAlarmItems.length,
-                  ),
-                ),
-              ],
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider(height: 1, indent: 20, endIndent: 20);
+                },
+                itemCount: alarmItems?.length ?? 0,
+              ),
       ),
     );
   }

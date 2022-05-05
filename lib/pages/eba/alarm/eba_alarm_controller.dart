@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../api/response/eba/alarm_logs_list_response/alarm_logs_list_response.dart';
 import '../../../api/rest_client.dart';
 
 class EbaAlarmController extends GetxController
@@ -10,8 +12,18 @@ class EbaAlarmController extends GetxController
 
   final RestClient client;
 
-  final List<String> majorAlarmItems = [''].obs;
-  final List<String> minorAlarmItems = [''].obs;
+  final Map<bool, List<AlarmLogs>> alarmItemsMap = {
+    false: <AlarmLogs>[].obs,
+    true: <AlarmLogs>[].obs
+  };
+
+  final Map<bool, RefreshController> refreshControllerMap = {
+    false: RefreshController(initialRefresh: false),
+    true: RefreshController(initialRefresh: false)
+  };
+
+  final _initPageSize = 20;
+  final Map<bool, int> _currentPageMap = {false: 0, true: 0};
 
   EbaAlarmController({required this.client});
 
@@ -19,24 +31,47 @@ class EbaAlarmController extends GetxController
   void onInit() {
     super.onInit();
     tabController = TabController(vsync: this, length: tabs.length);
-    //_getHitokoto();
   }
 
-  onRefresh() {
-    // _getHitokoto();
+  @override
+  void onClose() {
+    super.onClose();
+    tabController.dispose();
   }
 
-  _getAlarmLogsList(int offset, int limit, String projectId, int alarmLevel) {
+  onRefresh(bool isMajor) async {
+    _currentPageMap[isMajor] = 0;
+    await _getAlarmLogsList(0, isMajor);
+  }
+
+  onLoading(bool isMajor) async {
+    _currentPageMap[isMajor] = _currentPageMap[isMajor] ?? 0 + 1;
+    await _getAlarmLogsList(_currentPageMap[isMajor] ?? 0, isMajor);
+  }
+
+  Future _getAlarmLogsList(int offset, bool isMajor) async {
+    final String projectId = Get.arguments;
     final request = {
       'offset': offset,
-      'limit': limit,
+      'limit': _initPageSize,
       'projectId': projectId,
       'dtId': '3681568654222299015',
-      'alarmLevel': alarmLevel,
+      'alarmLevel': isMajor ? 1 : 3,
     };
-    client.getAlarmLogsList(request, "utf-8").then((value) {
-      majorAlarmItems.addAll(['', '', '', '', '']);
-      minorAlarmItems.addAll(['', '', '']);
+    await client.getAlarmLogsList(request, "device_alarm").then((value) {
+      if (value.status == 200) {
+        var alarmLogsList = value.data?.alarmLogsList;
+        if (alarmLogsList != null && alarmLogsList.isNotEmpty) {
+          alarmItemsMap[isMajor]?.addAll(alarmLogsList);
+          if (alarmLogsList.length < _initPageSize) {
+            refreshControllerMap[isMajor]?.refreshCompleted();
+          }
+        } else {
+          refreshControllerMap[isMajor]?.refreshCompleted();
+        }
+      } else {
+        refreshControllerMap[isMajor]?.refreshFailed();
+      }
     });
   }
 }

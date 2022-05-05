@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:sunac_flutter/config/flavor.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/response/report_response/report_response.dart';
 import '../../../api/rest_client.dart';
+import '../../../channel/get_user_info.dart';
 
 class EbaReportController extends GetxController {
   final isLoading = true.obs;
@@ -26,8 +28,20 @@ class EbaReportController extends GetxController {
   }
 
   launchURL() async {
-    Uri _uri = Uri.parse('https://flutter.dev');
-    if (!await launchUrl(_uri)) throw 'Could not launch $_uri';
+    String projectId = Get.arguments;
+    String url = FlavorConfig.instance.values.baseUrl +
+        '/v2/service/device-manage/device-info/check/download?projectId=$projectId';
+    Uri _uri = Uri.parse(url);
+    var userInfo = await GetUserInfo.getUserInfo();
+    if (!await launchUrl(_uri,
+        mode: LaunchMode.externalApplication,
+        webViewConfiguration: WebViewConfiguration(headers: <String, String>{
+          'access-token': userInfo?['accessToken'] ?? '',
+          'stage': FlavorConfig.instance.values.stage,
+          'Group': 'device_info'
+        }))) {
+      throw 'Could not launch $_uri';
+    }
   }
 
   EbaReportController({required this.client});
@@ -35,10 +49,11 @@ class EbaReportController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getReport();
+    String projectId = Get.arguments;
+    _getReport(projectId);
   }
 
-  _getReport() {
+  _getReport(String projectId) {
     loadingInspectionName.value = 'B2/-1层/生活水泵房：EBA设备-1';
     client.getHitokoto("json", "utf-8", noLoading: true).then((value) {
       totalDevicesRoom.value = 52;
@@ -82,7 +97,7 @@ class EbaReportController extends GetxController {
       // non-200 error goes here.
       switch (obj.runtimeType) {
         case DioError:
-        // Here's the sample to get the failed response error code and message
+          // Here's the sample to get the failed response error code and message
           final res = (obj as DioError).response;
           Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
           break;

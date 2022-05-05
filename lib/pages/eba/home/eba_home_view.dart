@@ -46,10 +46,16 @@ class EbaHomeView extends GetView<EbaHomeController> {
                     Column(
                       children: <Widget>[
                         _buildProjectDataDisplayBox(context),
-                        _buildClickableCardButton(Assets.images.iconAlarm, '告警',
-                            () => Get.toNamed(Routes.ebaAlarm)),
-                        _buildClickableCardButton(Assets.images.iconReport,
-                            '一键巡检', () => Get.toNamed(Routes.ebaReport)),
+                        _buildClickableCardButton(
+                            Assets.images.iconAlarm,
+                            '告警',
+                            () => Get.toNamed(Routes.ebaAlarm,
+                                arguments: controller.currentProjectId.value)),
+                        _buildClickableCardButton(
+                            Assets.images.iconReport,
+                            '一键巡检',
+                            () => Get.toNamed(Routes.ebaReport,
+                                arguments: controller.currentProjectId.value)),
                       ],
                     ),
                     _buildDropdownSearchList(context),

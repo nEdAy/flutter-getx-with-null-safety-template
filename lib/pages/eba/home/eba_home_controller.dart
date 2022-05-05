@@ -15,6 +15,7 @@ class EbaHomeController extends GetxController {
 
   final isDropDownActive = false.obs;
   final currentProjectName = "".obs;
+  final currentProjectId = "".obs;
   final List<Project> filteredProjectItems = <Project>[].obs;
   final List<Project> allProjectItems = <Project>[].obs;
   final TextEditingController projectSearchController = TextEditingController();
@@ -55,6 +56,7 @@ class EbaHomeController extends GetxController {
   }
 
   onProjectSearchItemClick(Project project) {
+    currentProjectId.value = project.id ?? '';
     currentProjectName.value = project.name ?? '';
     switchDropDownToInactive();
     var projectId = project.id;
@@ -88,9 +90,9 @@ class EbaHomeController extends GetxController {
           allProjectItems.addAll(projectList);
           var currentProject = allProjectItems.first;
           currentProjectName.value = currentProject.name ?? '';
-          var currentProjectId = currentProject.id;
-          if (currentProjectId != null && currentProjectId.isNotEmpty) {
-            _getProjectData(currentProjectId);
+          currentProjectId.value = currentProject.id ?? '';
+          if (currentProjectId.value.isNotEmpty) {
+            _getProjectData(currentProjectId.value);
           }
           filteredProjectItems.addAll(allProjectItems);
         }

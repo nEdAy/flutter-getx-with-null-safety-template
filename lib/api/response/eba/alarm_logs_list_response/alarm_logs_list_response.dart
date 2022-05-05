@@ -6,9 +6,9 @@ part 'alarm_logs_list_response.g.dart';
 class AlarmLogsListResponse {
   int? count = 0;
   @JsonKey(name: 'list')
-  List<AlarmLogs>? projectList;
+  List<AlarmLogs>? alarmLogsList;
 
-  AlarmLogsListResponse({this.count, this.projectList});
+  AlarmLogsListResponse({this.count, this.alarmLogsList});
 
   factory AlarmLogsListResponse.fromJson(Map<String, dynamic> json) =>
       _$AlarmLogsListResponseFromJson(json);
