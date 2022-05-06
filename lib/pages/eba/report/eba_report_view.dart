@@ -96,75 +96,82 @@ class EbaReportView extends GetView<EbaReportController> {
               ? Text('${controller.loadingInspectionName}',
                   style:
                       const TextStyle(color: Color(0xFF434343), fontSize: 16))
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 153,
-                      height: 64,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('设备房',
-                              style: TextStyle(color: Color(0xFF767676))),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const Text('总计',
-                                  style: TextStyle(color: Color(0xFF434343))),
-                              const SizedBox(width: 4),
-                              Text('${controller.totalDevicesRoom}',
-                                  style: const TextStyle(
-                                      color: Color(0xFF434343))),
-                              const SizedBox(width: 16),
-                              const Text('异常',
-                                  style: TextStyle(color: Color(0xFF434343))),
-                              const SizedBox(width: 4),
-                              Text('${controller.faultDevicesRoom}',
-                                  style:
-                                      const TextStyle(color: Color(0xFF434343)))
-                            ],
-                          )
-                        ],
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 153,
+                        height: 64,
+                        padding:
+                            const EdgeInsets.only(left: 12, top: 8, bottom: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('设备房',
+                                style: TextStyle(color: Color(0xFF767676))),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text('总计',
+                                    style: TextStyle(color: Color(0xFF434343))),
+                                const SizedBox(width: 4),
+                                Text('${controller.totalDevicesRoom}',
+                                    style: const TextStyle(
+                                        color: Color(0xFF434343))),
+                                const SizedBox(width: 16),
+                                const Text('异常',
+                                    style: TextStyle(color: Color(0xFF434343))),
+                                const SizedBox(width: 4),
+                                Text('${controller.faultDevicesRoom}',
+                                    style: const TextStyle(
+                                        color: Color(0xFF434343)))
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
+                      Container(
                         width: 1,
                         height: 34,
                         color: const Color(0xFFE6E6E6),
-                        margin: const EdgeInsets.symmetric(horizontal: 18)),
-                    SizedBox(
-                      width: 153,
-                      height: 64,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('设备',
-                              style: TextStyle(color: Color(0xFF767676))),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const Text('总计',
-                                  style: TextStyle(color: Color(0xFF434343))),
-                              const SizedBox(width: 4),
-                              Text('${controller.totalDevices}',
-                                  style: const TextStyle(
-                                      color: Color(0xFF434343))),
-                              const SizedBox(width: 16),
-                              const Text('异常',
-                                  style: TextStyle(color: Color(0xFF434343))),
-                              const SizedBox(width: 4),
-                              Text('${controller.faultDevices}',
-                                  style:
-                                      const TextStyle(color: Color(0xFF434343)))
-                            ],
-                          )
-                        ],
                       ),
-                    ),
-                  ],
+                      Container(
+                        width: 153,
+                        height: 64,
+                        padding:
+                            const EdgeInsets.only(left: 12, top: 8, bottom: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('设备',
+                                style: TextStyle(color: Color(0xFF767676))),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text('总计',
+                                    style: TextStyle(color: Color(0xFF434343))),
+                                const SizedBox(width: 4),
+                                Text('${controller.totalDevices}',
+                                    style: const TextStyle(
+                                        color: Color(0xFF434343))),
+                                const SizedBox(width: 16),
+                                const Text('异常',
+                                    style: TextStyle(color: Color(0xFF434343))),
+                                const SizedBox(width: 4),
+                                Text('${controller.faultDevices}',
+                                    style: const TextStyle(
+                                        color: Color(0xFF434343)))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
         ),
         const SizedBox(height: 12),
@@ -190,14 +197,14 @@ class EbaReportView extends GetView<EbaReportController> {
             children: [
               Row(
                 children: [
-                  reportItem.faultDevices?.isNotEmpty ?? false
+                  reportItem.abnormalEbaCount() > 0
                       ? Assets.images.iconReportItemHasError
                           .image(width: 16, height: 16)
                       : Assets.images.iconReportItemNoError
                           .image(width: 16, height: 16),
                   const SizedBox(width: 10),
                   Text(
-                    reportItem.devicesRoomName ?? '',
+                    reportItem.spaceName ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -208,7 +215,7 @@ class EbaReportView extends GetView<EbaReportController> {
                 ],
               ),
               Visibility(
-                visible: reportItem.faultDevices?.isNotEmpty ?? false,
+                visible: reportItem.abnormalEbaCount() > 0,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 26),
                   child: Column(
@@ -225,7 +232,7 @@ class EbaReportView extends GetView<EbaReportController> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${reportItem.faultDevices?.length ?? 0}',
+                            '${reportItem.abnormalEbaCount()}',
                             style: const TextStyle(
                                 fontSize: 16,
                                 color: Color(0xFFD97F00),
@@ -258,14 +265,14 @@ class EbaReportView extends GetView<EbaReportController> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, subIndex) {
-                                var faultDevices =
-                                    reportItem.faultDevices![subIndex];
+                                var abnormalEbaDevice =
+                                    controller.abnormalEbaDeviceList[subIndex];
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      faultDevices.faultDeviceName ?? '',
+                                      abnormalEbaDevice.deviceName ?? '',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -273,7 +280,7 @@ class EbaReportView extends GetView<EbaReportController> {
                                           color: Color(0xFF434343)),
                                     ),
                                     Text(
-                                      faultDevices.faultDeviceReason ?? '',
+                                      abnormalEbaDevice.getStatusString(),
                                       style: const TextStyle(
                                           color: Color(0xFFD91D00)),
                                     ),
@@ -286,7 +293,8 @@ class EbaReportView extends GetView<EbaReportController> {
                                   color: Colors.transparent,
                                 );
                               },
-                              itemCount: reportItem.faultDevices?.length ?? 0,
+                              itemCount:
+                                  controller.abnormalEbaDeviceList.length,
                             )
                           ],
                         ),

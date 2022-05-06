@@ -82,8 +82,8 @@ class EbaHomeController extends GetxController {
   }
 
   _getProjectNameList() async {
-    var userInfo = await GetUserInfo.getUserInfo();
-    client.getProjectList(userInfo?['memberId'], 'AUTHORITY').then((value) {
+    final userInfo = await GetUserInfo.getUserInfo();
+    client.getProjectList(userInfo?['memberId']).then((value) {
       if (value.status == 200) {
         var projectList = value.data?.projectList;
         if (projectList != null && projectList.isNotEmpty) {
@@ -106,7 +106,7 @@ class EbaHomeController extends GetxController {
   }
 
   void _getDeviceStatus(String projectId) {
-    client.getDeviceStatus(projectId, "device_info").then((value) {
+    client.getDeviceStatus(projectId).then((value) {
       if (value.status == 200) {
         var deviceStatus = value.data;
         if (deviceStatus != null) {
@@ -121,7 +121,7 @@ class EbaHomeController extends GetxController {
   }
 
   void _getAlarmLogs(String projectId) {
-    client.getAlarmLogs(projectId, "device_alarm").then((value) {
+    client.getAlarmLogs(projectId).then((value) {
       if (value.status == 200) {
         var alarmLogs = value.data;
         if (alarmLogs != null) {

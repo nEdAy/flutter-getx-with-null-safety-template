@@ -64,10 +64,10 @@ class EbaAlarmController extends GetxController
     final alarmItems = alarmItemsMap[isMajor];
     final refreshController = refreshControllerMap[isMajor];
     await client
-        .getAlarmLogsList(request, "device_alarm", noLoading: true)
+        .getAlarmLogsList(request)
         .then((value) {
       if (value.status == 200) {
-        var alarmLogsList = value.data?.alarmLogsList;
+        final alarmLogsList = value.data?.alarmLogsList;
         if (alarmLogsList != null && alarmLogsList.isNotEmpty) {
           if (isRefresh) {
             alarmItems?.clear();
