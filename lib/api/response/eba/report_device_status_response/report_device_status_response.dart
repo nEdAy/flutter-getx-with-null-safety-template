@@ -24,11 +24,13 @@ class ReportDeviceStatusResponse {
 
 @JsonSerializable()
 class DeviceStatisticsVo {
+  String? spaceId;
   String? spaceName;
   int? bugCount;
   int? stopCount;
 
-  DeviceStatisticsVo({this.spaceName, this.bugCount, this.stopCount});
+  DeviceStatisticsVo(
+      {this.spaceId, this.spaceName, this.bugCount, this.stopCount});
 
   int abnormalEbaCount() => (bugCount ?? 0) + (stopCount ?? 0);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../api/response/eba/report_eba_device_list_response/report_eba_device_list_response.dart';
 import '../../../gen/assets.gen.dart';
 import 'eba_report_controller.dart';
 
@@ -181,7 +182,8 @@ class EbaReportView extends GetView<EbaReportController> {
 
   _buildReportListViewItem(BuildContext context, int index) {
     var reportItem = controller.reportItems[index];
-    var isUnfold = false.obs;
+    final isUnfold = false.obs;
+    final abnormalEbaDeviceList = <EbaDevice>[].obs;
     return Obx(
       () => Visibility(
         visible: !controller.isLoading.value,
@@ -246,7 +248,10 @@ class EbaReportView extends GetView<EbaReportController> {
                                       color: Color(0xFF333333), size: 16)
                                   : const Icon(Icons.keyboard_arrow_down,
                                       color: Color(0xFF333333), size: 16),
-                              onTap: () => isUnfold.value = !isUnfold.value,
+                              onTap: () => controller.getReportRbaDeviceList(
+                                  reportItem.spaceId,
+                                  isUnfold,
+                                  abnormalEbaDeviceList),
                             );
                           }),
                         ],
@@ -265,8 +270,10 @@ class EbaReportView extends GetView<EbaReportController> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, subIndex) {
-                                var abnormalEbaDevice =
-                                    controller.abnormalEbaDeviceList[subIndex];
+                                final abnormalEbaDevice =
+                                    abnormalEbaDeviceList[subIndex];
+                                final isBug =
+                                    abnormalEbaDevice.getStatusString() == '故障';
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -279,10 +286,22 @@ class EbaReportView extends GetView<EbaReportController> {
                                           fontSize: 16,
                                           color: Color(0xFF434343)),
                                     ),
-                                    Text(
-                                      abnormalEbaDevice.getStatusString(),
-                                      style: const TextStyle(
-                                          color: Color(0xFFD91D00)),
+                                    Container(
+                                      child: Text(
+                                        abnormalEbaDevice.getStatusString(),
+                                        style: TextStyle(
+                                            color: isBug
+                                                ? const Color(0xFFD91D00)
+                                                : const Color(0xFF434343)),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: isBug
+                                            ? const Color(0xFFFBEFEE)
+                                            : const Color(0xFFF0F0F0),
+                                      ),
                                     ),
                                   ],
                                 );
@@ -293,8 +312,7 @@ class EbaReportView extends GetView<EbaReportController> {
                                   color: Colors.transparent,
                                 );
                               },
-                              itemCount:
-                                  controller.abnormalEbaDeviceList.length,
+                              itemCount: abnormalEbaDeviceList.length,
                             )
                           ],
                         ),

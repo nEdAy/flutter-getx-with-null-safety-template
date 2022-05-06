@@ -20,8 +20,6 @@ class EbaReportController extends GetxController {
 
   final List<DeviceStatisticsVo> reportItems = <DeviceStatisticsVo>[].obs;
 
-  final List<EbaDevice> abnormalEbaDeviceList = <EbaDevice>[].obs;
-
   final RestClient client;
 
   bool hasError() {
@@ -50,10 +48,10 @@ class EbaReportController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getReport();
+    _getDeviceStatusBySpace();
   }
 
-  _getReport() {
+  _getDeviceStatusBySpace() {
     loadingInspectionName.value = '巡检中...';
     final String projectId = Get.arguments;
     final request = {
@@ -72,7 +70,7 @@ class EbaReportController extends GetxController {
         if (deviceStatisticsVoList != null &&
             deviceStatisticsVoList.isNotEmpty) {
           reportItems.addAll(deviceStatisticsVoList);
-          showLoadingAnimation();
+          _showLoadingAnimation();
         } else {
           isLoading.value = false;
         }
@@ -80,7 +78,7 @@ class EbaReportController extends GetxController {
     });
   }
 
-  void showLoadingAnimation() {
+  _showLoadingAnimation() {
     var index = 0;
     Timer.periodic(const Duration(milliseconds: 300), (timer) {
       // 0.3s 回调一次
@@ -93,5 +91,28 @@ class EbaReportController extends GetxController {
         isLoading.value = false;
       }
     });
+  }
+
+  getReportRbaDeviceList(String? spaceId, RxBool isUnfold,
+      RxList<EbaDevice> abnormalEbaDeviceList) {
+    if (abnormalEbaDeviceList.isNotEmpty) {
+      isUnfold.value = !isUnfold.value;
+    } else {
+      final String projectId = Get.arguments;
+      final request = {
+        'projectId': projectId,
+        'deviceTypeId': '3681568654222299015',
+        "spaceId": spaceId ?? ''
+      };
+      client.getEbaListBySpace(request).then((value) {
+        if (value.status == 200) {
+          final ebaDeviceList = value.data?.getBugAndStopEbaDeviceList();
+          if (ebaDeviceList != null && ebaDeviceList.isNotEmpty) {
+            abnormalEbaDeviceList.addAll(ebaDeviceList);
+            isUnfold.value = !isUnfold.value;
+          }
+        }
+      });
+    }
   }
 }

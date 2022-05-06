@@ -41,10 +41,8 @@ class EbaDevice {
       case 1:
         return '正常';
       case 2:
-      case 3:
         return '故障';
-      case 4:
-      case 5:
+      case 3:
         return '停用';
       default:
         return '其它';
