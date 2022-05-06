@@ -105,7 +105,7 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
                                     fontSize: 16, color: Color(0xFF434343)),
                               ),
                               Text(
-                                alarmItems?[index].alarmTime ?? '',
+                                alarmItems?[index].getAlarmFormatLocalTime() ?? '',
                                 style: const TextStyle(
                                     fontSize: 14, color: Color(0xFFAAAAAA)),
                               ),

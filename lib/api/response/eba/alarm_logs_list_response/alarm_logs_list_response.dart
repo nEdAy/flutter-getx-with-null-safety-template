@@ -33,6 +33,18 @@ class AlarmLogs {
       this.alarmCondition,
       this.alarmTime});
 
+  String getAlarmFormatLocalTime() {
+    final time = alarmTime;
+    if (time == null) {
+      return '';
+    }
+    final utcTime = DateTime.parse(time);
+    final localTime = utcTime.toLocal();
+    String formatLocalTime =
+        "${localTime.year.toString()}-${localTime.month.toString().padLeft(2, '0')}-${localTime.day.toString().padLeft(2, '0')} ${localTime.hour.toString().padLeft(2, '0')}:${localTime.minute.toString().padLeft(2, '0')}:${localTime.second.toString().padLeft(2, '0')}";
+    return formatLocalTime;
+  }
+
   factory AlarmLogs.fromJson(Map<String, dynamic> json) =>
       _$AlarmLogsFromJson(json);
 
