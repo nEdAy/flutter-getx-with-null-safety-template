@@ -95,6 +95,9 @@ class EbaReportController extends GetxController {
 
   getReportRbaDeviceList(String? spaceId, RxBool isUnfold,
       RxList<EbaDevice> abnormalEbaDeviceList, RxBool isLoading) {
+    if (isLoading.value == true) {
+      return;
+    }
     if (abnormalEbaDeviceList.isNotEmpty) {
       isUnfold.value = !isUnfold.value;
     } else {
