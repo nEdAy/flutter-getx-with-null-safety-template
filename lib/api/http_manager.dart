@@ -63,7 +63,7 @@ class HttpManager {
     dio.interceptors.addAll([
       LoadingInterceptor(),
       RequestHeaderInterceptor(),
-      ResponseHeaderInterceptor(),
+      HandleErrorInterceptor(),
     ]);
   }
 
