@@ -89,6 +89,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                             ? const Color(0xFFD97F00)
                             : const Color(0xFF434343),
                         fontSize: 16,
+                        height: 1.2,
                         fontWeight: FontWeight.w500)),
               ),
             ),

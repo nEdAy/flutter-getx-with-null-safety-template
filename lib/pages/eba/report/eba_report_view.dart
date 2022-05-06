@@ -117,18 +117,18 @@ class EbaReportView extends GetView<EbaReportController> {
                             Row(
                               children: [
                                 const Text('总计',
-                                    style: TextStyle(color: Color(0xFF434343))),
+                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.totalDevicesRoom}',
                                     style: const TextStyle(
-                                        color: Color(0xFF434343))),
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 16),
                                 const Text('异常',
-                                    style: TextStyle(color: Color(0xFF434343))),
+                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.faultDevicesRoom}',
                                     style: const TextStyle(
-                                        color: Color(0xFF434343)))
+                                        color: Color(0xFF434343), height: 1.1))
                               ],
                             )
                           ],
@@ -154,18 +154,19 @@ class EbaReportView extends GetView<EbaReportController> {
                             Row(
                               children: [
                                 const Text('总计',
-                                    style: TextStyle(color: Color(0xFF434343))),
+                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.totalDevices}',
                                     style: const TextStyle(
-                                        color: Color(0xFF434343))),
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 16),
                                 const Text('异常',
-                                    style: TextStyle(color: Color(0xFF434343))),
+                                    style: TextStyle(
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.faultDevices}',
                                     style: const TextStyle(
-                                        color: Color(0xFF434343)))
+                                        color: Color(0xFF434343), height: 1.1))
                               ],
                             )
                           ],
@@ -211,6 +212,7 @@ class EbaReportView extends GetView<EbaReportController> {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                         fontSize: 16,
+                        height: 1.2,
                         color: Colors.black,
                         fontWeight: FontWeight.w500),
                   ),
@@ -230,6 +232,7 @@ class EbaReportView extends GetView<EbaReportController> {
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Color(0xFF434343),
+                                height: 1.2,
                                 fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 4),
@@ -237,6 +240,7 @@ class EbaReportView extends GetView<EbaReportController> {
                             '${reportItem.abnormalEbaCount()}',
                             style: const TextStyle(
                                 fontSize: 16,
+                                height: 1.2,
                                 color: Color(0xFFD97F00),
                                 fontWeight: FontWeight.w500),
                           ),
