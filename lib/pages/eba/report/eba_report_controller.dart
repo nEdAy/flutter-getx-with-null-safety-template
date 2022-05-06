@@ -94,7 +94,7 @@ class EbaReportController extends GetxController {
   }
 
   getReportRbaDeviceList(String? spaceId, RxBool isUnfold,
-      RxList<EbaDevice> abnormalEbaDeviceList) {
+      RxList<EbaDevice> abnormalEbaDeviceList, RxBool isLoading) {
     if (abnormalEbaDeviceList.isNotEmpty) {
       isUnfold.value = !isUnfold.value;
     } else {
@@ -104,7 +104,9 @@ class EbaReportController extends GetxController {
         'deviceTypeId': '3681568654222299015',
         "spaceId": spaceId ?? ''
       };
+      isLoading.value = true;
       client.getEbaListBySpace(request).then((value) {
+        isLoading.value = false;
         if (value.status == 200) {
           final ebaDeviceList = value.data?.getBugAndStopEbaDeviceList();
           if (ebaDeviceList != null && ebaDeviceList.isNotEmpty) {
@@ -112,6 +114,8 @@ class EbaReportController extends GetxController {
             isUnfold.value = !isUnfold.value;
           }
         }
+      }).catchError((_) {
+        isLoading.value = false;
       });
     }
   }

@@ -117,14 +117,16 @@ class EbaReportView extends GetView<EbaReportController> {
                             Row(
                               children: [
                                 const Text('总计',
-                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
+                                    style: TextStyle(
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.totalDevicesRoom}',
                                     style: const TextStyle(
                                         color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 16),
                                 const Text('异常',
-                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
+                                    style: TextStyle(
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.faultDevicesRoom}',
                                     style: const TextStyle(
@@ -154,7 +156,8 @@ class EbaReportView extends GetView<EbaReportController> {
                             Row(
                               children: [
                                 const Text('总计',
-                                    style: TextStyle(color: Color(0xFF434343), height: 1.1)),
+                                    style: TextStyle(
+                                        color: Color(0xFF434343), height: 1.1)),
                                 const SizedBox(width: 4),
                                 Text('${controller.totalDevices}',
                                     style: const TextStyle(
@@ -184,6 +187,7 @@ class EbaReportView extends GetView<EbaReportController> {
   _buildReportListViewItem(BuildContext context, int index) {
     var reportItem = controller.reportItems[index];
     final isUnfold = false.obs;
+    final isLoading = false.obs;
     final abnormalEbaDeviceList = <EbaDevice>[].obs;
     return Obx(
       () => Visibility(
@@ -247,15 +251,19 @@ class EbaReportView extends GetView<EbaReportController> {
                           const SizedBox(width: 4),
                           Obx(() {
                             return GestureDetector(
-                              child: isUnfold.value
-                                  ? const Icon(Icons.keyboard_arrow_up,
+                              child: isLoading.value
+                                  ? const Icon(Icons.downloading,
                                       color: Color(0xFF333333), size: 16)
-                                  : const Icon(Icons.keyboard_arrow_down,
-                                      color: Color(0xFF333333), size: 16),
+                                  : isUnfold.value
+                                      ? const Icon(Icons.keyboard_arrow_up,
+                                          color: Color(0xFF333333), size: 16)
+                                      : const Icon(Icons.keyboard_arrow_down,
+                                          color: Color(0xFF333333), size: 16),
                               onTap: () => controller.getReportRbaDeviceList(
                                   reportItem.spaceId,
                                   isUnfold,
-                                  abnormalEbaDeviceList),
+                                  abnormalEbaDeviceList,
+                                  isLoading),
                             );
                           }),
                         ],
