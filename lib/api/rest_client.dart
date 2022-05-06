@@ -33,5 +33,6 @@ abstract class RestClient {
 
   @POST("/v2/service/device-manage/device-alarm/alarm-logs-list")
   Future<BaseResponse<AlarmLogsListResponse>> getAlarmLogsList(
-      @Body() Map<String, dynamic> request, @Header("group") String group);
+      @Body() Map<String, dynamic> request, @Header("group") String group,
+      {@Header('noLoading') bool noLoading = false});
 }

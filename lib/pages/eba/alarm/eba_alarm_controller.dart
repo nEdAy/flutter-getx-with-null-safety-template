@@ -31,6 +31,8 @@ class EbaAlarmController extends GetxController
   void onInit() {
     super.onInit();
     tabController = TabController(vsync: this, length: tabs.length);
+    onRefresh(true);
+    onRefresh(false);
   }
 
   @override
@@ -41,15 +43,16 @@ class EbaAlarmController extends GetxController
 
   onRefresh(bool isMajor) async {
     _currentPageMap[isMajor] = 0;
-    await _getAlarmLogsList(0, isMajor);
+    await _getAlarmLogsList(0, isMajor, isRefresh: true);
   }
 
   onLoading(bool isMajor) async {
-    _currentPageMap[isMajor] = _currentPageMap[isMajor] ?? 0 + 1;
+    _currentPageMap[isMajor] = (_currentPageMap[isMajor] ?? 0) + 1;
     await _getAlarmLogsList(_currentPageMap[isMajor] ?? 0, isMajor);
   }
 
-  Future _getAlarmLogsList(int offset, bool isMajor) async {
+  Future _getAlarmLogsList(int offset, bool isMajor,
+      {bool isRefresh = false}) async {
     final String projectId = Get.arguments;
     final request = {
       'offset': offset,
@@ -58,19 +61,41 @@ class EbaAlarmController extends GetxController
       'dtId': '3681568654222299015',
       'alarmLevel': isMajor ? 1 : 3,
     };
-    await client.getAlarmLogsList(request, "device_alarm").then((value) {
+    final alarmItems = alarmItemsMap[isMajor];
+    final refreshController = refreshControllerMap[isMajor];
+    await client
+        .getAlarmLogsList(request, "device_alarm", noLoading: true)
+        .then((value) {
       if (value.status == 200) {
         var alarmLogsList = value.data?.alarmLogsList;
         if (alarmLogsList != null && alarmLogsList.isNotEmpty) {
-          alarmItemsMap[isMajor]?.addAll(alarmLogsList);
-          if (alarmLogsList.length < _initPageSize) {
-            refreshControllerMap[isMajor]?.refreshCompleted();
+          if (isRefresh) {
+            alarmItems?.clear();
+            alarmItems?.addAll(alarmLogsList);
+            refreshController?.refreshCompleted();
+          } else {
+            alarmItems?.addAll(alarmLogsList);
+            refreshController?.loadComplete();
           }
         } else {
-          refreshControllerMap[isMajor]?.refreshCompleted();
+          if (isRefresh) {
+            refreshController?.refreshToIdle();
+          } else {
+            refreshController?.loadNoData();
+          }
         }
       } else {
-        refreshControllerMap[isMajor]?.refreshFailed();
+        if (isRefresh) {
+          refreshController?.refreshFailed();
+        } else {
+          refreshController?.loadFailed();
+        }
+      }
+    }).catchError((error) {
+      if (isRefresh) {
+        refreshController?.refreshFailed();
+      } else {
+        refreshController?.loadFailed();
       }
     });
   }
