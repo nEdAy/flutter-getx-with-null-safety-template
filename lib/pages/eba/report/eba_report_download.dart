@@ -11,13 +11,11 @@ import '../../../channel/get_user_info.dart';
 import '../../../config/flavor.dart';
 
 class EbaReportDownload {
-  final _dio = Dio();
-
-  Future<void> downloadXLSFile(String url, CancelToken token) async {
+  Future<void> downloadXLSFile(Dio dio, String url, CancelToken token) async {
     // 校验是否有储存卡的读写权限
     Permission permission = Permission.storage;
-    bool isPermissionOk = await _checkPermission(permission);
-    if (isPermissionOk == false) {
+    PermissionStatus status = await permission.status;
+    if (status.isGranted == false) {
       // 发起权限申请
       PermissionStatus status = await permission.request();
       if (status.isPermanentlyDenied || status.isRestricted) {
@@ -36,7 +34,7 @@ class EbaReportDownload {
     }
     final savePath = await _getSavePath();
     try {
-      _download(url, savePath, cancelToken: token, options: options,
+      _download(dio, url, savePath, cancelToken: token, options: options,
           onReceiveProgress: (received, total) async {
         if (total != -1) {
           if (!token.isCancelled) {
@@ -92,19 +90,15 @@ class EbaReportDownload {
     return uKey + now;
   }
 
-  Future<bool> _checkPermission(Permission permission) async {
-    PermissionStatus status = await permission.status;
-    return status.isGranted;
-  }
-
   void _download(
+    Dio dio,
     String url,
     String savePath, {
     CancelToken? cancelToken,
     Options? options,
     void Function(int, int)? onReceiveProgress,
   }) async {
-    await _dio.download(url, savePath,
+    await dio.download(url, savePath,
         cancelToken: cancelToken,
         options: options,
         onReceiveProgress: onReceiveProgress);

@@ -24,6 +24,8 @@ class EbaReportController extends GetxController {
 
   final CancelToken token = CancelToken();
 
+  final _dio = Dio();
+
   bool hasError() {
     return faultDevicesRoom.value > 0 || faultDevices.value > 0;
   }
@@ -32,7 +34,7 @@ class EbaReportController extends GetxController {
     String projectId = Get.arguments;
     String url = FlavorConfig.instance.values.baseUrl +
         '/v2/service/device-manage/device-info/check/download?projectId=$projectId';
-    await EbaReportDownload().downloadXLSFile(url, token);
+    await EbaReportDownload().downloadXLSFile(_dio, url, token);
   }
 
   EbaReportController({required this.client});
