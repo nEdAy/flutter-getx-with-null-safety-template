@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -81,12 +80,7 @@ class EbaReportDownload {
   }
 
   Future<String> _getSavePath() async {
-    String _tempPath = "";
-    if (GetPlatform.isAndroid) {
-      _tempPath = "/sdcard/download/";
-    } else {
-      _tempPath = (await getApplicationDocumentsDirectory()).path;
-    }
+    String _tempPath = (await getApplicationDocumentsDirectory()).path;
     String _id = _idGenerator();
     String savePath = '$_tempPath/$_id.xls';
     return savePath;
@@ -101,14 +95,6 @@ class EbaReportDownload {
   Future<bool> _checkPermission(Permission permission) async {
     PermissionStatus status = await permission.status;
     return status.isGranted;
-  }
-
-  Future<void> _requestPermission(Permission permission) async {
-    // 发起权限申请
-    PermissionStatus status = await permission.request();
-    if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
   }
 
   void _download(
