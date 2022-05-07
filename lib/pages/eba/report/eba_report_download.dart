@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../channel/back_to_native.dart';
 import '../../../channel/get_user_info.dart';
@@ -15,6 +15,18 @@ class EbaReportDownload {
   final _dio = Dio();
 
   Future<void> downloadXLSFile(String url, CancelToken token) async {
+    // 校验是否有储存卡的读写权限
+    Permission permission = Permission.storage;
+    bool isPermissionOk = await _checkPermission(permission);
+    if (isPermissionOk == false) {
+      // 发起权限申请
+      PermissionStatus status = await permission.request();
+      if (status.isPermanentlyDenied || status.isRestricted) {
+        openAppSettings();
+        BotToast.showText(text: "请授权读写手机存储权限");
+        return;
+      }
+    }
     CancelFunc cancelLoadingFun = BotToast.showLoading(crossPage: false);
     final options = await _getDownloadOptions();
     if (options == null) {
@@ -70,12 +82,12 @@ class EbaReportDownload {
 
   Future<String> _getSavePath() async {
     String _tempPath = "";
-    if (Platform.isAndroid) {
+    if (GetPlatform.isAndroid) {
       _tempPath = "/sdcard/download/";
     } else {
       _tempPath = (await getApplicationDocumentsDirectory()).path;
     }
-    String _id= _idGenerator();
+    String _id = _idGenerator();
     String savePath = '$_tempPath/$_id.xls';
     return savePath;
   }
@@ -84,6 +96,19 @@ class EbaReportDownload {
     final uKey = UniqueKey().toString();
     final now = DateTime.now().microsecondsSinceEpoch.toString();
     return uKey + now;
+  }
+
+  Future<bool> _checkPermission(Permission permission) async {
+    PermissionStatus status = await permission.status;
+    return status.isGranted;
+  }
+
+  Future<void> _requestPermission(Permission permission) async {
+    // 发起权限申请
+    PermissionStatus status = await permission.request();
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
   }
 
   void _download(
