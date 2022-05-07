@@ -26,11 +26,12 @@ class ReportDeviceStatusResponse {
 class DeviceStatisticsVo {
   String? spaceId;
   String? spaceName;
+  String? fullSpaceName;
   int? bugCount;
   int? stopCount;
 
   DeviceStatisticsVo(
-      {this.spaceId, this.spaceName, this.bugCount, this.stopCount});
+      {this.spaceId, this.spaceName,this.fullSpaceName, this.bugCount, this.stopCount});
 
   int abnormalEbaCount() => (bugCount ?? 0) + (stopCount ?? 0);
 
