@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return RefreshConfiguration(
       child: DeveloperWidget(
         child: GetMaterialApp(
-          title: 'Sunac Flutter',
+          title: '臻心',
           initialRoute: AppPages.ebaHome,
           unknownRoute: AppPages.unknownRoute,
           getPages: AppPages.routes,
