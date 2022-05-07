@@ -1,13 +1,13 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:sunac_flutter/config/flavor.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/response/eba/report_device_status_response/report_device_status_response.dart';
 import '../../../api/response/eba/report_eba_device_list_response/report_eba_device_list_response.dart';
 import '../../../api/rest_client.dart';
-import '../../../channel/get_user_info.dart';
+import 'eba_report_download.dart';
 
 class EbaReportController extends GetxController {
   final isLoading = true.obs;
@@ -22,6 +22,8 @@ class EbaReportController extends GetxController {
 
   final RestClient client;
 
+  final CancelToken token = CancelToken();
+
   bool hasError() {
     return faultDevicesRoom.value > 0 || faultDevices.value > 0;
   }
@@ -30,17 +32,7 @@ class EbaReportController extends GetxController {
     String projectId = Get.arguments;
     String url = FlavorConfig.instance.values.baseUrl +
         '/v2/service/device-manage/device-info/check/download?projectId=$projectId';
-    Uri _uri = Uri.parse(url);
-    var userInfo = await GetUserInfo.getUserInfo();
-    if (!await launchUrl(_uri,
-        mode: LaunchMode.externalApplication,
-        webViewConfiguration: WebViewConfiguration(headers: <String, String>{
-          'access-token': userInfo?['accessToken'] ?? '',
-          'stage': FlavorConfig.instance.values.stage,
-          'Group': 'device_info'
-        }))) {
-      throw 'Could not launch $_uri';
-    }
+    await EbaReportDownload().downloadXLSFile(url, token);
   }
 
   EbaReportController({required this.client});
@@ -49,6 +41,14 @@ class EbaReportController extends GetxController {
   void onInit() {
     super.onInit();
     _getDeviceStatusBySpace();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    if (!token.isCancelled) {
+      token.cancel();
+    }
   }
 
   _getDeviceStatusBySpace() {
@@ -83,7 +83,7 @@ class EbaReportController extends GetxController {
     Timer.periodic(const Duration(milliseconds: 300), (timer) {
       // 0.3s 回调一次
       if (index < reportItems.length) {
-        loadingInspectionName.value = reportItems[index].spaceName ?? '';
+        loadingInspectionName.value = reportItems[index].fullSpaceName ?? '';
         index++;
       } else {
         // 取消定时器

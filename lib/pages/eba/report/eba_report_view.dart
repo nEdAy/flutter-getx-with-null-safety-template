@@ -211,7 +211,7 @@ class EbaReportView extends GetView<EbaReportController> {
                           .image(width: 16, height: 16),
                   const SizedBox(width: 10),
                   Text(
-                    reportItem.spaceName ?? '',
+                    reportItem.fullSpaceName ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
