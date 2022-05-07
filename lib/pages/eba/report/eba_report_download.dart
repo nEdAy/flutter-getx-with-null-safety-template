@@ -19,8 +19,10 @@ class EbaReportDownload {
       // 发起权限申请
       PermissionStatus status = await permission.request();
       if (status.isPermanentlyDenied || status.isRestricted) {
-        openAppSettings();
         BotToast.showText(text: "请授权读写手机存储权限");
+        Future.delayed(const Duration(seconds: 1), () {
+          openAppSettings();
+        });
         return;
       }
     }
@@ -29,7 +31,9 @@ class EbaReportDownload {
     if (options == null) {
       cancelLoadingFun();
       BotToast.showText(text: "登录过期，请重新登录");
-      BackToNativeChannel.backToNative(isLogout: true);
+      Future.delayed(const Duration(seconds: 1), () {
+        BackToNativeChannel.backToNative(isLogout: true);
+      });
       return;
     }
     final savePath = await _getSavePath();

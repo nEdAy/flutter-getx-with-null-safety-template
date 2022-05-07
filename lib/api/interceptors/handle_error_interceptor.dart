@@ -10,7 +10,9 @@ class HandleErrorInterceptor extends InterceptorsWrapper {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401 || response.statusCode == 403) {
       BotToast.showText(text: "登录过期，请重新登录");
-      BackToNativeChannel.backToNative(isLogout: true);
+      Future.delayed(const Duration(seconds: 1), () {
+        BackToNativeChannel.backToNative(isLogout: true);
+      });
     } else if (response.statusCode != 200) {
       BotToast.showText(text: "请求服务器异常");
     }
@@ -21,7 +23,9 @@ class HandleErrorInterceptor extends InterceptorsWrapper {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
       BotToast.showText(text: "登录过期，请重新登录");
-      BackToNativeChannel.backToNative(isLogout: true);
+      Future.delayed(const Duration(seconds: 1), () {
+        BackToNativeChannel.backToNative(isLogout: true);
+      });
     } else {
       BotToast.showText(text: "请求服务器异常");
     }
