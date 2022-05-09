@@ -89,7 +89,7 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
                           Text(
                             (alarmItems?[index].deviceName ?? '') +
                                 '：' +
-                                (alarmItems?[index].alarmContent ?? ''),
+                                (alarmItems?[index].name ?? ''),
                             style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.black,

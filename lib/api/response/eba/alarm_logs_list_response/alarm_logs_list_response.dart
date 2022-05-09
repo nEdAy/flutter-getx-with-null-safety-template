@@ -20,8 +20,8 @@ class AlarmLogsListResponse {
 class AlarmLogs {
   @JsonKey(name: 'device_name')
   String? deviceName;
-  @JsonKey(name: 'alarm_content')
-  String? alarmContent;
+  @JsonKey(name: 'name')
+  String? name;
   @JsonKey(name: 'alarm_condition')
   String? alarmCondition;
   @JsonKey(name: 'alarm_time')
@@ -29,7 +29,7 @@ class AlarmLogs {
 
   AlarmLogs(
       {this.deviceName,
-      this.alarmContent,
+      this.name,
       this.alarmCondition,
       this.alarmTime});
 
