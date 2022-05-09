@@ -263,40 +263,42 @@ class EbaHomeView extends GetView<EbaHomeController> {
           height: 70,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           color: Colors.white,
-          child: Obx(
-            () => TextField(
-              controller: controller.projectSearchController,
-              focusNode: controller.focusNode,
-              cursorColor: const Color(0xFF767676),
-              cursorWidth: 1,
-              style: const TextStyle(
-                  color: Color(0xFF434343),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-              textAlignVertical: TextAlignVertical.bottom,
-              decoration: InputDecoration(
-                prefixIcon: Assets.images.eba.iconProjectSearch
+          child: TextField(
+            controller: controller.projectSearchController,
+            showCursor: false,
+            style: const TextStyle(
+                color: Color(0xFF434343),
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
+            textAlignVertical: TextAlignVertical.bottom,
+            decoration: InputDecoration(
+              prefixIcon: Assets.images.eba.iconProjectSearch
+                  .image(width: 16, height: 16),
+              suffixIcon: GestureDetector(
+                child: Assets.images.eba.iconCleanText
                     .image(width: 16, height: 16),
-                prefixIconConstraints: const BoxConstraints(minWidth: 40),
-                fillColor: Colors.white,
-                filled: true,
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                hintText: '${controller.projectSearchHintText}',
-                hintStyle: const TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-                hintMaxLines: 1,
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                onTap: () => controller.clearSearchText(),
               ),
-              onChanged: (value) {
-                controller.onSearchInputChanged(value);
-              },
+              prefixIconConstraints: const BoxConstraints(minWidth: 40),
+              suffixIconConstraints: const BoxConstraints(minWidth: 40),
+              fillColor: Colors.white,
+              filled: true,
+              enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+                  borderRadius: BorderRadius.all(Radius.circular(4))),
+              hintText: '搜索项目名称',
+              hintStyle: const TextStyle(
+                  color: Color(0xFF767676),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+              hintMaxLines: 1,
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+                  borderRadius: BorderRadius.all(Radius.circular(4))),
             ),
+            onChanged: (value) {
+              controller.onSearchInputChanged(value);
+            },
           ),
         ),
         Expanded(
@@ -306,7 +308,8 @@ class EbaHomeView extends GetView<EbaHomeController> {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  child: Padding(
+                  child: Container(
+                    color: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 20),
                     child: Obx(

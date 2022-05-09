@@ -20,8 +20,6 @@ class EbaHomeController extends GetxController {
   final List<Project> allProjectItems = <Project>[].obs;
   final TextEditingController projectSearchController = TextEditingController();
 
-  final FocusNode focusNode = FocusNode();
-  final projectSearchHintText = "搜索项目名称".obs;
   final projectSearchKeyword = "".obs;
 
   final RestClient client;
@@ -31,13 +29,6 @@ class EbaHomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    focusNode.addListener(() {
-      if (!focusNode.hasFocus) {
-        projectSearchHintText.value = '搜索项目名称';
-      } else {
-        projectSearchHintText.value = ' 搜索主机名称、编号、位置';
-      }
-    });
     _getProjectNameList();
   }
 
@@ -130,5 +121,10 @@ class EbaHomeController extends GetxController {
         }
       }
     });
+  }
+
+  void clearSearchText() {
+    projectSearchController.clear();
+    onSearchInputChanged('');
   }
 }
