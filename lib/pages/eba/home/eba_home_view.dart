@@ -46,6 +46,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                     Column(
                       children: <Widget>[
                         _buildProjectDataDisplayBox(context),
+                        const SizedBox(height: 14),
                         _buildClickableCardButton(
                             Assets.images.eba.iconAlarm,
                             '告警',
@@ -117,7 +118,6 @@ class EbaHomeView extends GetView<EbaHomeController> {
     return Container(
       width: context.width,
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-      height: 248,
       color: const Color(0xFF2D2C2B),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,8 +218,13 @@ class EbaHomeView extends GetView<EbaHomeController> {
   _buildClickableCardButton(
       AssetGenImage iconImage, String text, GestureTapCallback onTap) {
     return GestureDetector(
-      child: Card(
-        margin: const EdgeInsets.all(10.0),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xFFF0F0F0), width: 1),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular((4.0)),
+        ),
         child: Container(
           height: 100,
           alignment: Alignment.center,
