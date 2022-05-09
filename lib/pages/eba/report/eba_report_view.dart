@@ -74,9 +74,9 @@ class EbaReportView extends GetView<EbaReportController> {
                   padding: const EdgeInsets.all(10.0),
                 )
               : (controller.hasError()
-                  ? Assets.images.iconReportHasError
+                  ? Assets.images.eba.iconReportHasError
                       .image(width: 100, height: 100)
-                  : Assets.images.iconReportNoError
+                  : Assets.images.eba.iconReportNoError
                       .image(width: 100, height: 100)),
         ),
         const SizedBox(height: 20),
@@ -205,9 +205,9 @@ class EbaReportView extends GetView<EbaReportController> {
               Row(
                 children: [
                   reportItem.abnormalEbaCount() > 0
-                      ? Assets.images.iconReportItemHasError
+                      ? Assets.images.eba.iconReportItemHasError
                           .image(width: 16, height: 16)
-                      : Assets.images.iconReportItemNoError
+                      : Assets.images.eba.iconReportItemNoError
                           .image(width: 16, height: 16),
                   const SizedBox(width: 10),
                   Text(

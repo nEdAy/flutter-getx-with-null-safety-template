@@ -47,12 +47,12 @@ class EbaHomeView extends GetView<EbaHomeController> {
                       children: <Widget>[
                         _buildProjectDataDisplayBox(context),
                         _buildClickableCardButton(
-                            Assets.images.iconAlarm,
+                            Assets.images.eba.iconAlarm,
                             '告警',
                             () => Get.toNamed(Routes.ebaAlarm,
                                 arguments: controller.currentProjectId.value)),
                         _buildClickableCardButton(
-                            Assets.images.iconReport,
+                            Assets.images.eba.iconReport,
                             '一键巡检',
                             () => Get.toNamed(Routes.ebaReport,
                                 arguments: controller.currentProjectId.value)),
@@ -97,9 +97,9 @@ class EbaHomeView extends GetView<EbaHomeController> {
               () => Visibility(
                 visible: controller.allProjectItems.length > 1,
                 child: controller.isDropDownActive.value
-                    ? Assets.images.iconArrowDropDownActive
+                    ? Assets.images.eba.iconArrowDropDownActive
                         .image(width: 16, height: 16)
-                    : Assets.images.iconArrowDropDown
+                    : Assets.images.eba.iconArrowDropDown
                         .image(width: 16, height: 16),
               ),
             )
@@ -270,7 +270,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   fontWeight: FontWeight.w500),
               textAlignVertical: TextAlignVertical.bottom,
               decoration: InputDecoration(
-                prefixIcon: Assets.images.iconProjectSearch
+                prefixIcon: Assets.images.eba.iconProjectSearch
                     .image(width: 16, height: 16),
                 prefixIconConstraints: const BoxConstraints(minWidth: 40),
                 fillColor: Colors.white,
