@@ -24,8 +24,8 @@ class EbaHomeView extends GetView<EbaHomeController> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () => BackToNativeChannel.backToNative(),
-          icon: const Icon(Icons.arrow_back_ios),
-          iconSize: 16,
+          icon: ImageIcon(Assets.images.eba.iconArrowBack),
+          iconSize: 24,
         ),
       ),
       body: GestureDetector(
@@ -233,9 +233,9 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
+            trailing: ImageIcon(
+              Assets.images.eba.iconArrowForward,
+              size: 24,
               color: Colors.black,
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../api/response/eba/alarm_logs_list_response/alarm_logs_list_response.dart';
+import '../../../gen/assets.gen.dart';
 import '../../../widgets/round_underline_tab_indicator.dart';
 import 'eba_alarm_controller.dart';
 
@@ -21,8 +22,8 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () => Get.back(),
-          icon: const Icon(Icons.arrow_back_ios),
-          iconSize: 16,
+          icon: ImageIcon(Assets.images.eba.iconArrowBack),
+          iconSize: 24,
         ),
         bottom: TabBar(
           controller: controller.tabController,

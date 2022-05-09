@@ -17,8 +17,8 @@ class EbaReportView extends GetView<EbaReportController> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () => Get.back(),
-          icon: const Icon(Icons.arrow_back_ios),
-          iconSize: 16,
+          icon: ImageIcon(Assets.images.eba.iconArrowBack),
+          iconSize: 24,
         ),
       ),
       body: SafeArea(
