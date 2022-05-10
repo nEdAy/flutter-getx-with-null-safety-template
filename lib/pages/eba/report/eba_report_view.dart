@@ -229,44 +229,39 @@ class EbaReportView extends GetView<EbaReportController> {
                   child: Column(
                     children: [
                       const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Text(
-                            '异常',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF434343),
-                                height: 1.2,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${reportItem.abnormalEbaCount()}',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                height: 1.2,
-                                color: Color(0xFFD97F00),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 4),
-                          Obx(() {
-                            return GestureDetector(
-                              child: isLoading.value
-                                  ? const Icon(Icons.downloading,
-                                      color: Color(0xFF333333), size: 16)
-                                  : isUnfold.value
-                                      ? const Icon(Icons.keyboard_arrow_up,
-                                          color: Color(0xFF333333), size: 16)
-                                      : const Icon(Icons.keyboard_arrow_down,
-                                          color: Color(0xFF333333), size: 16),
-                              onTap: () => controller.getReportRbaDeviceList(
-                                  reportItem.spaceId,
-                                  isUnfold,
-                                  abnormalEbaDeviceList,
-                                  isLoading),
-                            );
-                          }),
-                        ],
+                      GestureDetector(
+                        child: Row(
+                          children: [
+                            const Text(
+                              '异常',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF434343),
+                                  height: 1.2,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${reportItem.abnormalEbaCount()}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  height: 1.2,
+                                  color: Color(0xFFD97F00),
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(width: 4),
+                            isUnfold.value
+                                ? Assets.images.eba.iconArrowUp
+                                    .image(width: 16, height: 16)
+                                : Assets.images.eba.iconArrowDown
+                                    .image(width: 16, height: 16),
+                          ],
+                        ),
+                        onTap: () => controller.getReportRbaDeviceList(
+                            reportItem.spaceId,
+                            isUnfold,
+                            abnormalEbaDeviceList,
+                            isLoading),
                       ),
                       Visibility(
                         visible: isUnfold.value,
@@ -348,8 +343,16 @@ class EbaReportView extends GetView<EbaReportController> {
           width: context.width,
           height: 82,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          color: Colors.white,
-          child: ElevatedButton(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                width: 1,
+                color: Color(0xFFF0F0F0),
+              ),
+            ),
+          ),
+          child: TextButton(
             onPressed: () => controller.launchURL(),
             child: const Text(
               '查看巡检报表',
@@ -358,7 +361,11 @@ class EbaReportView extends GetView<EbaReportController> {
                   fontSize: 18,
                   fontWeight: FontWeight.w500),
             ),
-            style: ElevatedButton.styleFrom(primary: const Color(0xFFFF9F08)),
+            style: ElevatedButton.styleFrom(
+                //圆角
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)),
+                primary: const Color(0xFFFF9F08)),
           ),
         ),
       ),
