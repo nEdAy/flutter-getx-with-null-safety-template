@@ -51,12 +51,14 @@ class EbaHomeView extends GetView<EbaHomeController> {
                             Assets.images.eba.iconAlarm,
                             '告警',
                             () => Get.toNamed(Routes.ebaAlarm,
-                                arguments: controller.currentProjectId.value)),
+                                arguments: controller.currentProjectId.value),
+                            false),
                         _buildClickableCardButton(
                             Assets.images.eba.iconReport,
                             '一键巡检',
                             () => Get.toNamed(Routes.ebaReport,
-                                arguments: controller.currentProjectId.value)),
+                                arguments: controller.currentProjectId.value),
+                            true),
                       ],
                     ),
                     _buildDropdownSearchList(context),
@@ -215,8 +217,8 @@ class EbaHomeView extends GetView<EbaHomeController> {
     );
   }
 
-  _buildClickableCardButton(
-      AssetGenImage iconImage, String text, GestureTapCallback onTap) {
+  _buildClickableCardButton(AssetGenImage iconImage, String text,
+      GestureTapCallback onTap, bool justButtonClickable) {
     return GestureDetector(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -238,15 +240,37 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),
-            trailing: ImageIcon(
-              Assets.images.eba.iconArrowForward,
-              size: 24,
-              color: Colors.black,
-            ),
+            trailing: justButtonClickable
+                ? SizedBox(
+                    width: 64,
+                    height: 32,
+                    child: OutlinedButton(
+                      onPressed: onTap,
+                      child: const Text(
+                        '开始',
+                        style: TextStyle(
+                            height: 1.2,
+                            color: Color(0xFFD97F00),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFFFFECCE)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        backgroundColor: const Color(0xFFFFF5E6),
+                      ),
+                    ),
+                  )
+                : ImageIcon(
+                    Assets.images.eba.iconArrowForward,
+                    size: 24,
+                    color: Colors.black,
+                  ),
           ),
         ),
       ),
-      onTap: onTap,
+      onTap: justButtonClickable ? null : onTap,
     );
   }
 
@@ -274,11 +298,13 @@ class EbaHomeView extends GetView<EbaHomeController> {
             decoration: InputDecoration(
               prefixIcon: Assets.images.eba.iconProjectSearch
                   .image(width: 16, height: 16),
-              suffixIcon: GestureDetector(
-                child: Assets.images.eba.iconCleanText
-                    .image(width: 16, height: 16),
-                onTap: () => controller.clearSearchText(),
-              ),
+              suffixIcon: controller.projectSearchKeyword.value.isNotEmpty
+                  ? GestureDetector(
+                      child: Assets.images.eba.iconCleanText
+                          .image(width: 16, height: 16),
+                      onTap: () => controller.clearSearchText(),
+                    )
+                  : null,
               prefixIconConstraints: const BoxConstraints(minWidth: 40),
               suffixIconConstraints: const BoxConstraints(minWidth: 40),
               fillColor: Colors.white,

@@ -259,7 +259,7 @@ class EbaReportView extends GetView<EbaReportController> {
                                         strokeWidth: 1.33,
                                       ),
                                       height: 13.3,
-                                      width:  13.3,
+                                      width: 13.3,
                                     )
                                   : isUnfold.value
                                       ? Assets.images.eba.iconArrowUp
@@ -373,11 +373,10 @@ class EbaReportView extends GetView<EbaReportController> {
                   fontSize: 18,
                   fontWeight: FontWeight.w500),
             ),
-            style: ElevatedButton.styleFrom(
-                //圆角
+            style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6)),
-                primary: const Color(0xFFFF9F08)),
+                backgroundColor: const Color(0xFFFF9F08)),
           ),
         ),
       ),
