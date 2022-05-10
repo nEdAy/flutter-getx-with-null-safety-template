@@ -346,7 +346,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                   },
                 );
               },
-              separatorBuilder: (BuildContext context, int index) {
+              separatorBuilder: (context, index) {
                 return const Divider(
                   height: 1,
                   thickness: 1,

@@ -106,7 +106,8 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
                                     fontSize: 16, color: Color(0xFF434343)),
                               ),
                               Text(
-                                alarmItems?[index].getAlarmFormatLocalTime() ?? '',
+                                alarmItems?[index].getAlarmFormatLocalTime() ??
+                                    '',
                                 style: const TextStyle(
                                     fontSize: 14, color: Color(0xFFAAAAAA)),
                               ),
@@ -118,7 +119,16 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return const Divider(height: 1, indent: 20, endIndent: 20);
+                  return Container(
+                    color: Colors.white,
+                    child: const Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Color(0xFFF0F0F0),
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                  );
                 },
                 itemCount: alarmItems?.length ?? 0,
               ),
