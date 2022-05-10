@@ -55,6 +55,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
       onPressed: () => Get.to(() => HttpLogListWidget()),
       tooltip: 'Dio Log',
       child: const Icon(Icons.wifi),
+      backgroundColor: FlavorConfig.instance.color,
     );
   }
 }

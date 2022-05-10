@@ -49,7 +49,9 @@ class FlavorService extends GetxService {
     final baseUrl = flavorInfoMap?['baseUrl'] ?? prodBaseUrl;
     final stage = flavorInfoMap?['stage'] ?? prodStage;
     FlavorConfig(
-        flavor: flavor, values: FlavorValues(baseUrl: baseUrl, stage: stage));
+        flavor: flavor,
+        values: FlavorValues(baseUrl: baseUrl, stage: stage),
+        color: Colors.orangeAccent);
     return this;
   }
 }

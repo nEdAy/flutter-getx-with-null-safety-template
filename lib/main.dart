@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry/sentry.dart';
 
+import 'config/flavor.dart';
 import 'global.dart';
 import 'routes/app_pages.dart';
 import 'widgets/developer_widget.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       child: DeveloperWidget(
         child: GetMaterialApp(
           title: '臻心',
+          theme: ThemeData(colorSchemeSeed: FlavorConfig.instance.color),
           initialRoute: AppPages.ebaHome,
           unknownRoute: AppPages.unknownRoute,
           getPages: AppPages.routes,
@@ -46,7 +48,6 @@ class MyApp extends StatelessWidget {
           navigatorObservers: [BotToastNavigatorObserver()],
         ),
       ),
-
     );
   }
 }
