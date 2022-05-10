@@ -250,11 +250,23 @@ class EbaReportView extends GetView<EbaReportController> {
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(width: 4),
-                            isUnfold.value
-                                ? Assets.images.eba.iconArrowUp
-                                    .image(width: 16, height: 16)
-                                : Assets.images.eba.iconArrowDown
-                                    .image(width: 16, height: 16),
+                            Obx(
+                              () => isLoading.value
+                                  ? const SizedBox(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Color(0xffAAAAAA)),
+                                        strokeWidth: 1.33,
+                                      ),
+                                      height: 13.3,
+                                      width:  13.3,
+                                    )
+                                  : isUnfold.value
+                                      ? Assets.images.eba.iconArrowUp
+                                          .image(width: 16, height: 16)
+                                      : Assets.images.eba.iconArrowDown
+                                          .image(width: 16, height: 16),
+                            ),
                           ],
                         ),
                         onTap: () => controller.getReportRbaDeviceList(
