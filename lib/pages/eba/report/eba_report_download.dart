@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +14,20 @@ import '../../../config/flavor.dart';
 
 class EbaReportDownload {
   Future<void> downloadXLSFile(Dio dio, String url, CancelToken token) async {
-    // 校验是否有储存卡的读写权限
-    Permission permission = Permission.storage;
-    PermissionStatus status = await permission.status;
-    if (status.isGranted == false) {
-      // 发起权限申请
-      PermissionStatus status = await permission.request();
-      if (status.isPermanentlyDenied || status.isRestricted) {
-        BotToast.showText(text: "请授权读写手机存储权限");
-        Future.delayed(const Duration(seconds: 1), () {
-          openAppSettings();
-        });
-        return;
+    if (Platform.isAndroid) {
+      // 校验是否有储存卡的读写权限
+      Permission permission = Permission.storage;
+      PermissionStatus status = await permission.status;
+      if (status.isGranted == false) {
+        // 发起权限申请
+        PermissionStatus status = await permission.request();
+        if (status.isPermanentlyDenied || status.isRestricted) {
+          BotToast.showText(text: "请授权读写手机存储权s限");
+          Future.delayed(const Duration(seconds: 1), () {
+            openAppSettings();
+          });
+          return;
+        }
       }
     }
     CancelFunc cancelLoadingFun = BotToast.showLoading(crossPage: false);
