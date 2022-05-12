@@ -46,7 +46,7 @@ dependencies:
   # Open File(*.xls)
   open_file: ^3.2.1
   # Path Provider
-  path_provider: ^2.0.9
+  path_provider: ^2.0.10
   # Permission Handler
   permission_handler: ^9.2.0
 
