@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   # GetX
-  get: ^4.6.1
+  get: 4.6.1
   # Http client
   dio: ^4.0.6
   # Http client generator
@@ -34,7 +34,7 @@ dependencies:
   # Dio network inspector
   dio_log : ^2.0.2
   # Json generation
-  json_annotation: ^4.4.0
+  json_annotation: ^4.5.0
   # Log
   logger: ^1.1.0
   # Loading/Toast/Notification
@@ -65,7 +65,7 @@ dev_dependencies:
   # Http client generator
   retrofit_generator: ^4.0.1
   # Json serializable
-  json_serializable: ^6.1.6
+  json_serializable: ^6.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
