@@ -109,6 +109,17 @@ class EbaReportDownload {
     await dio.download(url, savePath,
         cancelToken: cancelToken,
         options: options,
-        onReceiveProgress: onReceiveProgress);
+        onReceiveProgress: onReceiveProgress).catchError((Object obj) {
+      // non-200 error goes here.
+      switch (obj.runtimeType) {
+        case DioError:
+        // Here's the sample to get the failed response error code and message
+          final res = (obj as DioError).response;
+          Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
