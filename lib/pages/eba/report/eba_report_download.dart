@@ -13,7 +13,8 @@ import '../../../channel/get_user_info.dart';
 import '../../../config/flavor.dart';
 
 class EbaReportDownload {
-  Future<void> downloadXLSFile(Dio dio, String url, CancelToken token) async {
+  Future<void> downloadXLSFile(
+      Dio dio, String url, CancelToken token, String projectName) async {
     if (Platform.isAndroid) {
       // 校验是否有储存卡的读写权限
       Permission permission = Permission.storage;
@@ -40,7 +41,7 @@ class EbaReportDownload {
       });
       return;
     }
-    final savePath = await _getSavePath();
+    final savePath = await _getSavePath(projectName);
     try {
       _download(dio, url, savePath, cancelToken: token, options: options,
           onReceiveProgress: (received, total) async {
@@ -85,17 +86,25 @@ class EbaReportDownload {
     );
   }
 
-  Future<String> _getSavePath() async {
+  Future<String> _getSavePath(String projectName) async {
     String _tempPath = (await getApplicationDocumentsDirectory()).path;
     String _id = _idGenerator();
-    String savePath = '$_tempPath/$_id.xls';
+    String _dateTime = _formatNowTime();
+    String _fileName = '[$projectName]巡检报表$_dateTime-$_id.xls';
+    String savePath = '$_tempPath/$_fileName';
     return savePath;
+  }
+
+  String _formatNowTime() {
+    final dateTime = DateTime.now();
+    final localTime = dateTime.toLocal();
+    String formatLocalTime = "${localTime.year.toString()}${localTime.month.toString().padLeft(2, '0')}${localTime.day.toString().padLeft(2, '0')}";
+    return formatLocalTime;
   }
 
   String _idGenerator() {
     final uKey = UniqueKey().toString();
-    final now = DateTime.now().microsecondsSinceEpoch.toString();
-    return uKey + now;
+    return uKey;
   }
 
   void _download(
@@ -106,14 +115,16 @@ class EbaReportDownload {
     Options? options,
     void Function(int, int)? onReceiveProgress,
   }) async {
-    await dio.download(url, savePath,
-        cancelToken: cancelToken,
-        options: options,
-        onReceiveProgress: onReceiveProgress).catchError((Object obj) {
+    await dio
+        .download(url, savePath,
+            cancelToken: cancelToken,
+            options: options,
+            onReceiveProgress: onReceiveProgress)
+        .catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {
         case DioError:
-        // Here's the sample to get the failed response error code and message
+          // Here's the sample to get the failed response error code and message
           final res = (obj as DioError).response;
           Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
           break;

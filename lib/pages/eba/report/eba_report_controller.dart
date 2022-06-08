@@ -31,10 +31,11 @@ class EbaReportController extends GetxController {
   }
 
   launchURL() async {
-    String projectId = Get.arguments;
+    String projectId = Get.arguments['id'];
     String url = FlavorConfig.instance.values.baseUrl +
         '/v2/service/device-manage/device-info/check/download?projectId=$projectId';
-    await EbaReportDownload().downloadXLSFile(_dio, url, token);
+    String projectName = Get.arguments['name'];
+    await EbaReportDownload().downloadXLSFile(_dio, url, token, projectName);
   }
 
   EbaReportController({required this.client});
@@ -55,7 +56,7 @@ class EbaReportController extends GetxController {
 
   _getDeviceStatusBySpace() {
     loadingInspectionName.value = '巡检中...';
-    final String projectId = Get.arguments;
+    final String projectId = Get.arguments['id'];
     final request = {
       'projectId': projectId,
       'deviceTypeId': '3681568654222299015',
@@ -103,7 +104,7 @@ class EbaReportController extends GetxController {
     if (abnormalEbaDeviceList.isNotEmpty) {
       isUnfold.value = !isUnfold.value;
     } else {
-      final String projectId = Get.arguments;
+      final String projectId = Get.arguments['id'];
       final request = {
         'projectId': projectId,
         'deviceTypeId': '3681568654222299015',

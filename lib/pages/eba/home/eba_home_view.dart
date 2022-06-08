@@ -56,8 +56,10 @@ class EbaHomeView extends GetView<EbaHomeController> {
                         _buildClickableCardButton(
                             Assets.images.eba.iconReport,
                             '一键巡检',
-                            () => Get.toNamed(Routes.ebaReport,
-                                arguments: controller.currentProjectId.value),
+                            () => Get.toNamed(Routes.ebaReport, arguments: {
+                                  'id': controller.currentProjectId.value,
+                                  'name': controller.currentProjectName.value
+                                }),
                             true),
                       ],
                     ),
