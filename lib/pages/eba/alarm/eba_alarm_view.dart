@@ -22,7 +22,7 @@ class EbaAlarmView extends GetView<EbaAlarmController> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () => Get.back(),
-          icon: ImageIcon(Assets.images.eba.iconArrowBack),
+          icon: ImageIcon(Assets.images.eba.iconArrowBack.image().image),
           iconSize: 24,
         ),
         bottom: TabBar(

@@ -24,7 +24,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
         iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () => BackToNativeChannel.backToNative(),
-          icon: ImageIcon(Assets.images.eba.iconArrowBack),
+          icon: ImageIcon(Assets.images.eba.iconArrowBack.image().image),
           iconSize: 24,
         ),
       ),
@@ -265,7 +265,7 @@ class EbaHomeView extends GetView<EbaHomeController> {
                     ),
                   )
                 : ImageIcon(
-                    Assets.images.eba.iconArrowForward,
+                    Assets.images.eba.iconArrowForward.image().image,
                     size: 24,
                     color: Colors.black,
                   ),
