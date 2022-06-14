@@ -16,8 +16,8 @@ see the [add-to-app documentation](https://flutter.dev/docs/development/add-to-a
 
 ## Branch name rule
 
-- master - sunac flutter template release
-- develop - sunac flutter template development
+- master - flutter template release
+- develop - flutter template development
 - release
     - allowed branch name: release/{projectKey}/{majorVersion}.{minorVersion}.0
         - example: release/xxx/1.0.0
