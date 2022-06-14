@@ -30,7 +30,6 @@ class HomeView extends GetView<HomeController> {
               Card(
                 margin: const EdgeInsets.all(10.0),
                 child: Container(
-                  height: 150,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
