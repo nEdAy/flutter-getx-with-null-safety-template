@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import 'config/flavor.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// 全局配置
 class Global {
@@ -18,7 +19,7 @@ class Global {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Android 状态栏为透明的沉浸
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       SystemUiOverlayStyle systemUiOverlayStyle =
           const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
