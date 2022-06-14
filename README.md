@@ -1,7 +1,7 @@
 # flutter-getx-with-null-safety-template
 
 <code>![null safety](https://img.shields.io/badge/null-safety-blue)</code>
-<code>![flutter version](https://img.shields.io/badge/flutter-2.x-blue)</code>
+<code>![flutter version](https://img.shields.io/badge/flutter-3.x-blue)</code>
 <code>![getx version](https://img.shields.io/badge/getx-4.x-blue)</code>
 
 A new Flutter Module template project.
