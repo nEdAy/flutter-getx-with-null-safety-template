@@ -50,4 +50,4 @@ app.*.map.json
 # Build Runner
 *.g.dart
 *.gen.dart
-/.fvm/flutter_sdk/
+/.fvm/flutter_sdk
