@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
 import 'package:dio_log/interceptor/dio_log_interceptor.dart';
@@ -30,7 +27,6 @@ class HttpManager {
 
   RestClient _createClient() {
     final dio = Dio(_createBaseOptions());
-    _addCertificateConfig(dio);
     _addInterceptorsConfig(dio);
     _addDioLogger(dio);
     return RestClient(dio);
@@ -45,18 +41,6 @@ class HttpManager {
         validateStatus: (status) {
           return status != null && status < 500;
         });
-  }
-
-  void _addCertificateConfig(Dio dio) {
-    // 当环境为DEV的时候，证书校验忽略，直接返回 true
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) {
-        return true;
-      };
-      return null;
-    };
   }
 
   void _addInterceptorsConfig(Dio dio) {

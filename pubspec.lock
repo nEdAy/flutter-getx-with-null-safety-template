@@ -203,7 +203,7 @@ packages:
       name: dio_log
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -257,7 +257,7 @@ packages:
       name: flutter_lints
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.1"
+    version: "1.0.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -276,7 +276,7 @@ packages:
       name: get
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.6.5"
+    version: "4.6.1"
   glob:
     dependency: transitive
     description:
@@ -346,7 +346,7 @@ packages:
       name: lints
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0"
+    version: "1.0.1"
   logger:
     dependency: "direct main"
     description:
@@ -546,11 +546,9 @@ packages:
   pull_to_refresh:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "6d7fbdd"
-      resolved-ref: "6d7fbdd5b3cde242a474d66da312aac4aa892b9b"
-      url: "https://github.com/miquelbeltran/flutter_pulltorefresh"
-    source: git
+      name: pull_to_refresh
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "2.0.0"
   quiver:
     dependency: transitive
@@ -747,5 +745,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.0-206.0.dev <3.0.0"
+  dart: ">=2.17.0-0 <3.0.0"
   flutter: ">=2.8.1"
