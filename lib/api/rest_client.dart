@@ -24,7 +24,7 @@ abstract class RestClient {
   @GET("/v2/corp/organization/member/id/{memberId}/project_list")
   Future<BaseResponse<ProjectListResponse>> getProjectList(
       @Path("memberId") String memberId,
-      {@Header("group") String group = 'AUTHORITY'});
+      {@Header("group") String group = 'rc_test_1'});
 
   @GET("/v2/service/device-manage/device-info/statistic/device-run-status")
   Future<BaseResponse<DeviceStatusResponse>> getDeviceStatus(
