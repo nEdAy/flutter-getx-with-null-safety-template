@@ -78,7 +78,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 flutter:
-  # The following line ensures that the Material Icons font is
+  # The following line ensures that the Material Icons font
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
