@@ -8,8 +8,8 @@ class RequestHeaderInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    var userInfo = await GetUserInfo.getUserInfo();
-    var header = <String, String>{tokenHeader: userInfo?['accessToken'] ?? ""};
+    var userInfo  = {}; // await GetUserInfo.getUserInfo();
+    var header = <String, String>{tokenHeader: userInfo['accessToken'] ?? ""};
     options.headers.addAll(header);
     super.onRequest(options, handler);
   }
