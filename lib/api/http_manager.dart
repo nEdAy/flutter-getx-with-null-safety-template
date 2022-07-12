@@ -4,7 +4,6 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
 import 'package:dio_log/interceptor/dio_log_interceptor.dart';
-import 'package:sunac_flutter/config/flavor.dart';
 
 import '../config/flavor.dart';
 import 'interceptors/interceptors.dart';
