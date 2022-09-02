@@ -47,6 +47,15 @@ dependencies:
   bot_toast: ^4.0.3
   # Sentry
   sentry: ^6.9.1
+  # Pull to Refresh
+  pull_to_refresh:
+    git:
+      url: https://github.com/miquelbeltran/flutter_pulltorefresh
+      ref: 6d7fbdd
+  # Extended Image
+  extended_image: ^6.2.1
+  # Screen Util
+  flutter_screenutil: ^5.5.3+2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

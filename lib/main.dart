@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry/sentry.dart';
 
 import 'config/flavor.dart';
@@ -34,17 +37,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return DeveloperWidget(
-      child: GetMaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(colorSchemeSeed: FlavorConfig.instance.color),
-        initialRoute: AppPages.initial,
-        unknownRoute: AppPages.unknownRoute,
-        getPages: AppPages.routes,
-        builder: BotToastInit(),
-        debugShowCheckedModeBanner: false,
-        navigatorObservers: [BotToastNavigatorObserver()],
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return RefreshConfiguration(
+          footerTriggerDistance: 50,
+          child: DeveloperWidget(
+            child: GetMaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(colorSchemeSeed: FlavorConfig.instance.color),
+              initialRoute: AppPages.initial,
+              unknownRoute: AppPages.unknownRoute,
+              getPages: AppPages.routes,
+              builder: BotToastInit(),
+              debugShowCheckedModeBanner: false,
+              navigatorObservers: [BotToastNavigatorObserver()],
+              localizationsDelegates: const [
+                RefreshLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('zh'),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
