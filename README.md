@@ -1,4 +1,4 @@
-# sunac_flutter
+# flutter-getx-with-null-safety-template
 
 <code>![null safety](https://img.shields.io/badge/null-safety-blue)</code>
 <code>![flutter version](https://img.shields.io/badge/flutter-3.x-blue)</code>
@@ -16,17 +16,17 @@ see the [add-to-app documentation](https://flutter.dev/docs/development/add-to-a
 
 ## Branch name rule
 
-- master - sunac flutter template release
-- develop - sunac flutter template development
+- master - flutter template release
+- develop - flutter template development
 - release
     - allowed branch name: release/{projectKey}/{majorVersion}.{minorVersion}.0
-        - example: release/zx/1.0.0, release/gx/1.0.0
+        - example: release/xxx/1.0.0
     - hotfix
         - allowed branch name: hotfix/{projectKey}/{majorVersion}.{minorVersion}.{patchVersionInMasterBranch+1}
-        - example: hotfix/zx/1.0.1, release/gx/1.0.1
+        - example: hotfix/xxx/1.0.1
     - feature
         - allowed branch name: feature/{projectKey}/{storyOrBugOrDefectOrIncidentName}/{domainAccountName}
-        - example: feature/zx/add-flutter-to-android/sus12
+        - example: feature/xxx/add-flutter-to-android/nEdAy
 
 ## GitFlow
 

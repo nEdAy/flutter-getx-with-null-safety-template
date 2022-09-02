@@ -1,5 +1,5 @@
 class ChannelKeys {
-  static const packageKey = 'com.sunacwy.staff';
+  static const packageKey = 'cn.neday.flutterTemplate';
 
   static const backToNative = '$packageKey/backToNative';
 

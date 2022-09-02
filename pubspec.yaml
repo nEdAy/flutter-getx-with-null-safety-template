@@ -1,4 +1,4 @@
-name: sunac_flutter
+name: flutter_template
 description: A new Flutter Module template project.
 
 # The following line prevents the package from being accidentally published to
@@ -124,5 +124,5 @@ flutter:
   # identifiers, which may be completely independent or the same as these.
   module:
     androidX: true
-    androidPackage: com.sunac.sunac_flutter
-    iosBundleIdentifier: com.sunac.sunacFlutter
+    androidPackage: cn.neday.flutterTemplate
+    iosBundleIdentifier: cn.neday.flutterTemplate
