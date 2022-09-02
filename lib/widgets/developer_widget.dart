@@ -1,4 +1,5 @@
 import 'package:dio_log/http_log_list_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +21,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const isRelease = bool.fromEnvironment('dart.vm.product');
-    if (FlavorConfig.isProduction() && isRelease) return widget.child;
+    if (FlavorConfig.isProduction() && !kDebugMode) return widget.child;
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Overlay(
@@ -54,8 +54,8 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
     return FloatingActionButton(
       onPressed: () => Get.to(() => HttpLogListWidget()),
       tooltip: 'Dio Log',
-      child: const Icon(Icons.wifi),
       backgroundColor: FlavorConfig.instance.color,
+      child: const Icon(Icons.wifi),
     );
   }
 }

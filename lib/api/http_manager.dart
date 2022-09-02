@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:dio_http_formatter/dio_http_formatter.dart';
 import 'package:dio_log/interceptor/dio_log_interceptor.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
 
 import '../config/flavor.dart';
 import 'interceptors/interceptors.dart';
@@ -44,7 +45,7 @@ class HttpManager {
   void _addInterceptorsConfig(Dio dio) {
     dio.interceptors.addAll([
       LoadingInterceptor(),
-      RequestHeaderInterceptor(),
+      RequestTokenInterceptor(),
       HandleErrorInterceptor(),
     ]);
   }
@@ -52,7 +53,18 @@ class HttpManager {
   void _addDioLogger(Dio dio, {bool printResponseBody = true}) {
     dio.interceptors.addAll([
       DioLogInterceptor(),
-      HttpFormatter(includeResponseBody: printResponseBody),
+      PrettyDioLogger(
+        requestHeader: true,
+        queryParameters: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: printResponseBody,
+        error: true,
+        showProcessingTime: true,
+        showCUrl: true,
+        convertFormData: false,
+        canShowLog: kDebugMode,
+      )
     ]);
   }
 }
