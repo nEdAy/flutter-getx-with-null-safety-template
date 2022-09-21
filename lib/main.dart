@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
             unknownRoute: AppPages.unknownRoute,
             getPages: AppPages.routes,
             builder: (context, child) {
-              child = DeveloperWidget(child: child);
               child = botToastBuilder(context, child);
+              child = DeveloperWidget(child: child);
               return child;
             },
             debugShowCheckedModeBanner: false,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sunac_flutter/widgets/scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
-import 'package:sunac_flutter/widgets/scrollable_clean_calendar/scrollable_clean_calendar.dart';
-import 'package:sunac_flutter/widgets/scrollable_clean_calendar/utils/enums.dart';
 
 import '../gen/assets.gen.dart';
 import '../utils/date_util.dart';
+import 'scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
+import 'scrollable_clean_calendar/scrollable_clean_calendar.dart';
+import 'scrollable_clean_calendar/utils/enums.dart';
 
 class CalendarPicker extends StatefulWidget {
   final String label;

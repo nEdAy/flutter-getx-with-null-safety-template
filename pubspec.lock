@@ -564,6 +564,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.3+1"
+  scrollable_positioned_list:
+    dependency: "direct main"
+    description:
+      name: scrollable_positioned_list
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.4"
   sentry:
     dependency: "direct main"
     description:
