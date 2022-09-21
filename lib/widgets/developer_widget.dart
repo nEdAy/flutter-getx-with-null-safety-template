@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../config/flavor.dart';
 
 class DeveloperWidget extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
 
   const DeveloperWidget({Key? key, required this.child}) : super(key: key);
 
@@ -21,12 +21,14 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (FlavorConfig.isProduction() && !kDebugMode) return widget.child;
+    if (FlavorConfig.isProduction() && !kDebugMode) {
+      return widget.child ?? const SizedBox.shrink();
+    }
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Overlay(
         initialEntries: [
-          OverlayEntry(builder: (_) => widget.child),
+          OverlayEntry(builder: (_) => widget.child?? const SizedBox.shrink()),
           OverlayEntry(
             builder: (_) {
               return Positioned(

@@ -24,14 +24,4 @@ class GetUserInfo {
       return null;
     }
   }
-
-  static String _lastAccessToken = '';
-
-  static String getLastAccessToken() {
-    return _lastAccessToken;
-  }
-
-  static void setLastAccessToken(String token) {
-    _lastAccessToken = token;
-  }
 }

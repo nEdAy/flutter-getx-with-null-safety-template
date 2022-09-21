@@ -22,10 +22,11 @@ class ImageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    titles = Get.arguments['title'];
+    titles = Get.arguments['titles'];
 
     urls = Get.arguments['urls'];
     headers = Get.arguments['headers'];
+    pageIndex.value = Get.arguments['pageIndex']?? 0;
 
     files = Get.arguments['files'];
     enableMemoryCache = Get.arguments['enableMemoryCache'];

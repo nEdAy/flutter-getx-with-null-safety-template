@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
+import 'channel/get_flavor_info.dart';
+import 'channel/get_user_info.dart';
 import 'config/flavor.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'config/user_info.dart';
 
 /// 全局配置
 class Global {
@@ -38,6 +41,7 @@ class Global {
     /// 这里是你放get_storage、hive、shared_pref初始化的地方。
     /// 或者moor连接，或者其他什么异步的东西。
     await Get.putAsync(() => FlavorService().init());
+    await Get.putAsync(() => UserInfoService().init());
     Logger().i('All services started...');
   }
 }
@@ -48,6 +52,16 @@ class FlavorService extends GetxService {
     final flavor = flavorInfoMap['flavor'] ?? prod;
     final baseUrl = flavorInfoMap['baseUrl'] ?? prodBaseUrl;
     FlavorConfig(flavor: flavor, values: FlavorValues(baseUrl: baseUrl));
+    return this;
+  }
+}
+
+class UserInfoService extends GetxService {
+  Future<UserInfoService> init() async {
+    final userInfoMap = {}; // await GetUserInfo.getUserInfo();
+    final token = userInfoMap?['accessToken'] ?? '';
+    final memberId = userInfoMap?['memberId'] ?? '';
+    UserInfoConfig(values: UserInfoValues(token: token, memberId: memberId));
     return this;
   }
 }

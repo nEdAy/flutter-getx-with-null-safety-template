@@ -50,33 +50,31 @@ class ImageView extends GetView<ImageController> {
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
-        Expanded(
-          child: ExtendedImageGesturePageView.builder(
-              controller: controller.pageController,
-              itemCount: urlsLength,
-              canScrollPage: (GestureDetails? gestureDetails) => urlsLength > 1,
-              onPageChanged: (int index) => controller.pageIndex.value = index,
-              itemBuilder: (BuildContext context, int index) {
-                final urls = controller.urls;
-                if (urls != null) {
-                  final imageUrl = urls[index];
-                  if (imageUrl.isNotEmpty) {
-                    return ExtendedImage.network(
-                      imageUrl,
-                      fit: BoxFit.contain,
-                      mode: ExtendedImageMode.gesture,
-                      headers: controller.headers,
-                      enableMemoryCache: controller.enableMemoryCache ?? true,
-                      clearMemoryCacheWhenDispose:
-                      controller.clearMemoryCacheWhenDispose ?? false,
-                      initGestureConfigHandler: (ExtendedImageState state) =>
-                          _buildGestureConfig(),
-                    );
-                  }
+        ExtendedImageGesturePageView.builder(
+            controller: controller.pageController,
+            itemCount: urlsLength,
+            canScrollPage: (GestureDetails? gestureDetails) => urlsLength > 1,
+            onPageChanged: (int index) => controller.pageIndex.value = index,
+            itemBuilder: (BuildContext context, int index) {
+              final urls = controller.urls;
+              if (urls != null) {
+                final imageUrl = urls[index];
+                if (imageUrl.isNotEmpty) {
+                  return ExtendedImage.network(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    mode: ExtendedImageMode.gesture,
+                    headers: controller.headers,
+                    enableMemoryCache: controller.enableMemoryCache ?? true,
+                    clearMemoryCacheWhenDispose:
+                        controller.clearMemoryCacheWhenDispose ?? false,
+                    initGestureConfigHandler: (ExtendedImageState state) =>
+                        _buildGestureConfig(),
+                  );
                 }
-                return const SizedBox.shrink();
-              }),
-        ),
+              }
+              return const SizedBox.shrink();
+            }),
         _buildIndicator(urlsLength),
       ],
     );
@@ -86,32 +84,30 @@ class ImageView extends GetView<ImageController> {
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
-        Expanded(
-          child: ExtendedImageGesturePageView.builder(
-              controller: controller.pageController,
-              itemCount: fileLength,
-              canScrollPage: (GestureDetails? gestureDetails) => fileLength > 1,
-              onPageChanged: (int index) => controller.pageIndex.value = index,
-              itemBuilder: (BuildContext context, int index) {
-                final files = controller.files;
-                if (files != null) {
-                  final file = files[index];
-                  if (file != null && file.existsSync() == true) {
-                    return ExtendedImage.file(
-                      file,
-                      fit: BoxFit.contain,
-                      mode: ExtendedImageMode.gesture,
-                      enableMemoryCache: controller.enableMemoryCache ?? false,
-                      clearMemoryCacheWhenDispose:
-                      controller.clearMemoryCacheWhenDispose ?? true,
-                      initGestureConfigHandler: (ExtendedImageState state) =>
-                          _buildGestureConfig(),
-                    );
-                  }
+        ExtendedImageGesturePageView.builder(
+            controller: controller.pageController,
+            itemCount: fileLength,
+            canScrollPage: (GestureDetails? gestureDetails) => fileLength > 1,
+            onPageChanged: (int index) => controller.pageIndex.value = index,
+            itemBuilder: (BuildContext context, int index) {
+              final files = controller.files;
+              if (files != null) {
+                final file = files[index];
+                if (file != null && file.existsSync() == true) {
+                  return ExtendedImage.file(
+                    file,
+                    fit: BoxFit.contain,
+                    mode: ExtendedImageMode.gesture,
+                    enableMemoryCache: controller.enableMemoryCache ?? false,
+                    clearMemoryCacheWhenDispose:
+                        controller.clearMemoryCacheWhenDispose ?? true,
+                    initGestureConfigHandler: (ExtendedImageState state) =>
+                        _buildGestureConfig(),
+                  );
                 }
-                return const SizedBox.shrink();
-              }),
-        ),
+              }
+              return const SizedBox.shrink();
+            }),
         _buildIndicator(fileLength),
       ],
     );
@@ -135,12 +131,12 @@ class ImageView extends GetView<ImageController> {
   _buildIndicator(int length) {
     return length > 1
         ? Padding(
-      padding: const EdgeInsets.only(bottom: 25),
-      child: Obx(() => Indicator(
-        pageIndex: controller.pageIndex.value,
-        itemCount: length,
-      )),
-    )
+            padding: const EdgeInsets.only(bottom: 25),
+            child: Obx(() => Indicator(
+                  pageIndex: controller.pageIndex.value,
+                  itemCount: length,
+                )),
+          )
         : const SizedBox.shrink();
   }
 }

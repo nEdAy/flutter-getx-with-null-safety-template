@@ -42,28 +42,31 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
+        final botToastBuilder = BotToastInit();
         return RefreshConfiguration(
           footerTriggerDistance: 50,
-          child: DeveloperWidget(
-            child: GetMaterialApp(
-              title: 'Flutter Demo',
-              theme: ThemeData(colorSchemeSeed: FlavorConfig.instance.color),
-              initialRoute: AppPages.initial,
-              unknownRoute: AppPages.unknownRoute,
-              getPages: AppPages.routes,
-              builder: BotToastInit(),
-              debugShowCheckedModeBanner: false,
-              navigatorObservers: [BotToastNavigatorObserver()],
-              localizationsDelegates: const [
-                RefreshLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('zh'),
-              ],
-            ),
+          child: GetMaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(colorSchemeSeed: FlavorConfig.instance.color),
+            initialRoute: AppPages.initial,
+            unknownRoute: AppPages.unknownRoute,
+            getPages: AppPages.routes,
+            builder: (context, child) {
+              child = DeveloperWidget(child: child);
+              child = botToastBuilder(context, child);
+              return child;
+            },
+            debugShowCheckedModeBanner: false,
+            navigatorObservers: [BotToastNavigatorObserver()],
+            localizationsDelegates: const [
+              RefreshLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('zh', 'CH'),
+            ],
           ),
         );
       },
