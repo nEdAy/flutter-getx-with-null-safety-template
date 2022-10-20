@@ -66,6 +66,8 @@ dependencies:
   isar_flutter_libs: *isar_version # contains Isar Core
   # Network Connectivity
   internet_connection_checker: ^1.0.0+1
+  # Utility Dart Libraries
+  quiver: ^3.1.0
   # Device Preview
   device_preview: ^1.1.0
 

@@ -4,6 +4,17 @@ import 'package:get/get.dart';
 import '../gen/assets.gen.dart';
 
 class SearchWidget extends StatefulWidget {
+  const SearchWidget({
+    super.key,
+    required this.hintText,
+    required this.searchController,
+    this.onSearchInputChanged,
+    this.onSearchInputSubmitted,
+    this.prefix,
+    this.autofocus,
+    required this.onClearTap,
+  });
+
   final String hintText;
   final TextEditingController searchController;
   final ValueChanged<String>? onSearchInputChanged;
@@ -11,17 +22,6 @@ class SearchWidget extends StatefulWidget {
   final GestureTapCallback onClearTap;
   final Widget? prefix;
   final bool? autofocus;
-
-  const SearchWidget(
-      {Key? key,
-      required this.hintText,
-      required this.searchController,
-      this.onSearchInputChanged,
-      this.onSearchInputSubmitted,
-      this.prefix,
-      this.autofocus,
-      required this.onClearTap})
-      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +47,6 @@ class _SearchWidgetState extends State<SearchWidget> {
         controller: widget.searchController,
         autofocus: widget.autofocus ?? false,
         focusNode: _focusNode,
-        maxLines: 1,
         style: const TextStyle(
           color: Color(0xFF434343),
           fontSize: 16,
@@ -86,8 +85,8 @@ class _SearchWidgetState extends State<SearchWidget> {
           fillColor: Colors.white,
           filled: true,
           enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-              borderRadius: BorderRadius.all(Radius.circular(4))),
+            borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+          ),
           hintText: widget.hintText,
           hintStyle: const TextStyle(
             color: Color(0xFF767676),
@@ -97,8 +96,8 @@ class _SearchWidgetState extends State<SearchWidget> {
           ),
           hintMaxLines: 1,
           focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFE6E6E6)),
-              borderRadius: BorderRadius.all(Radius.circular(4))),
+            borderSide: BorderSide(color: Color(0xFFE6E6E6)),
+          ),
         ),
         textInputAction: TextInputAction.search,
         onChanged: (value) {

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,19 +19,20 @@ void main() {
   runZonedGuarded(() async {
     await Sentry.init(
       (options) {
-        options.dsn =
-            'https://8f96c596bcb0404e80650df83e5cb944@o1149022.ingest.sentry.io/6257332';
-        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-        // We recommend adjusting this value in production.
-        options.tracesSampleRate = 1.0;
+        options
+          ..dsn =
+              'https://8f96c596bcb0404e80650df83e5cb944@o1149022.ingest.sentry.io/6257332'
+          // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+          // We recommend adjusting this value in production.
+          ..tracesSampleRate = 1.0;
       },
     );
     // Init your App.
-    Global.init().then(
+    await Global.init().then(
       (e) => runApp(
         DevicePreview(
-            enabled: !kReleaseMode,
-            builder: (context) => const MyApp()), // Wrap your app
+          builder: (context) => const MyApp(),
+        ), // Wrap your app
       ),
     );
   }, (exception, stackTrace) async {
@@ -41,7 +41,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override

@@ -4,10 +4,9 @@ import 'package:extended_image/extended_image.dart';
 import 'package:get/get.dart';
 
 class ImageController extends GetxController {
-  final ExtendedPageController pageController = ExtendedPageController(
-    initialPage: 0,
-    pageSpacing: 50,
-  );
+  final pageIndex = 0.obs;
+
+  late final ExtendedPageController pageController;
 
   late final List<String>? titles;
   late final List<String>? urls;
@@ -17,16 +16,20 @@ class ImageController extends GetxController {
   late final bool? enableMemoryCache;
   late final bool? clearMemoryCacheWhenDispose;
 
-  final pageIndex = 0.obs;
-
   @override
   void onInit() {
     super.onInit();
+    final initialPageIndex = Get.arguments['pageIndex'] ?? 0;
+    pageController = ExtendedPageController(
+      initialPage: initialPageIndex,
+      pageSpacing: 50,
+    );
+    pageIndex.value = initialPageIndex;
+
     titles = Get.arguments['titles'];
 
     urls = Get.arguments['urls'];
     headers = Get.arguments['headers'];
-    pageIndex.value = Get.arguments['pageIndex']?? 0;
 
     files = Get.arguments['files'];
     enableMemoryCache = Get.arguments['enableMemoryCache'];

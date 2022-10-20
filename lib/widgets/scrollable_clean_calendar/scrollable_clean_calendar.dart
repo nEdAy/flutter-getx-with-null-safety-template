@@ -82,7 +82,7 @@ class ScrollableCleanCalendar extends StatefulWidget {
   final CleanCalendarController calendarController;
 
   const ScrollableCleanCalendar({
-    Key? key,
+    super.key,
     this.locale = 'en',
     this.scrollController,
     this.showWeekdays = true,
@@ -106,11 +106,12 @@ class ScrollableCleanCalendar extends StatefulWidget {
     this.dayTextStyle,
     this.dayRadius = 6,
     required this.calendarController,
-  })  : assert(layout != null ||
-            (monthBuilder != null &&
-                weekdayBuilder != null &&
-                dayBuilder != null)),
-        super(key: key);
+  }) : assert(
+          layout != null ||
+              (monthBuilder != null &&
+                  weekdayBuilder != null &&
+                  dayBuilder != null),
+        );
 
   @override
   State<ScrollableCleanCalendar> createState() =>

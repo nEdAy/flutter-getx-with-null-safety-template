@@ -22,19 +22,19 @@ class DialogWidget extends Dialog {
   final GestureTapCallback? onNegativeButtonTextPressed;
   final GestureTapCallback onPositiveButtonPressed;
 
-  const DialogWidget(
-      {Key? key,
-      required this.titleText,
-      this.titleAlignment = Alignment.center,
-      this.contentWidget,
-      this.negativeButtonText = '取消',
-      this.positiveButtonText = '确认提交',
-      this.positiveButtonTextColor = 0xFF000000,
-      this.positiveButtonBackgroundColor = 0xFFFF9F08,
-      this.positiveButtonSideColor = 0xFFFF9F08,
-      this.onNegativeButtonTextPressed,
-      required this.onPositiveButtonPressed})
-      : super(key: key);
+  const DialogWidget({
+    super.key,
+    required this.titleText,
+    this.titleAlignment = Alignment.center,
+    this.contentWidget,
+    this.negativeButtonText = '取消',
+    this.positiveButtonText = '确认提交',
+    this.positiveButtonTextColor = 0xFF000000,
+    this.positiveButtonBackgroundColor = 0xFFFF9F08,
+    this.positiveButtonSideColor = 0xFFFF9F08,
+    this.onNegativeButtonTextPressed,
+    required this.onPositiveButtonPressed,
+  });
 
   _buildDialogWidget() {
     return ConstrainedBox(
@@ -43,10 +43,11 @@ class DialogWidget extends Dialog {
       ),
       child: Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(8))),
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child: Container(
             color: Colors.white,
             child: Column(
@@ -54,14 +55,17 @@ class DialogWidget extends Dialog {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    height: 60,
-                    alignment: titleAlignment,
-                    child: Text(titleText,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF000000),
-                        ))),
+                  height: 60,
+                  alignment: titleAlignment,
+                  child: Text(
+                    titleText,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                ),
                 contentWidget ?? const SizedBox.shrink(),
                 const SizedBox(height: 20),
                 Row(

@@ -8,11 +8,13 @@ class LoadingInterceptor extends InterceptorsWrapper {
   static const String requestKey = 'requestKey';
 
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (!options.headers.containsKey('noLoading') ||
         options.headers['noLoading'] == false) {
-      CancelFunc cancel = BotToast.showLoading();
+      final cancel = BotToast.showLoading();
       final requestKeyValue = '${options.uri}-${DateUtil.getNowDateMs()}';
       options.extra = {requestKey: requestKeyValue};
       _cancelMap.putIfAbsent(requestKeyValue, () => cancel);
@@ -21,7 +23,10 @@ class LoadingInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
     cancelLoading(response.requestOptions);
     super.onResponse(response, handler);
   }
@@ -39,7 +44,7 @@ class LoadingInterceptor extends InterceptorsWrapper {
       if (extra.containsKey(requestKey)) {
         final requestKeyValue = extra[requestKey];
         if (_cancelMap.containsKey(requestKeyValue)) {
-          CancelFunc? cancel = _cancelMap[requestKeyValue];
+          final cancel = _cancelMap[requestKeyValue];
           if (cancel != null) {
             cancel();
             _cancelMap.remove(requestKeyValue);

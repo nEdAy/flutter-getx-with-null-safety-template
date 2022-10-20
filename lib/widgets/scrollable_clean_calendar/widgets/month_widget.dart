@@ -5,22 +5,23 @@ import '../utils/enums.dart';
 import '../utils/extensions.dart';
 
 class MonthWidget extends StatelessWidget {
-  final DateTime month;
-  final String locale;
-  final Layout? layout;
-  final TextStyle? textStyle;
-  final TextAlign? textAlign;
-  final Widget Function(BuildContext context, String month)? monthBuilder;
 
   const MonthWidget({
-    Key? key,
+    super.key,
     required this.month,
     required this.locale,
     required this.layout,
     required this.monthBuilder,
     required this.textStyle,
     required this.textAlign,
-  }) : super(key: key);
+  });
+
+  final DateTime month;
+  final String locale;
+  final Layout? layout;
+  final TextStyle? textStyle;
+  final TextAlign? textAlign;
+  final Widget Function(BuildContext context, String month)? monthBuilder;
 
   @override
   Widget build(BuildContext context) {

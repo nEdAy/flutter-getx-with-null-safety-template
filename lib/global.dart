@@ -15,17 +15,17 @@ import 'config/user_info.dart';
 /// 全局配置
 class Global {
   /// 是否 release
-  static bool get isRelease => const bool.fromEnvironment("dart.vm.product");
+  static bool get isRelease => const bool.fromEnvironment('dart.vm.product');
 
   /// init
-  static Future init() async {
+  static Future<dynamic> init() async {
     // 确保初始化
     WidgetsFlutterBinding.ensureInitialized();
 
     // Android 状态栏为透明的沉浸
     if (!kIsWeb && Platform.isAndroid) {
-      SystemUiOverlayStyle systemUiOverlayStyle =
-          const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      const systemUiOverlayStyle =
+          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
 
@@ -70,13 +70,13 @@ class FlavorService extends GetxService {
 class UserInfoService extends GetxService {
   Future<UserInfoService> init() async {
     final userInfoMap = {}; // await GetUserInfo.getUserInfo();
-    String token = '';
-    String memberId = '';
+    var token = '';
+    var memberId = '';
     if (userInfoMap != null) {
       token = userInfoMap['accessToken'] ?? '';
       memberId = userInfoMap['memberId'] ?? '';
     } else {
-      UserInfo? userInfo = StoreManager.instance.getUserInfoSync();
+      final userInfo = StoreManager.instance.getUserInfoSync();
       if (userInfo != null) {
         token = userInfo.token;
         memberId = userInfo.memberId;

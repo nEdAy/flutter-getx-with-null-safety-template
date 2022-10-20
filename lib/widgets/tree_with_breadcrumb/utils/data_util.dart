@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'dart:convert';
 
 import '../flutter_tree.dart';
@@ -9,9 +11,9 @@ class DataUtil {
       Config config,
       bool Function(Map<String, dynamic> treeNode, Config config)
           isNotRootNode) {
-    Map obj = {};
+    final Map obj = {};
     String? rootId;
-    for (var v in dataList) {
+    for (final v in dataList) {
       if (v.containsKey([config.id])) {
         v[config.id] = v[config.id].toString();
       }
@@ -50,7 +52,8 @@ class DataUtil {
   }
 
   static List<Map<String, dynamic>> copyDeepList(
-      List<Map<String, dynamic>> list) {
+    List<Map<String, dynamic>> list,
+  ) {
     return json.decode(json.encode(list));
   }
 }

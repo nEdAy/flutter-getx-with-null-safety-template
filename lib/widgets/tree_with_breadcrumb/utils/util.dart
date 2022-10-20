@@ -7,12 +7,12 @@ class MStack {
     items.add(item);
   }
 
-  pop() {
+  dynamic pop() {
     --top;
     return items.removeLast();
   }
 
-  peek() {
+  dynamic peek() {
     return items[top - 1];
   }
 }

@@ -5,8 +5,8 @@ const String pre = 'pre';
 const String uat = 'uat';
 const String sit = 'sit';
 
-const devBaseUrl = "https://international.v1.hitokoto.cn";
-const prodBaseUrl = "https://v1.hitokoto.cn/";
+const devBaseUrl = 'https://international.v1.hitokoto.cn';
+const prodBaseUrl = 'https://v1.hitokoto.cn/';
 
 class FlavorValues {
   final String baseUrl;
