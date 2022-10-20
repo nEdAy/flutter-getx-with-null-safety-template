@@ -280,7 +280,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
             fontSize: 16,
             color:
                 isChecked ? const Color(0xFFD97F00) : const Color(0xFF434343),
-            fontWeight: isChecked ? FontWeight.w500 : FontWeight.w400),
+            fontWeight: isChecked ? FontWeight.bold : FontWeight.normal),
       ),
     );
   }
@@ -483,7 +483,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
           style: TextStyle(
               color: isLast ? Colors.black : const Color(0xFF434343),
               fontSize: 14,
-              fontWeight: isLast ? FontWeight.w500 : FontWeight.w400)),
+              fontWeight: isLast ? FontWeight.bold : FontWeight.normal)),
       onTap: () {
         setState(() {
           _breadcrumbList = _breadcrumbList.take(index + 1).toList();
@@ -529,8 +529,8 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
                       ? const Color(0xFF767676)
                       : const Color(0xFFAAAAAA),
                   fontWeight: allCheckedNode['checked'] == CheckStatus.unChecked
-                      ? FontWeight.w500
-                      : FontWeight.w400,
+                      ? FontWeight.bold
+                      : FontWeight.normal,
                   fontSize: 18),
             ),
           ),
@@ -548,7 +548,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],

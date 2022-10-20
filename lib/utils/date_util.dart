@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import "package:quiver/time.dart";
+
 class DateRange {
   DateTime? from;
   DateTime? to;
@@ -10,27 +13,34 @@ class DateRange {
 /// year -> yyyy/yy   month -> MM/M    day -> dd/d
 /// hour -> HH/H      minute -> mm/m   second -> ss/s
 class DateFormats {
-  static String full = 'yyyy-MM-dd HH:mm:ss';
-  static String y_mo_d_h_m = 'yyyy-MM-dd HH:mm';
-  static String y_mo_d = 'yyyy-MM-dd';
-  static String y_mo = 'yyyy-MM';
-  static String mo_d = 'MM-dd';
-  static String mo_d_h_m = 'MM-dd HH:mm';
-  static String h_m_s = 'HH:mm:ss';
-  static String h_m = 'HH:mm';
+  static const String full = 'yyyy-MM-dd HH:mm:ss';
+  static const String y_mo_d_h_m = 'yyyy-MM-dd HH:mm';
+  static const String y_mo_d = 'yyyy-MM-dd';
+  static const String y_mo = 'yyyy-MM';
+  static const String mo_d = 'MM-dd';
+  static const String mo_d_h_m = 'MM-dd HH:mm';
+  static const String h_m_s = 'HH:mm:ss';
+  static const String h_m = 'HH:mm';
 
-  static String zh_full = 'yyyy年MM月dd日 HH时mm分ss秒';
-  static String zh_y_mo_d_h_m = 'yyyy年MM月dd日 HH时mm分';
-  static String zh_y_mo_d = 'yyyy年MM月dd日';
-  static String zh_y_mo = 'yyyy年MM月';
-  static String zh_mo_d = 'MM月dd日';
-  static String zh_mo_d_h_m = 'MM月dd日 HH时mm分';
-  static String zh_h_m_s = 'HH时mm分ss秒';
-  static String zh_h_m = 'HH时mm分';
+  static const String zh_full = 'yyyy年MM月dd日 HH时mm分ss秒';
+  static const String zh_y_mo_d_h_m = 'yyyy年MM月dd日 HH时mm分';
+  static const String zh_y_mo_d = 'yyyy年MM月dd日';
+  static const String zh_y_mo = 'yyyy年MM月';
+  static const String zh_mo_d = 'MM月dd日';
+  static const String zh_mo_d_h_m = 'MM月dd日 HH时mm分';
+  static const String zh_h_m_s = 'HH时mm分ss秒';
+  static const String zh_h_m = 'HH时mm分';
+}
+
+class DateStrOption {
+  static const String today = '今天';
+  static const String tomorrow = '明天';
+  static const String thisWeek = "本周";
+  static const String thisMonth = "本月";
 }
 
 /// month->days.
-Map<int, int> MONTH_DAY = {
+const Map<int, int> MONTH_DAY = {
   1: 31,
   2: 28,
   3: 31,
@@ -245,18 +255,22 @@ class DateUtil {
     if (ms == null || ms <= 0) {
       return false;
     }
-    DateTime _old = DateTime.fromMillisecondsSinceEpoch(ms, isUtc: isUtc);
-    DateTime _now;
+    DateTime tempOld = DateTime.fromMillisecondsSinceEpoch(ms, isUtc: isUtc);
+    DateTime tempNow;
     if (locMs != null) {
-      _now = DateUtil.getDateTimeByMs(locMs, isUtc: isUtc);
+      tempNow = DateUtil.getDateTimeByMs(locMs, isUtc: isUtc);
     } else {
-      _now = isUtc ? DateTime.now().toUtc() : DateTime.now().toLocal();
+      tempNow = isUtc ? DateTime.now().toUtc() : DateTime.now().toLocal();
     }
 
     DateTime old =
-        _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _old : _now;
+        tempNow.millisecondsSinceEpoch > tempOld.millisecondsSinceEpoch
+            ? tempOld
+            : tempNow;
     DateTime now =
-        _now.millisecondsSinceEpoch > _old.millisecondsSinceEpoch ? _now : _old;
+        tempNow.millisecondsSinceEpoch > tempOld.millisecondsSinceEpoch
+            ? tempNow
+            : tempOld;
     return (now.weekday >= old.weekday) &&
         (now.millisecondsSinceEpoch - old.millisecondsSinceEpoch <=
             7 * 24 * 60 * 60 * 1000);
@@ -285,5 +299,293 @@ class DateUtil {
   /// 是否是闰年
   static bool isLeapYearByYear(int year) {
     return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+  }
+
+  /// dateStr: DateStrOption
+  /// rangeDate: 能够选中的时间范围 可选参数
+  /// transformDateWith("今天") => [DateTime.now()]
+  static List<DateTime>? transformDateWith(String dateStr,
+      [List<DateTime>? rangeDate]) {
+    final todayDate =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
+    if (rangeDate == null || rangeDate.length != 2) {
+      if (dateStr == DateStrOption.today) {
+        return [todayDate];
+      } else if (dateStr == DateStrOption.tomorrow) {
+        return [todayDate.add(const Duration(days: 1))];
+      } else if (dateStr == DateStrOption.thisWeek) {
+        final week = todayDate.weekday;
+        DateTime startDate, endDate;
+        startDate = todayDate.add(Duration(days: -week + 1));
+        endDate = todayDate.add(Duration(days: 7 - week));
+        return [startDate, endDate];
+      } else if (dateStr == DateStrOption.thisMonth) {
+        final day = todayDate.day;
+        DateTime startDate, endDate;
+        final daysCount = daysInMonth(todayDate.year, todayDate.month);
+        startDate = todayDate.add(Duration(days: -day + 1));
+        endDate = todayDate.add(Duration(days: daysCount - day));
+        return [startDate, endDate];
+      }
+    } else {
+      final limitStartDate =
+          DateTime(rangeDate[0].year, rangeDate[0].month, rangeDate[0].day);
+      final limitEndDate =
+          DateTime(rangeDate[1].year, rangeDate[1].month, rangeDate[1].day);
+
+      if (dateStr == DateStrOption.today) {
+        if (todayDate.difference(limitEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(todayDate).inDays > 0) {
+          return null;
+        }
+
+        return [todayDate];
+      } else if (dateStr == DateStrOption.tomorrow) {
+        final tomorrow = todayDate.add(const Duration(days: 1));
+
+        if (tomorrow.difference(limitEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(tomorrow).inDays > 0) {
+          return null;
+        }
+        return [tomorrow];
+      } else if (dateStr == DateStrOption.thisWeek) {
+        final week = todayDate.weekday;
+        var weekStartDate = todayDate.add(Duration(days: -week + 1));
+        var weekEndDate = todayDate.add(Duration(days: 7 - week));
+
+        DateTime startDate, endDate;
+
+        if (weekStartDate.difference(limitEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(weekEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(weekStartDate).inDays > 0) {
+          startDate = limitStartDate;
+        } else {
+          startDate = weekStartDate;
+        }
+
+        if (limitEndDate.difference(weekEndDate).inDays <= 0) {
+          endDate = limitEndDate;
+        } else {
+          endDate = weekEndDate;
+        }
+
+        return [startDate, endDate];
+      } else if (dateStr == DateStrOption.thisMonth) {
+        final day = todayDate.day;
+        final daysCount = daysInMonth(todayDate.year, todayDate.month);
+        final monthStartDate = todayDate.add(Duration(days: -day + 1));
+        final monthEndDate = todayDate.add(Duration(days: daysCount - day));
+        DateTime startDate, endDate;
+
+        if (monthStartDate.difference(limitEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(monthEndDate).inDays > 0) {
+          return null;
+        }
+
+        if (limitStartDate.difference(monthStartDate).inDays > 0) {
+          startDate = limitStartDate;
+        } else {
+          startDate = monthStartDate;
+        }
+
+        if (limitEndDate.difference(monthEndDate).inDays <= 0) {
+          endDate = limitEndDate;
+        } else {
+          endDate = monthEndDate;
+        }
+
+        return [startDate, endDate];
+      }
+    }
+
+    return null;
+  }
+
+  /// 转换时间为字符串 今天、明天、本周、本月
+  static String transformDateToStrWith(List<DateTime> dateArray,
+      [List<DateTime>? rangeDate]) {
+    final todayDate =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    if (dateArray.length == 1) {
+      final date =
+          DateTime(dateArray[0].year, dateArray[0].month, dateArray[0].day);
+      if (date.difference(todayDate).inDays == 0) {
+        final resultArray = transformDateWith(DateStrOption.today, rangeDate);
+        if (resultArray != null && resultArray.length == 1) {
+          return DateStrOption.today;
+        }
+      }
+      if (date.difference(todayDate).inDays == 1) {
+        final resultArray =
+            transformDateWith(DateStrOption.tomorrow, rangeDate);
+        if (resultArray != null && resultArray.length == 1) {
+          return DateStrOption.tomorrow;
+        }
+      }
+
+      if (date.year != todayDate.year) {
+        return "${date.year}.${date.month}.${date.day}";
+      } else {
+        return "${date.month}.${date.day}";
+      }
+    } else if (dateArray.length == 2) {
+      final startDate =
+          DateTime(dateArray[0].year, dateArray[0].month, dateArray[0].day);
+      final endDate =
+          DateTime(dateArray[1].year, dateArray[1].month, dateArray[1].day);
+      if (endDate.difference(startDate).inDays == 0) {
+        if (endDate.difference(todayDate).inDays == 0) {
+          final resultArray = transformDateWith(DateStrOption.today, rangeDate);
+          if (resultArray != null && resultArray.length == 1) {
+            return DateStrOption.today;
+          }
+        }
+        if (endDate.difference(todayDate).inDays == 1) {
+          final resultArray =
+              transformDateWith(DateStrOption.tomorrow, rangeDate);
+          if (resultArray != null && resultArray.length == 1) {
+            return DateStrOption.tomorrow;
+          }
+        }
+
+        if (endDate.year != todayDate.year) {
+          return "${endDate.year}.${endDate.month}.${endDate.day}";
+        } else {
+          return "${endDate.month}.${endDate.day}";
+        }
+      } else {
+        final weekResultArray =
+            transformDateWith(DateStrOption.thisWeek, rangeDate);
+        if (weekResultArray != null && weekResultArray.length == 2) {
+          final weekStartDate = DateTime(weekResultArray[0].year,
+              weekResultArray[0].month, weekResultArray[0].day);
+          final weekEndDate = DateTime(weekResultArray[1].year,
+              weekResultArray[1].month, weekResultArray[1].day);
+
+          if (weekStartDate.difference(startDate).inDays == 0 &&
+              weekEndDate.difference(endDate).inDays == 0) {
+            return DateStrOption.thisWeek;
+          }
+        }
+
+        final monthResultArray =
+            transformDateWith(DateStrOption.thisMonth, rangeDate);
+        if (monthResultArray != null && monthResultArray.length == 2) {
+          final monthStartDate = DateTime(monthResultArray[0].year,
+              monthResultArray[0].month, monthResultArray[0].day);
+          final monthEndDate = DateTime(monthResultArray[1].year,
+              monthResultArray[1].month, monthResultArray[1].day);
+
+          if (monthStartDate.difference(startDate).inDays == 0 &&
+              monthEndDate.difference(endDate).inDays == 0) {
+            return DateStrOption.thisMonth;
+          }
+        }
+
+        var startDateStr = "${startDate.month}.${startDate.day}";
+        if (startDate.year != todayDate.year) {
+          startDateStr = "${startDate.year}.$startDateStr";
+        }
+
+        var endDateStr = "${endDate.month}.${endDate.day}";
+        if (endDate.year != todayDate.year) {
+          endDateStr = "${endDate.year}.$endDateStr";
+        }
+
+        return "$startDateStr-$endDateStr";
+      }
+    }
+
+    return "";
+  }
+
+  static String transformDateStrToFormate(String dateStr,
+      {String? dateFormat}) {
+    if (dateStr.length <= 0) {
+      return "";
+    }
+
+    DateFormat formate;
+
+    if (dateFormat != null && dateFormat.length > 0) {
+      formate = DateFormat(dateFormat);
+    } else {
+      formate = DateFormat(DateFormats.full);
+    }
+
+    DateTime date = formate.parse(dateStr);
+    DateFormat timeFormat = DateFormat("HH:mm");
+    // 时间字符串
+    final timeStr = timeFormat.format(date);
+
+    final formateDate = DateTime(date.year, date.month, date.day);
+    final formateToday =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    // final formateTomorrow = DateTime(DateTime.now().add(Duration(days: 1)).year, DateTime.now().add(Duration(days: 1)).month, DateTime.now().add(Duration(days: 1)).day);
+
+    //日期字符串
+    var dayStr = "";
+
+    if (formateDate.year == formateToday.year) {
+      if (formateDate.difference(formateToday).inDays <= 6) {
+        dayStr = transformToFormatWeekStr(formateDate);
+      } else if (formateDate.difference(formateToday).inDays == 1) {
+        dayStr = "明天";
+      } else if (formateDate.difference(formateToday).inDays == 0) {
+        dayStr = "今天";
+      }
+    } else {
+      DateFormat tempDateFormat = DateFormat("yy-MM-dd");
+      dayStr = tempDateFormat.format(formateDate);
+    }
+
+    return "$dayStr $timeStr";
+  }
+
+  static String transformToFormatWeekStr(DateTime dateTime) {
+    var weekStr = "";
+
+    switch (dateTime.weekday) {
+      case 1:
+        weekStr = "本周一";
+        break;
+      case 2:
+        weekStr = "本周二";
+        break;
+      case 3:
+        weekStr = "本周三";
+        break;
+      case 4:
+        weekStr = "本周四";
+        break;
+      case 5:
+        weekStr = "本周五";
+        break;
+      case 6:
+        weekStr = "本周六";
+        break;
+      case 7:
+        weekStr = "本周日";
+        break;
+      default:
+        break;
+    }
+    return "";
   }
 }

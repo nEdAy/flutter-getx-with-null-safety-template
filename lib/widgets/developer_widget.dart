@@ -17,8 +17,6 @@ class DeveloperWidget extends StatefulWidget {
 }
 
 class _DeveloperWidgetState extends State<DeveloperWidget> {
-  Offset _offset = const Offset(30, 120);
-
   @override
   Widget build(BuildContext context) {
     if (FlavorConfig.isProduction() && !kDebugMode) {
@@ -28,19 +26,20 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
       textDirection: TextDirection.ltr,
       child: Overlay(
         initialEntries: [
-          OverlayEntry(builder: (_) => widget.child?? const SizedBox.shrink()),
+          OverlayEntry(builder: (_) => widget.child ?? const SizedBox.shrink()),
           OverlayEntry(
             builder: (_) {
+              Offset offset = Offset(context.width * 0.8, context.height * 0.8);
               return Positioned(
-                left: _offset.dx,
-                top: _offset.dy,
+                left: offset.dx,
+                top: offset.dy,
                 child: Draggable(
                   childWhenDragging: Container(),
                   feedback: _developerWidget(),
                   child: _developerWidget(),
                   onDragEnd: (DraggableDetails detail) {
                     setState(() {
-                      _offset = detail.offset;
+                      offset = detail.offset;
                     });
                   },
                 ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 const String prod = 'prod';
-const String dev = 'dev';
+const String pre = 'pre';
 const String uat = 'uat';
+const String sit = 'sit';
 
 const devBaseUrl = "https://international.v1.hitokoto.cn";
 const prodBaseUrl = "https://v1.hitokoto.cn/";
@@ -36,7 +37,9 @@ class FlavorConfig {
 
   static bool isProduction() => _instance.flavor == prod;
 
-  static bool isQA() => _instance.flavor == uat;
+  static bool isPreProduction() => _instance.flavor == pre;
 
-  static bool isDevelopment() => _instance.flavor == dev;
+  static bool isUAT() => _instance.flavor == uat;
+
+  static bool isSIT() => _instance.flavor == sit;
 }

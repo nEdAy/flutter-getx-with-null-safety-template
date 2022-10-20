@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../gen/assets.gen.dart';
 
@@ -21,6 +21,7 @@ class ImageWidget extends StatefulWidget {
   final bool? clearMemoryCacheWhenDispose;
 
   final Widget? loadingWidget;
+  final Widget? emptyWidget;
 
   final GestureTapCallback? onImageTap;
 
@@ -36,6 +37,7 @@ class ImageWidget extends StatefulWidget {
       this.enableMemoryCache,
       this.clearMemoryCacheWhenDispose,
       this.loadingWidget,
+      this.emptyWidget,
       this.onImageTap})
       : super(key: key);
 
@@ -55,10 +57,11 @@ class _ImageWidgetState extends State<ImageWidget> {
     } else if (file != null && file.existsSync() == true) {
       return _fileImage(file);
     } else {
-      return Container(
-          width: widget.width,
-          height: widget.height,
-          color: const Color(0xFFF0F0F0));
+      return widget.emptyWidget ??
+          Container(
+              width: widget.width,
+              height: widget.height,
+              color: const Color(0xFFF0F0F0));
     }
   }
 
@@ -83,7 +86,7 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  _fileImage(File file) {
+  _fileImage(dynamic file) {
     return ExtendedImage.file(
       file,
       width: widget.width,
@@ -132,7 +135,7 @@ class _ImageWidgetState extends State<ImageWidget> {
   }
 
   _failedWidget(ExtendedImageState state) {
-    final ratio = widget.width / Get.width;
+    double ratio = widget.width / 1.sw;
     if (ratio > 0.5) {
       return Container(
         color: const Color(0xFFE7E7E7),
@@ -173,33 +176,34 @@ class _ImageWidgetState extends State<ImageWidget> {
         ),
       );
     } else {
+      ratio = ratio * 2;
       return Container(
         color: const Color(0xFFE7E7E7),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('加载失败',
+            Text('加载失败',
                 style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 16,
+                  color: const Color(0xFF767676),
+                  fontSize: 16 * ratio,
                 )),
-            const SizedBox(height: 8),
+            SizedBox(height: 8 * ratio),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color(0xFFF0F0F0),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
+                  borderRadius: BorderRadius.circular(16.0 * ratio),
                 ),
-                minimumSize: const Size(96, 32),
+                minimumSize: Size(96 * ratio, 32 * ratio),
                 padding: EdgeInsets.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 side: const BorderSide(width: 1, color: Color(0xFFDCDCDC)),
               ),
               onPressed: () => state.reLoadImage(),
-              child: const Text('刷新重试',
+              child: Text('刷新重试',
                   style: TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 14 ,
+                    color: const Color(0xFF767676),
+                    fontSize: 14 * ratio,
                   )),
             ),
           ],

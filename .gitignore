@@ -51,3 +51,6 @@ app.*.map.json
 *.g.dart
 *.gen.dart
 /.fvm/flutter_sdk
+
+
+pubspec.lock

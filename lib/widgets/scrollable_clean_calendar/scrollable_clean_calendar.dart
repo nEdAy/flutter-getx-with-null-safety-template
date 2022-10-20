@@ -1,7 +1,6 @@
 library scrollable_clean_calendar;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -146,9 +145,8 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
             weekdayBuilder: widget.weekdayBuilder,
             textStyle: widget.weekdayTextStyle,
           ),
-          const SizedBox(height: 20),
           SizedBox(
-            height: 400.h,
+            height: 320,
             child: widget.scrollController != null
                 ? listViewCalendar()
                 : scrollablePositionedListCalendar(),

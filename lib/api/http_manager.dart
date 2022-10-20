@@ -52,7 +52,9 @@ class HttpManager {
 
   void _addDioLogger(Dio dio, {bool printResponseBody = true}) {
     dio.interceptors.addAll([
+      // logcat print
       DioLogInterceptor(),
+      // flutter debug console
       PrettyDioLogger(
         requestHeader: true,
         queryParameters: true,
