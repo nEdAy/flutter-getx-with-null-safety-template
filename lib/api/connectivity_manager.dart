@@ -8,7 +8,7 @@ import 'package:logger/logger.dart';
 class ConnectionManagerController extends GetxController {
   final isOnline = false.obs;
   final InternetConnectionChecker _connectivity = InternetConnectionChecker();
-  late StreamSubscription _streamSubscription;
+  late StreamSubscription<InternetConnectionStatus> _streamSubscription;
 
   @override
   void onInit() {

@@ -6,8 +6,10 @@ class RequestTokenInterceptor extends InterceptorsWrapper {
   final String tokenHeader = 'access-token';
 
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final accessToken = UserInfoConfig.getToken();
     final header = <String, String>{tokenHeader: accessToken};
     options.headers.addAll(header);

@@ -24,7 +24,7 @@ class DaysWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
   const DaysWidget({
-    Key? key,
+    super.key,
     required this.month,
     required this.cleanCalendarController,
     required this.calendarCrossAxisSpacing,
@@ -38,7 +38,7 @@ class DaysWidget extends StatelessWidget {
     required this.dayDisableColor,
     required this.radius,
     required this.textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -197,11 +197,12 @@ class CleanCalendarController extends ChangeNotifier {
     final month =
         ((date.year - minDate.year) * 12) - minDate.month + date.month;
     await itemScrollController.scrollTo(
-        index: month,
-        alignment: alignment,
-        duration: duration,
-        curve: curve,
-        opacityAnimationWeights: opacityAnimationWeights);
+      index: month,
+      alignment: alignment,
+      duration: duration,
+      curve: curve,
+      opacityAnimationWeights: opacityAnimationWeights,
+    );
   }
 
   /// Jump to [date.month].

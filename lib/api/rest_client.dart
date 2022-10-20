@@ -10,11 +10,14 @@ part 'rest_client.g.dart';
 abstract class RestClient {
   factory RestClient(Dio dio, {String? baseUrl}) = _RestClient;
 
-  @GET("/")
+  @GET('/')
   Future<HitokotoResponse> getHitokoto(
-      @Query("encode") String encode, @Query("charset") String charset);
+    @Query('encode') String encode,
+    @Query('charset') String charset,
+  );
 
-  @GET("/")
+  @GET('/')
   Future<HttpResponse<BaseResponse<HitokotoResponse>>> getHitokotoHttpResponse(
-      @Queries() Map<String, dynamic> queries);
+    @Queries() Map<String, dynamic> queries,
+  );
 }

@@ -8,7 +8,7 @@ import '../config/flavor.dart';
 class DeveloperWidget extends StatefulWidget {
   final Widget? child;
 
-  const DeveloperWidget({Key? key, required this.child}) : super(key: key);
+  const DeveloperWidget({super.key, required this.child});
 
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +53,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   Widget _developerWidget() {
     return FloatingActionButton(
-      onPressed: () => Get.to(() => HttpLogListWidget()),
+      onPressed: () => Get.to(HttpLogListWidget.new),
       tooltip: 'Dio Log',
       backgroundColor: FlavorConfig.instance.color,
       child: const Icon(Icons.wifi),

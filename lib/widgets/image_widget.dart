@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
@@ -26,7 +28,7 @@ class ImageWidget extends StatefulWidget {
   final GestureTapCallback? onImageTap;
 
   const ImageWidget(
-      {Key? key,
+      {super.key,
       required this.width,
       required this.height,
       this.shape,
@@ -38,8 +40,7 @@ class ImageWidget extends StatefulWidget {
       this.clearMemoryCacheWhenDispose,
       this.loadingWidget,
       this.emptyWidget,
-      this.onImageTap})
-      : super(key: key);
+      this.onImageTap});
 
   @override
   State<StatefulWidget> createState() {
@@ -65,7 +66,7 @@ class _ImageWidgetState extends State<ImageWidget> {
     }
   }
 
-  _networkImage(String imageUrl) {
+  ExtendedImage _networkImage(String imageUrl) {
     return ExtendedImage.network(
       imageUrl,
       width: widget.width,
@@ -86,7 +87,7 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  _fileImage(dynamic file) {
+  ExtendedImage _fileImage(dynamic file) {
     return ExtendedImage.file(
       file,
       width: widget.width,
@@ -106,14 +107,14 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  _loadingWidget() {
+  Widget _loadingWidget() {
     return widget.loadingWidget ??
         Container(
           alignment: Alignment.center,
           color: const Color(0xFFE7E7E7),
           child: const SizedBox(
-            height: 38.0,
-            width: 38.0,
+            height: 38,
+            width: 38,
             child: CircularProgressIndicator(
               color: Colors.white,
               backgroundColor: Color(0xFFAAAAAA),
@@ -124,17 +125,17 @@ class _ImageWidgetState extends State<ImageWidget> {
         );
   }
 
-  _completedWidget(ExtendedImageState state) {
+  GestureDetector _completedWidget(ExtendedImageState state) {
     final onImageTap = widget.onImageTap;
     return GestureDetector(
-        onTap: onImageTap != null ? () => onImageTap() : null,
+        onTap: onImageTap,
         child: ExtendedRawImage(
           image: state.extendedImageInfo?.image,
           fit: BoxFit.fill,
         ));
   }
 
-  _failedWidget(ExtendedImageState state) {
+  Container _failedWidget(ExtendedImageState state) {
     double ratio = widget.width / 1.sw;
     if (ratio > 0.5) {
       return Container(

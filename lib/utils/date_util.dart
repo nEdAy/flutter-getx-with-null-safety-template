@@ -1,5 +1,7 @@
+// ignore_for_file: require_trailing_commas
+
 import 'package:intl/intl.dart';
-import "package:quiver/time.dart";
+import 'package:quiver/time.dart';
 
 class DateRange {
   DateTime? from;
@@ -35,8 +37,8 @@ class DateFormats {
 class DateStrOption {
   static const String today = '今天';
   static const String tomorrow = '明天';
-  static const String thisWeek = "本周";
-  static const String thisMonth = "本月";
+  static const String thisWeek = '本周';
+  static const String thisMonth = '本月';
 }
 
 /// month->days.
@@ -77,7 +79,7 @@ class DateUtil {
 
   /// get DateMilliseconds By DateStr.
   static int? getDateMsByTimeStr(String dateStr, {bool? isUtc}) {
-    DateTime? dateTime = getDateTime(dateStr, isUtc: isUtc);
+    final dateTime = getDateTime(dateStr, isUtc: isUtc);
     return dateTime?.millisecondsSinceEpoch;
   }
 
@@ -112,7 +114,7 @@ class DateUtil {
     if (dateTime == null) return '';
     format = format ?? DateFormats.full;
     if (format.contains('yy')) {
-      String year = dateTime.year.toString();
+      final String year = dateTime.year.toString();
       if (format.contains('yyyy')) {
         format = format.replaceAll('yyyy', year);
       } else {
@@ -152,8 +154,8 @@ class DateUtil {
   /// short
   static String getWeekday(DateTime? dateTime,
       {String languageCode = 'en', bool short = false}) {
-    if (dateTime == null) return "";
-    String weekday = "";
+    if (dateTime == null) return '';
+    String weekday = '';
     switch (dateTime.weekday) {
       case 1:
         weekday = languageCode == 'zh' ? '星期一' : 'Monday';
@@ -187,15 +189,15 @@ class DateUtil {
   /// get WeekDay By Milliseconds.
   static String getWeekdayByMs(int milliseconds,
       {bool isUtc = false, String languageCode = 'en', bool short = false}) {
-    DateTime dateTime = getDateTimeByMs(milliseconds, isUtc: isUtc);
+    final DateTime dateTime = getDateTimeByMs(milliseconds, isUtc: isUtc);
     return getWeekday(dateTime, languageCode: languageCode, short: short);
   }
 
   /// get day of year.
   /// 在今年的第几天.
   static int getDayOfYear(DateTime dateTime) {
-    int year = dateTime.year;
-    int month = dateTime.month;
+    final int year = dateTime.year;
+    final int month = dateTime.month;
     int days = dateTime.day;
     for (int i = 1; i < month; i++) {
       days = days + MONTH_DAY[i]!;
@@ -216,7 +218,7 @@ class DateUtil {
   /// 是否是当天.
   static bool isToday(int? milliseconds, {bool isUtc = false, int? locMs}) {
     if (milliseconds == null || milliseconds == 0) return false;
-    DateTime old =
+    final DateTime old =
         DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
     DateTime now;
     if (locMs != null) {
@@ -231,7 +233,7 @@ class DateUtil {
   /// 是否是昨天.
   static bool isYesterday(DateTime dateTime, DateTime locDateTime) {
     if (yearIsEqual(dateTime, locDateTime)) {
-      int spDay = getDayOfYear(locDateTime) - getDayOfYear(dateTime);
+      final int spDay = getDayOfYear(locDateTime) - getDayOfYear(dateTime);
       return spDay == 1;
     } else {
       return ((locDateTime.year - dateTime.year == 1) &&
@@ -255,7 +257,8 @@ class DateUtil {
     if (ms == null || ms <= 0) {
       return false;
     }
-    DateTime tempOld = DateTime.fromMillisecondsSinceEpoch(ms, isUtc: isUtc);
+    final DateTime tempOld =
+        DateTime.fromMillisecondsSinceEpoch(ms, isUtc: isUtc);
     DateTime tempNow;
     if (locMs != null) {
       tempNow = DateUtil.getDateTimeByMs(locMs, isUtc: isUtc);
@@ -263,11 +266,11 @@ class DateUtil {
       tempNow = isUtc ? DateTime.now().toUtc() : DateTime.now().toLocal();
     }
 
-    DateTime old =
+    final DateTime old =
         tempNow.millisecondsSinceEpoch > tempOld.millisecondsSinceEpoch
             ? tempOld
             : tempNow;
-    DateTime now =
+    final DateTime now =
         tempNow.millisecondsSinceEpoch > tempOld.millisecondsSinceEpoch
             ? tempNow
             : tempOld;
@@ -357,8 +360,8 @@ class DateUtil {
         return [tomorrow];
       } else if (dateStr == DateStrOption.thisWeek) {
         final week = todayDate.weekday;
-        var weekStartDate = todayDate.add(Duration(days: -week + 1));
-        var weekEndDate = todayDate.add(Duration(days: 7 - week));
+        final weekStartDate = todayDate.add(Duration(days: -week + 1));
+        final weekEndDate = todayDate.add(Duration(days: 7 - week));
 
         DateTime startDate, endDate;
 
@@ -440,9 +443,9 @@ class DateUtil {
       }
 
       if (date.year != todayDate.year) {
-        return "${date.year}.${date.month}.${date.day}";
+        return '${date.year}.${date.month}.${date.day}';
       } else {
-        return "${date.month}.${date.day}";
+        return '${date.month}.${date.day}';
       }
     } else if (dateArray.length == 2) {
       final startDate =
@@ -465,9 +468,9 @@ class DateUtil {
         }
 
         if (endDate.year != todayDate.year) {
-          return "${endDate.year}.${endDate.month}.${endDate.day}";
+          return '${endDate.year}.${endDate.month}.${endDate.day}';
         } else {
-          return "${endDate.month}.${endDate.day}";
+          return '${endDate.month}.${endDate.day}';
         }
       } else {
         final weekResultArray =
@@ -498,39 +501,39 @@ class DateUtil {
           }
         }
 
-        var startDateStr = "${startDate.month}.${startDate.day}";
+        var startDateStr = '${startDate.month}.${startDate.day}';
         if (startDate.year != todayDate.year) {
-          startDateStr = "${startDate.year}.$startDateStr";
+          startDateStr = '${startDate.year}.$startDateStr';
         }
 
-        var endDateStr = "${endDate.month}.${endDate.day}";
+        var endDateStr = '${endDate.month}.${endDate.day}';
         if (endDate.year != todayDate.year) {
-          endDateStr = "${endDate.year}.$endDateStr";
+          endDateStr = '${endDate.year}.$endDateStr';
         }
 
-        return "$startDateStr-$endDateStr";
+        return '$startDateStr-$endDateStr';
       }
     }
 
-    return "";
+    return '';
   }
 
   static String transformDateStrToFormate(String dateStr,
       {String? dateFormat}) {
-    if (dateStr.length <= 0) {
-      return "";
+    if (dateStr.isEmpty) {
+      return '';
     }
 
     DateFormat formate;
 
-    if (dateFormat != null && dateFormat.length > 0) {
+    if (dateFormat != null && dateFormat.isNotEmpty) {
       formate = DateFormat(dateFormat);
     } else {
       formate = DateFormat(DateFormats.full);
     }
 
-    DateTime date = formate.parse(dateStr);
-    DateFormat timeFormat = DateFormat("HH:mm");
+    final DateTime date = formate.parse(dateStr);
+    final DateFormat timeFormat = DateFormat('HH:mm');
     // 时间字符串
     final timeStr = timeFormat.format(date);
 
@@ -540,52 +543,52 @@ class DateUtil {
     // final formateTomorrow = DateTime(DateTime.now().add(Duration(days: 1)).year, DateTime.now().add(Duration(days: 1)).month, DateTime.now().add(Duration(days: 1)).day);
 
     //日期字符串
-    var dayStr = "";
+    var dayStr = '';
 
     if (formateDate.year == formateToday.year) {
       if (formateDate.difference(formateToday).inDays <= 6) {
         dayStr = transformToFormatWeekStr(formateDate);
       } else if (formateDate.difference(formateToday).inDays == 1) {
-        dayStr = "明天";
+        dayStr = '明天';
       } else if (formateDate.difference(formateToday).inDays == 0) {
-        dayStr = "今天";
+        dayStr = '今天';
       }
     } else {
-      DateFormat tempDateFormat = DateFormat("yy-MM-dd");
+      final DateFormat tempDateFormat = DateFormat('yy-MM-dd');
       dayStr = tempDateFormat.format(formateDate);
     }
 
-    return "$dayStr $timeStr";
+    return '$dayStr $timeStr';
   }
 
   static String transformToFormatWeekStr(DateTime dateTime) {
-    var weekStr = "";
+    var weekStr = '';
 
     switch (dateTime.weekday) {
       case 1:
-        weekStr = "本周一";
+        weekStr = '本周一';
         break;
       case 2:
-        weekStr = "本周二";
+        weekStr = '本周二';
         break;
       case 3:
-        weekStr = "本周三";
+        weekStr = '本周三';
         break;
       case 4:
-        weekStr = "本周四";
+        weekStr = '本周四';
         break;
       case 5:
-        weekStr = "本周五";
+        weekStr = '本周五';
         break;
       case 6:
-        weekStr = "本周六";
+        weekStr = '本周六';
         break;
       case 7:
-        weekStr = "本周日";
+        weekStr = '本周日';
         break;
       default:
         break;
     }
-    return "";
+    return '';
   }
 }

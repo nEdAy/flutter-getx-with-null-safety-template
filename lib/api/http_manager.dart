@@ -33,13 +33,14 @@ class HttpManager {
 
   BaseOptions _createBaseOptions() {
     return BaseOptions(
-        connectTimeout: connectTimeout,
-        receiveTimeout: receiveTimeout,
-        baseUrl: FlavorConfig.instance.values.baseUrl,
-        headers: _optHeader,
-        validateStatus: (status) {
-          return status != null && status < 500;
-        });
+      connectTimeout: connectTimeout,
+      receiveTimeout: receiveTimeout,
+      baseUrl: FlavorConfig.instance.values.baseUrl,
+      headers: _optHeader,
+      validateStatus: (status) {
+        return status != null && status < 500;
+      },
+    );
   }
 
   void _addInterceptorsConfig(Dio dio) {
@@ -61,10 +62,7 @@ class HttpManager {
         requestBody: true,
         responseHeader: true,
         responseBody: printResponseBody,
-        error: true,
-        showProcessingTime: true,
         showCUrl: true,
-        convertFormData: false,
         canShowLog: kDebugMode,
       )
     ]);

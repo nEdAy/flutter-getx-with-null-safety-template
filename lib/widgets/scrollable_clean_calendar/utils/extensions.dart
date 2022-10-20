@@ -1,20 +1,18 @@
 extension StringExtension on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${substring(1)}";
+    return '${this[0].toUpperCase()}${substring(1)}';
   }
 }
 
 extension DateUtilsExtensions on DateTime {
   bool get isLeapYear {
-    bool leapYear = false;
-
-    bool leap = ((year % 100 == 0) && (year % 400 != 0));
+    const leapYear = false;
+    final leap = (year % 100 == 0) && (year % 400 != 0);
     if (leap == true) {
       return false;
     } else if (year % 4 == 0) {
       return true;
     }
-
     return leapYear;
   }
 

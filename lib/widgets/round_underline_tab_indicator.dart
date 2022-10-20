@@ -18,7 +18,7 @@ class RoundUnderlineTabIndicator extends Decoration {
   ///
   /// The [borderSide] and [insets] arguments must not be null.
   const RoundUnderlineTabIndicator({
-    this.borderSide = const BorderSide(width: 2.0, color: Colors.white),
+    this.borderSide = const BorderSide(width: 2, color: Colors.white),
     this.insets = EdgeInsets.zero,
     this.width = 0.0,
   });
@@ -64,10 +64,14 @@ class RoundUnderlineTabIndicator extends Decoration {
   }
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    final Rect indicator = insets.resolve(textDirection).deflateRect(rect);
-    double w = (indicator.left + indicator.right) / 2;
-    return Rect.fromLTWH(w - width / 2, indicator.bottom - borderSide.width,
-        width, borderSide.width);
+    final indicator = insets.resolve(textDirection).deflateRect(rect);
+    final w = (indicator.left + indicator.right) / 2;
+    return Rect.fromLTWH(
+      w - width / 2,
+      indicator.bottom - borderSide.width,
+      width,
+      borderSide.width,
+    );
   }
 
   @override
@@ -85,13 +89,12 @@ class _UnderlinePainter extends BoxPainter {
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
-    final Rect rect = offset & configuration.size!;
-    final TextDirection textDirection = configuration.textDirection!;
-    final Rect indicator = decoration
+    final rect = offset & configuration.size!;
+    final textDirection = configuration.textDirection!;
+    final indicator = decoration
         ._indicatorRectFor(rect, textDirection)
         .deflate(decoration.borderSide.width / 2.0);
-    final Paint paint = decoration.borderSide.toPaint()
-      ..strokeCap = StrokeCap.square;
+    final paint = decoration.borderSide.toPaint()..strokeCap = StrokeCap.square;
     canvas.drawLine(indicator.bottomLeft, indicator.bottomRight, paint);
   }
 }
