@@ -16,6 +16,8 @@ class BackToNativeChannel {
       await _channel.invokeMethod(_backToNative, arguments);
     } on PlatformException catch (e) {
       Logger().e(e);
+    } on MissingPluginException catch (e) {
+      Logger().e(e);
     }
   }
 }

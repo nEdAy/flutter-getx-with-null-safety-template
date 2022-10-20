@@ -1,27 +1,23 @@
-class UserInfoValues {
-  final String token;
-  final String memberId;
-
-  UserInfoValues({required this.token, required this.memberId});
-}
+import '../store/user_info.dart';
 
 class UserInfoConfig {
-  final UserInfoValues values;
+  final UserInfo userInfo;
   static late UserInfoConfig _instance;
 
   factory UserInfoConfig({
-    required UserInfoValues values,
+    required UserInfo userInfo,
   }) {
-    _instance = UserInfoConfig._internal(values);
+    _instance = UserInfoConfig._internal(userInfo);
     return _instance;
   }
 
-  UserInfoConfig._internal(this.values);
+  UserInfoConfig._internal(this.userInfo);
 
   static UserInfoConfig get instance {
     return _instance;
   }
 
-  static String getToken() => _instance.values.token;
-  static String getMemberId() => _instance.values.memberId;
+  static String getToken() => _instance.userInfo.token;
+
+  static String getMemberId() => _instance.userInfo.memberId;
 }

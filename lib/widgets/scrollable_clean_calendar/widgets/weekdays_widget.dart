@@ -25,24 +25,27 @@ class WeekdaysWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!showWeekdays) return const SizedBox.shrink();
-    return GridView.count(
-      crossAxisCount: DateTime.daysPerWeek,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.zero,
-      children: List.generate(DateTime.daysPerWeek, (index) {
-        String weekDay = cleanCalendarController.getDaysOfWeek(locale)[index];
-        if (locale == 'zh' && weekDay.length == 2) {
-          weekDay = weekDay.substring(1, 2);
-        }
-        if (weekdayBuilder != null) {
-          return weekdayBuilder!(context, weekDay);
-        }
-        return <Layout, Widget Function()>{
-          Layout.DEFAULT: () => _pattern(context, weekDay),
-          Layout.BEAUTY: () => _beauty(context, weekDay)
-        }[layout]!();
-      }),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 44),
+      child: GridView.count(
+        crossAxisCount: DateTime.daysPerWeek,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        children: List.generate(DateTime.daysPerWeek, (index) {
+          String weekDay = cleanCalendarController.getDaysOfWeek(locale)[index];
+          if (locale == 'zh' && weekDay.length == 2) {
+            weekDay = weekDay.substring(1, 2);
+          }
+          if (weekdayBuilder != null) {
+            return weekdayBuilder!(context, weekDay);
+          }
+          return <Layout, Widget Function()>{
+            Layout.DEFAULT: () => _pattern(context, weekDay),
+            Layout.BEAUTY: () => _beauty(context, weekDay)
+          }[layout]!();
+        }),
+      ),
     );
   }
 

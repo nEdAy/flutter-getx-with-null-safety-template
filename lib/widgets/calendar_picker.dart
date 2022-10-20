@@ -40,7 +40,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
           child: Text(
             widget.label,
             style: const TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         GestureDetector(
@@ -92,7 +92,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
     Get.bottomSheet(
       Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
+        // mainAxisAlignment: MainAxisAlignment.end,
         children: [
           _buildLabelWidget(label),
           _buildScrollableCleanCalendar(calendarController),
@@ -120,7 +120,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
           Text(
             label,
             style: const TextStyle(
-                color: Colors.black, fontSize: 22, fontWeight: FontWeight.w500),
+                color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
           ),
           IconButton(
             onPressed: () => Get.back(),
@@ -156,7 +156,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
               '重置',
               style: TextStyle(
                   color: Color(0xFF767676),
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
           ),
@@ -176,7 +176,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -191,13 +191,15 @@ class _CalendarPickerState extends State<CalendarPicker> {
       layout: Layout.BEAUTY,
       monthTextAlign: TextAlign.start,
       monthTextStyle: const TextStyle(
-          color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+          color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
       weekdayTextStyle: const TextStyle(
-          color: Color(0xFF434343), fontSize: 14, fontWeight: FontWeight.w400),
+          color: Color(0xFF434343),
+          fontSize: 14,
+          fontWeight: FontWeight.normal),
       daySelectedBackgroundColor: const Color(0xFFFFA20C),
       daySelectedBackgroundColorBetween: const Color(0xFFFFEBCE),
       dayTextStyle: const TextStyle(
-          color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+          color: Colors.black, fontSize: 16, fontWeight: FontWeight.normal),
       dayDisableBackgroundColor: const Color(0xFFAAAAAA),
       spaceBetweenCalendars: 20,
       spaceBetweenMonthAndCalendar: 20,

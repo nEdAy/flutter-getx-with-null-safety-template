@@ -139,6 +139,20 @@ class CleanCalendarController extends ChangeNotifier {
     }
   }
 
+  /// 选中日期
+  void selectDate(DateTime date) {
+    rangeMinDate = date;
+    rangeMaxDate = date;
+    notifyListeners();
+  }
+
+  /// 选中日期范围
+  void selectDateRange(DateTime startDate, DateTime endDate) {
+    rangeMinDate = startDate;
+    rangeMaxDate = endDate;
+    notifyListeners();
+  }
+
   void clearSelectedDates() {
     rangeMaxDate = null;
     rangeMinDate = null;

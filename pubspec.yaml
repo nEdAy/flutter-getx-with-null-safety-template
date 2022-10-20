@@ -22,42 +22,52 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
+
+isar_version: &isar_version ^3.0.2
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: ^0.17.0
   # GetX
   get: ^4.6.5
   # HTTP client
   dio: ^4.0.6
   # HTTP client generator
-  retrofit: ^3.0.1+1
+  retrofit: ^3.3.1
   # HTTP client Log
-  flutter_pretty_dio_logger: ^2.0.2
+  flutter_pretty_dio_logger: ^2.0.3
   # Dio network inspector
   dio_log : ^2.0.4
   # Json generation
-  json_annotation: ^4.6.0
+  json_annotation: ^4.7.0
   # Log
   logger: ^1.1.0
   # Loading/Toast/Notification
   bot_toast: ^4.0.3
   # Sentry
-  sentry: ^6.9.1
+  sentry: ^6.11.2
   # Pull to Refresh
   pull_to_refresh:
     git:
       url: https://github.com/miquelbeltran/flutter_pulltorefresh
       ref: 6d7fbdd
   # Extended Image
-  extended_image: ^6.2.1
+  extended_image: ^6.3.0
   # Screen Util
   flutter_screenutil: ^5.5.3+2
   # Scrollable Positioned List
-  scrollable_positioned_list: ^0.3.2
+  scrollable_positioned_list: ^0.3.5
+  # Fully async NoSQL database
+  isar: *isar_version
+  isar_flutter_libs: *isar_version # contains Isar Core
+  # Network Connectivity
+  internet_connection_checker: ^1.0.0+1
+  # Device Preview
+  device_preview: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -70,11 +80,13 @@ dev_dependencies:
   # Build Runner
   build_runner: ^2.2.0
   # Flutter gen runner
-  flutter_gen_runner: ^4.3.0
+  flutter_gen_runner: ^5.0.1
   # HTTP client generator
-  retrofit_generator: ^4.0.3+1
+  retrofit_generator: ^4.2.0
   # Json serializable
-  json_serializable: ^6.3.1
+  json_serializable: ^6.5.2
+  # Fully async NoSQL database
+  isar_generator: *isar_version
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

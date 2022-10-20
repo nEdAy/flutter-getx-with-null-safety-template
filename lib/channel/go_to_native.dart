@@ -14,6 +14,8 @@ class GoToNativeChannel {
       await _channel.invokeMethod(_goToNative);
     } on PlatformException catch (e) {
       Logger().e(e);
+    } on MissingPluginException catch (e) {
+      Logger().e(e);
     }
   }
 }

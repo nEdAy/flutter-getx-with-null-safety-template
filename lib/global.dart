@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_template/store/store_manager.dart';
+import 'package:flutter_template/store/user_info.dart';
 import 'package:get/get.dart';
+import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 
-import 'channel/get_flavor_info.dart';
-import 'channel/get_user_info.dart';
 import 'config/flavor.dart';
 import 'config/user_info.dart';
 
@@ -40,9 +41,19 @@ class Global {
 
     /// 这里是你放get_storage、hive、shared_pref初始化的地方。
     /// 或者moor连接，或者其他什么异步的东西。
+    await Get.putAsync(() => StoreService().init());
     await Get.putAsync(() => FlavorService().init());
     await Get.putAsync(() => UserInfoService().init());
+
     Logger().i('All services started...');
+  }
+}
+
+class StoreService extends GetxService {
+  Future<StoreService> init() async {
+    final isar = await Isar.open([UserInfoSchema]);
+    StoreManager(isar: isar);
+    return this;
   }
 }
 
@@ -59,9 +70,20 @@ class FlavorService extends GetxService {
 class UserInfoService extends GetxService {
   Future<UserInfoService> init() async {
     final userInfoMap = {}; // await GetUserInfo.getUserInfo();
-    final token = userInfoMap?['accessToken'] ?? '';
-    final memberId = userInfoMap?['memberId'] ?? '';
-    UserInfoConfig(values: UserInfoValues(token: token, memberId: memberId));
+    String token = '';
+    String memberId = '';
+    if (userInfoMap != null) {
+      token = userInfoMap['accessToken'] ?? '';
+      memberId = userInfoMap['memberId'] ?? '';
+    } else {
+      UserInfo? userInfo = StoreManager.instance.getUserInfoSync();
+      if (userInfo != null) {
+        token = userInfo.token;
+        memberId = userInfo.memberId;
+      }
+    }
+    final userInfo = UserInfo(token: token, memberId: memberId);
+    UserInfoConfig(userInfo: userInfo);
     return this;
   }
 }

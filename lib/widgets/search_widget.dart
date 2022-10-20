@@ -10,6 +10,7 @@ class SearchWidget extends StatefulWidget {
   final ValueChanged<String>? onSearchInputSubmitted;
   final GestureTapCallback onClearTap;
   final Widget? prefix;
+  final bool? autofocus;
 
   const SearchWidget(
       {Key? key,
@@ -18,6 +19,7 @@ class SearchWidget extends StatefulWidget {
       this.onSearchInputChanged,
       this.onSearchInputSubmitted,
       this.prefix,
+      this.autofocus,
       required this.onClearTap})
       : super(key: key);
 
@@ -43,13 +45,13 @@ class _SearchWidgetState extends State<SearchWidget> {
       color: Colors.white,
       child: TextField(
         controller: widget.searchController,
-        autofocus: true,
+        autofocus: widget.autofocus ?? false,
         focusNode: _focusNode,
         maxLines: 1,
         style: const TextStyle(
           color: Color(0xFF434343),
           fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           textBaseline: TextBaseline.alphabetic,
         ),
         textAlignVertical: TextAlignVertical.bottom,
@@ -90,7 +92,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           hintStyle: const TextStyle(
             color: Color(0xFF767676),
             fontSize: 16,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.normal,
             textBaseline: TextBaseline.alphabetic,
           ),
           hintMaxLines: 1,
