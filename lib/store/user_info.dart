@@ -6,12 +6,16 @@ part 'user_info.g.dart';
 class UserInfo {
   UserInfo({
     this.id,
-    required this.token,
-    required this.memberId,
+    this.oaAccount,
+    this.password,
+    this.token,
+    this.memberId,
   });
 
   Id? id;
 
-  String token;
-  String memberId;
+  String? oaAccount;
+  String? password;
+  String? token;
+  String? memberId;
 }

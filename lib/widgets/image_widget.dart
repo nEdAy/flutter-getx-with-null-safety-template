@@ -71,6 +71,7 @@ class _ImageWidgetState extends State<ImageWidget> {
       imageUrl,
       width: widget.width,
       height: widget.height,
+      fit: BoxFit.cover,
       headers: widget.headers,
       shape: widget.shape ?? BoxShape.rectangle,
       borderRadius: widget.borderRadius,
@@ -92,6 +93,7 @@ class _ImageWidgetState extends State<ImageWidget> {
       file,
       width: widget.width,
       height: widget.height,
+      fit: BoxFit.cover,
       enableMemoryCache: widget.enableMemoryCache ?? false,
       clearMemoryCacheWhenDispose: widget.clearMemoryCacheWhenDispose ?? true,
       loadStateChanged: (ExtendedImageState state) {

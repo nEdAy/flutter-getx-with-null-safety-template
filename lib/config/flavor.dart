@@ -9,17 +9,12 @@ const devBaseUrl = 'https://international.v1.hitokoto.cn';
 const prodBaseUrl = 'https://v1.hitokoto.cn/';
 
 class FlavorValues {
-  final String baseUrl;
-
   FlavorValues({required this.baseUrl});
+
+  final String baseUrl;
 }
 
 class FlavorConfig {
-  final String flavor;
-  final Color color;
-  final FlavorValues values;
-  static late FlavorConfig _instance;
-
   factory FlavorConfig({
     required String flavor,
     required FlavorValues values,
@@ -30,6 +25,11 @@ class FlavorConfig {
   }
 
   FlavorConfig._internal(this.flavor, this.values, this.color);
+
+  final String flavor;
+  final Color color;
+  final FlavorValues values;
+  static late FlavorConfig _instance;
 
   static FlavorConfig get instance {
     return _instance;

@@ -441,7 +441,6 @@ class DateUtil {
           return DateStrOption.tomorrow;
         }
       }
-
       if (date.year != todayDate.year) {
         return '${date.year}.${date.month}.${date.day}';
       } else {
@@ -466,7 +465,6 @@ class DateUtil {
             return DateStrOption.tomorrow;
           }
         }
-
         if (endDate.year != todayDate.year) {
           return '${endDate.year}.${endDate.month}.${endDate.day}';
         } else {
@@ -486,7 +484,6 @@ class DateUtil {
             return DateStrOption.thisWeek;
           }
         }
-
         final monthResultArray =
             transformDateWith(DateStrOption.thisMonth, rangeDate);
         if (monthResultArray != null && monthResultArray.length == 2) {
@@ -500,70 +497,60 @@ class DateUtil {
             return DateStrOption.thisMonth;
           }
         }
-
         var startDateStr = '${startDate.month}.${startDate.day}';
         if (startDate.year != todayDate.year) {
           startDateStr = '${startDate.year}.$startDateStr';
         }
-
         var endDateStr = '${endDate.month}.${endDate.day}';
         if (endDate.year != todayDate.year) {
           endDateStr = '${endDate.year}.$endDateStr';
         }
-
         return '$startDateStr-$endDateStr';
       }
     }
-
     return '';
   }
 
-  static String transformDateStrToFormate(String dateStr,
-      {String? dateFormat}) {
+  static String transformDateStrToFormat(String dateStr, {String? dateFormat}) {
     if (dateStr.isEmpty) {
       return '';
     }
-
-    DateFormat formate;
-
+    DateFormat format;
     if (dateFormat != null && dateFormat.isNotEmpty) {
-      formate = DateFormat(dateFormat);
+      format = DateFormat(dateFormat);
     } else {
-      formate = DateFormat(DateFormats.full);
+      format = DateFormat(DateFormats.full);
     }
-
-    final DateTime date = formate.parse(dateStr);
+    final DateTime date = format.parse(dateStr);
     final DateFormat timeFormat = DateFormat('HH:mm');
     // 时间字符串
     final timeStr = timeFormat.format(date);
-
-    final formateDate = DateTime(date.year, date.month, date.day);
-    final formateToday =
+    final formatDate = DateTime(date.year, date.month, date.day);
+    final formatToday =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    // final formateTomorrow = DateTime(DateTime.now().add(Duration(days: 1)).year, DateTime.now().add(Duration(days: 1)).month, DateTime.now().add(Duration(days: 1)).day);
-
-    //日期字符串
+    // 日期字符串
     var dayStr = '';
-
-    if (formateDate.year == formateToday.year) {
-      if (formateDate.difference(formateToday).inDays <= 6) {
-        dayStr = transformToFormatWeekStr(formateDate);
-      } else if (formateDate.difference(formateToday).inDays == 1) {
+    if (formatDate.year == formatToday.year) {
+      final DateFormat tempDateFormat = DateFormat('MM-dd');
+      dayStr = tempDateFormat.format(formatDate);
+      if (formatDate.difference(formatToday).inDays <= 6) {
+        dayStr = transformToFormatWeekStr(formatDate);
+      }
+      if (formatDate.difference(formatToday).inDays == 1) {
         dayStr = '明天';
-      } else if (formateDate.difference(formateToday).inDays == 0) {
+      }
+      if (formatDate.difference(formatToday).inDays == 0) {
         dayStr = '今天';
       }
     } else {
       final DateFormat tempDateFormat = DateFormat('yy-MM-dd');
-      dayStr = tempDateFormat.format(formateDate);
+      dayStr = tempDateFormat.format(formatDate);
     }
-
     return '$dayStr $timeStr';
   }
 
   static String transformToFormatWeekStr(DateTime dateTime) {
     var weekStr = '';
-
     switch (dateTime.weekday) {
       case 1:
         weekStr = '本周一';
@@ -589,6 +576,6 @@ class DateUtil {
       default:
         break;
     }
-    return '';
+    return weekStr;
   }
 }

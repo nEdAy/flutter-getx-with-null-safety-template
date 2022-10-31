@@ -5,6 +5,9 @@ abstract class Routes {
 
   static const home = _Paths.home;
   static const notFound = _Paths.notFound;
+
+  static const image = _Paths.image;
+  static const login = _Paths.login;
 }
 
 abstract class _Paths {
@@ -12,4 +15,7 @@ abstract class _Paths {
 
   static const home = '/home';
   static const notFound = '/unknown';
+
+  static const image = '/image';
+  static const login = '/login';
 }

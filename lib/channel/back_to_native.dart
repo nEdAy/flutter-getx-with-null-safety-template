@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import '../config/flavor.dart';
+import '../routes/app_pages.dart';
 import 'channel_keys.dart';
 
 class BackToNativeChannel {
@@ -20,8 +22,15 @@ class BackToNativeChannel {
       Logger().e(e);
     } on MissingPluginException catch (e) {
       Logger().e(e);
-      if (FlavorConfig.isUAT() && kDebugMode) {
-        // await Get.offAllNamed(Routes.login, arguments: Get.currentRoute);
+      final currentRoute = Get.currentRoute;
+      if (FlavorConfig.isUAT() && kDebugMode && currentRoute != Routes.login) {
+        await Get.offAndToNamed(
+          Routes.login,
+          arguments: {
+            'route': Get.currentRoute,
+            'arguments': Get.arguments,
+          },
+        );
       }
     }
   }

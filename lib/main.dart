@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,13 +32,19 @@ void main() {
     await Global.init().then(
       (e) => runApp(
         DevicePreview(
+          enabled: kDebugMode,
           builder: (context) => const MyApp(),
-        ), // Wrap your app
+        ),
       ),
     );
   }, (exception, stackTrace) async {
     await Sentry.captureException(exception, stackTrace: stackTrace);
-  });
+  }, zoneSpecification: ZoneSpecification(
+      print: (Zone self, ZoneDelegate parent, Zone zone, String message) {
+    if (kDebugMode) {
+      parent.print(zone, message);
+    }
+  }));
 }
 
 class MyApp extends StatelessWidget {

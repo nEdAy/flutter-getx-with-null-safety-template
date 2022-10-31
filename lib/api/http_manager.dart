@@ -52,8 +52,9 @@ class HttpManager {
   }
 
   void _addDioLogger(Dio dio, {bool printResponseBody = true}) {
+    DioLogInterceptor.enablePrintLog = false;
     dio.interceptors.addAll([
-      // logcat print
+      // logcat print (enablePrintLog = false)
       DioLogInterceptor(),
       // flutter debug console
       PrettyDioLogger(

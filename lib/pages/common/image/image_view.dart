@@ -120,6 +120,8 @@ class ImageView extends GetView<ImageController> {
 
   GestureConfig _buildGestureConfig() {
     return GestureConfig(
+      // you must set inPageView true if you want to use ExtendedImageGesturePageView
+      inPageView: true,
       minScale: 0.9,
       animationMinScale: 0.7,
       maxScale: 4,

@@ -1,6 +1,7 @@
 import 'package:dio_log/http_log_list_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../config/flavor.dart';
@@ -17,6 +18,8 @@ class DeveloperWidget extends StatefulWidget {
 }
 
 class _DeveloperWidgetState extends State<DeveloperWidget> {
+  Offset offset = Offset(1.sw * 0.8, 1.sh * 0.8);
+
   @override
   Widget build(BuildContext context) {
     if (FlavorConfig.isProduction() && !kDebugMode) {
@@ -29,7 +32,6 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
           OverlayEntry(builder: (_) => widget.child ?? const SizedBox.shrink()),
           OverlayEntry(
             builder: (_) {
-              Offset offset = Offset(context.width * 0.8, context.height * 0.8);
               return Positioned(
                 left: offset.dx,
                 top: offset.dy,

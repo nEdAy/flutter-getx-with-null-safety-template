@@ -39,7 +39,8 @@ showCenterToast(
               : const SizedBox.shrink(),
           Text(
             text,
-            maxLines: 1,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Colors.white,

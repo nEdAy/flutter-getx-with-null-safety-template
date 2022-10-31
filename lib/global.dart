@@ -9,14 +9,12 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 
+import 'channel/get_user_info.dart';
 import 'config/flavor.dart';
 import 'config/user_info.dart';
 
 /// 全局配置
 class Global {
-  /// 是否 release
-  static bool get isRelease => const bool.fromEnvironment('dart.vm.product');
-
   /// init
   static Future<dynamic> init() async {
     // 确保初始化
@@ -69,20 +67,30 @@ class FlavorService extends GetxService {
 
 class UserInfoService extends GetxService {
   Future<UserInfoService> init() async {
-    final userInfoMap = {}; // await GetUserInfo.getUserInfo();
+    final userInfoMap = await GetUserInfo.getUserInfo();
+    var oaAccount = '';
+    String? password;
     var token = '';
     var memberId = '';
     if (userInfoMap != null) {
       token = userInfoMap['accessToken'] ?? '';
       memberId = userInfoMap['memberId'] ?? '';
+      oaAccount = userInfoMap['oaAccount'] ?? '';
     } else {
       final userInfo = StoreManager.instance.getUserInfoSync();
       if (userInfo != null) {
-        token = userInfo.token;
-        memberId = userInfo.memberId;
+        oaAccount = userInfo.oaAccount ?? '';
+        password = userInfo.password;
+        token = userInfo.token ?? '';
+        memberId = userInfo.memberId ?? '';
       }
     }
-    final userInfo = UserInfo(token: token, memberId: memberId);
+    final userInfo = UserInfo(
+      oaAccount: oaAccount,
+      password: password,
+      token: token,
+      memberId: memberId,
+    );
     UserInfoConfig(userInfo: userInfo);
     return this;
   }
