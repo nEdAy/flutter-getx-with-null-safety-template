@@ -75,6 +75,9 @@ class _ImageWidgetState extends State<ImageWidget> {
       headers: widget.headers,
       shape: widget.shape ?? BoxShape.rectangle,
       borderRadius: widget.borderRadius,
+      cache: widget.enableMemoryCache ?? true,
+      enableMemoryCache: widget.enableMemoryCache ?? true,
+      clearMemoryCacheWhenDispose: widget.clearMemoryCacheWhenDispose ?? false,
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:

@@ -7,7 +7,7 @@ class LoginBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<LoginController>(
-      () => LoginController(client: HttpManager().client),
+          () => LoginController(client: HttpManager().client),
     );
   }
 }

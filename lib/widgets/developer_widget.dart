@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio_log/http_log_list_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../config/flavor.dart';
+import 'watermark_widget.dart';
 
 class DeveloperWidget extends StatefulWidget {
   final Widget? child;
@@ -48,6 +50,9 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
               );
             },
           ),
+          OverlayEntry(
+            builder: (context) => const WatermarkWidget(),
+          ),
         ],
       ),
     );
@@ -55,7 +60,10 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   Widget _developerWidget() {
     return FloatingActionButton(
-      onPressed: () => Get.to(HttpLogListWidget.new),
+      onPressed: () {
+        BotToast.closeAllLoading();
+        Get.to(HttpLogListWidget.new);
+      },
       tooltip: 'Dio Log',
       backgroundColor: FlavorConfig.instance.color,
       child: const Icon(Icons.wifi),

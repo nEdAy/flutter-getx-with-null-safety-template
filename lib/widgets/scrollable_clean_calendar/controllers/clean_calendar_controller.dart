@@ -92,7 +92,6 @@ class CleanCalendarController extends ChangeNotifier {
 
   List<String> getDaysOfWeek([String locale = 'pt']) {
     var today = DateTime.now();
-
     while (today.weekday != weekdayStart) {
       today = today.subtract(const Duration(days: 1));
     }
@@ -106,7 +105,6 @@ class CleanCalendarController extends ChangeNotifier {
       dateFormat.format(today.add(const Duration(days: 5))),
       dateFormat.format(today.add(const Duration(days: 6)))
     ];
-
     return daysOfWeek;
   }
 
@@ -125,14 +123,11 @@ class CleanCalendarController extends ChangeNotifier {
       rangeMinDate = date;
       rangeMaxDate = date;
     }
-
     if (update) {
       notifyListeners();
-
       if (onDayTapped != null) {
         onDayTapped!(date);
       }
-
       if (onRangeSelected != null) {
         onRangeSelected!(rangeMinDate!, rangeMaxDate);
       }
