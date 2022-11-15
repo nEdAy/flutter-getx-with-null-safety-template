@@ -8,6 +8,8 @@ class UserInfo {
     this.id,
     this.oaAccount,
     this.password,
+    this.userName,
+    this.loginPhone,
     this.token,
     this.memberId,
   });
@@ -16,6 +18,8 @@ class UserInfo {
 
   String? oaAccount;
   String? password;
+  String? userName;
+  String? loginPhone;
   String? token;
   String? memberId;
 }

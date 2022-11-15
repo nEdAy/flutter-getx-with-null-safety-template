@@ -6,7 +6,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:logger/logger.dart';
 
 class ConnectionManagerController extends GetxController {
-  final isOnline = false.obs;
+  final isOnline = true.obs;
   final InternetConnectionChecker _connectivity = InternetConnectionChecker();
   late StreamSubscription<InternetConnectionStatus> _streamSubscription;
 

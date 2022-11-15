@@ -20,6 +20,7 @@ class DateFormats {
   static const String y_mo_d = 'yyyy-MM-dd';
   static const String y_mo = 'yyyy-MM';
   static const String mo_d = 'MM-dd';
+  static const String m_d = 'MM.dd';
   static const String mo_d_h_m = 'MM-dd HH:mm';
   static const String h_m_s = 'HH:mm:ss';
   static const String h_m = 'HH:mm';
@@ -309,9 +310,8 @@ class DateUtil {
   /// transformDateWith("今天") => [DateTime.now()]
   static List<DateTime>? transformDateWith(String dateStr,
       [List<DateTime>? rangeDate]) {
-    final todayDate =
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-
+    final today = DateTime.now();
+    final todayDate = DateTime(today.year, today.month, today.day);
     if (rangeDate == null || rangeDate.length != 2) {
       if (dateStr == DateStrOption.today) {
         return [todayDate];
@@ -336,24 +336,19 @@ class DateUtil {
           DateTime(rangeDate[0].year, rangeDate[0].month, rangeDate[0].day);
       final limitEndDate =
           DateTime(rangeDate[1].year, rangeDate[1].month, rangeDate[1].day);
-
       if (dateStr == DateStrOption.today) {
         if (todayDate.difference(limitEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(todayDate).inDays > 0) {
           return null;
         }
-
         return [todayDate];
       } else if (dateStr == DateStrOption.tomorrow) {
         final tomorrow = todayDate.add(const Duration(days: 1));
-
         if (tomorrow.difference(limitEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(tomorrow).inDays > 0) {
           return null;
         }
@@ -362,29 +357,23 @@ class DateUtil {
         final week = todayDate.weekday;
         final weekStartDate = todayDate.add(Duration(days: -week + 1));
         final weekEndDate = todayDate.add(Duration(days: 7 - week));
-
         DateTime startDate, endDate;
-
         if (weekStartDate.difference(limitEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(weekEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(weekStartDate).inDays > 0) {
           startDate = limitStartDate;
         } else {
           startDate = weekStartDate;
         }
-
         if (limitEndDate.difference(weekEndDate).inDays <= 0) {
           endDate = limitEndDate;
         } else {
           endDate = weekEndDate;
         }
-
         return [startDate, endDate];
       } else if (dateStr == DateStrOption.thisMonth) {
         final day = todayDate.day;
@@ -392,31 +381,25 @@ class DateUtil {
         final monthStartDate = todayDate.add(Duration(days: -day + 1));
         final monthEndDate = todayDate.add(Duration(days: daysCount - day));
         DateTime startDate, endDate;
-
         if (monthStartDate.difference(limitEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(monthEndDate).inDays > 0) {
           return null;
         }
-
         if (limitStartDate.difference(monthStartDate).inDays > 0) {
           startDate = limitStartDate;
         } else {
           startDate = monthStartDate;
         }
-
         if (limitEndDate.difference(monthEndDate).inDays <= 0) {
           endDate = limitEndDate;
         } else {
           endDate = monthEndDate;
         }
-
         return [startDate, endDate];
       }
     }
-
     return null;
   }
 
@@ -533,7 +516,9 @@ class DateUtil {
     if (formatDate.year == formatToday.year) {
       final DateFormat tempDateFormat = DateFormat('MM-dd');
       dayStr = tempDateFormat.format(formatDate);
-      if (formatDate.difference(formatToday).inDays <= 6) {
+      if (formatDate.difference(formatToday).inDays <=
+              (7 - formatToday.weekday) &&
+          formatDate.difference(formatToday).inDays >= 0) {
         dayStr = transformToFormatWeekStr(formatDate);
       }
       if (formatDate.difference(formatToday).inDays == 1) {

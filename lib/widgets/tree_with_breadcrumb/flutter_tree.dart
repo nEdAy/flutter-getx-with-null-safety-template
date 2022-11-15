@@ -98,6 +98,8 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
 
   Map<String, dynamic> nullCheckedNode = {};
 
+  Map<String, dynamic>? commonCheckedNode;
+
   List<Map<String, dynamic>> _breadcrumbList = [];
 
   @override
@@ -126,6 +128,12 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
             ? CheckStatus.checked
             : CheckStatus.unChecked,
       };
+
+      commonCheckedNode = _breadcrumbList.first[widget.config.children][0];
+      if (widget.isNullCheckedNodeChecked == false &&
+          commonCheckedNode != null) {
+        _selectCheckedBox(commonCheckedNode!);
+      }
     }
 
     _getCheckedItems();
@@ -164,24 +172,25 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
           if (treeNode != null) {
             if (_breadcrumbList.length == 1) {
               if (index == 0) {
-                return Column(
-                  children: [
-                    _buildTreeNode(allCheckedNode),
-                    _buildListDivider(),
-                    _buildTreeNode(treeNode),
-                  ],
-                );
-              } else if (index == children.length - 1 &&
-                  widget.config.nullCheckedNodeName != null) {
-                return Column(
-                  children: [
-                    _buildTreeNode(treeNode),
-                    _buildListDivider(),
-                    _buildTreeNode(nullCheckedNode),
-                  ],
-                );
-              } else {
-                return _buildTreeNode(treeNode);
+                if (widget.config.nullCheckedNodeName != null) {
+                  return Column(
+                    children: [
+                      _buildTreeNode(allCheckedNode),
+                      _buildListDivider(),
+                      _buildTreeNode(treeNode),
+                      _buildListDivider(),
+                      _buildTreeNode(nullCheckedNode),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      _buildTreeNode(allCheckedNode),
+                      _buildListDivider(),
+                      _buildTreeNode(treeNode),
+                    ],
+                  );
+                }
               }
             }
             return _buildTreeNode(treeNode);
@@ -321,6 +330,17 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
           });
         }
       }
+    } else if (treeNode == commonCheckedNode) {
+      if (checked != CheckStatus.checked) {
+        if ((sourceTreeMap[widget.config.children] ?? []).isNotEmpty) {
+          _deepChangeCheckStatus(sourceTreeMap, true);
+        }
+        if (nullCheckedNode['checked'] == CheckStatus.checked) {
+          setState(() {
+            nullCheckedNode['checked'] = CheckStatus.unChecked;
+          });
+        }
+      }
     } else if (treeNode == nullCheckedNode) {
       setState(() {
         nullCheckedNode['checked'] = checked == CheckStatus.checked
@@ -364,13 +384,21 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
     final hasCheckedNode = checkedList.isNotEmpty;
     final isNullChecked = nullCheckedNode['checked'] == CheckStatus.checked;
     setState(() {
-      if (hasCheckedNode) {
-        nullCheckedNode['checked'] = CheckStatus.unChecked;
-      }
-      if (hasCheckedNode || isNullChecked) {
-        allCheckedNode['checked'] = CheckStatus.unChecked;
+      if (commonCheckedNode != null) {
+        if (hasCheckedNode) {
+          allCheckedNode['checked'] = CheckStatus.unChecked;
+          nullCheckedNode['checked'] = CheckStatus.unChecked;
+        }
+        if (isNullChecked) {
+          allCheckedNode['checked'] = CheckStatus.unChecked;
+          commonCheckedNode!['checked'] = CheckStatus.unChecked;
+        }
       } else {
-        allCheckedNode['checked'] = CheckStatus.checked;
+        if (hasCheckedNode) {
+          allCheckedNode['checked'] = CheckStatus.unChecked;
+        } else {
+          allCheckedNode['checked'] = CheckStatus.checked;
+        }
       }
     });
     this.checkedList = checkedList;
@@ -494,6 +522,9 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
   }
 
   Container _buildToolBar() {
+    final isNeedReset = (commonCheckedNode == null &&
+            allCheckedNode['checked'] == CheckStatus.unChecked) ||
+        (commonCheckedNode != null && !checkedList.contains(commonCheckedNode));
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -508,13 +539,13 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextButton(
-            onPressed: allCheckedNode['checked'] == CheckStatus.unChecked
+            onPressed: isNeedReset
                 ? () {
-                    _selectCheckedBox(allCheckedNode);
-                    if (widget.config.nullCheckedNodeName != null) {
-                      if (nullCheckedNode['checked'] == CheckStatus.checked) {
-                        nullCheckedNode['checked'] = CheckStatus.unChecked;
-                      }
+                    if (commonCheckedNode != null) {
+                      nullCheckedNode['checked'] = CheckStatus.unChecked;
+                      _selectCheckedBox(commonCheckedNode!);
+                    } else {
+                      _selectCheckedBox(allCheckedNode);
                     }
                     setState(() {
                       _breadcrumbList = _breadcrumbList.take(1).toList();
@@ -525,12 +556,10 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
             child: Text(
               '重置',
               style: TextStyle(
-                  color: allCheckedNode['checked'] == CheckStatus.unChecked
+                  color: isNeedReset
                       ? const Color(0xFF767676)
                       : const Color(0xFFAAAAAA),
-                  fontWeight: allCheckedNode['checked'] == CheckStatus.unChecked
-                      ? FontWeight.bold
-                      : FontWeight.normal,
+                  fontWeight: isNeedReset ? FontWeight.bold : FontWeight.normal,
                   fontSize: 18),
             ),
           ),
@@ -539,7 +568,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
                 nullCheckedNode['checked'] == CheckStatus.checked),
             style: TextButton.styleFrom(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 12.5, horizontal: 63),
+                const EdgeInsets.symmetric(vertical: 12.5, horizontal: 63),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6)),
                 backgroundColor: const Color(0xFFFF9F08)),

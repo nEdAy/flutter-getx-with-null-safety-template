@@ -68,6 +68,7 @@ class ImageView extends GetView<ImageController> {
                   fit: BoxFit.contain,
                   mode: ExtendedImageMode.gesture,
                   headers: controller.headers,
+                  cache: controller.enableMemoryCache ?? true,
                   enableMemoryCache: controller.enableMemoryCache ?? true,
                   clearMemoryCacheWhenDispose:
                       controller.clearMemoryCacheWhenDispose ?? false,

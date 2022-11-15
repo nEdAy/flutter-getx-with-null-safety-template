@@ -59,10 +59,10 @@ class DialogWidget extends Dialog {
                   alignment: titleAlignment,
                   child: Text(
                     titleText,
-                    style: const TextStyle(
-                      fontSize: 22,
+                    style: TextStyle(
+                      fontSize: contentWidget == null ? 20 : 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
+                      color: const Color(0xFF000000),
                     ),
                   ),
                 ),
