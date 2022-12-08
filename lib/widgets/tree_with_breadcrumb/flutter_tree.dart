@@ -5,8 +5,12 @@ library packages;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../gen/assets.gen.dart';
+import '../highlight_text.dart';
+import '../search_widget.dart';
 import 'utils/data_util.dart';
 import 'utils/util.dart';
 
@@ -22,6 +26,7 @@ class Config {
       this.parentId = 'parentId',
       this.label = 'name',
       this.id = 'id',
+      this.searchHintTextSuffix,
       this.children = 'children',
       this.allCheckedNodeName = '全部',
       this.nullCheckedNodeName,
@@ -36,6 +41,8 @@ class Config {
   final String label;
 
   final String id;
+
+  final String? searchHintTextSuffix;
 
   final String children;
 
@@ -93,6 +100,10 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
   Map<String, dynamic> treeMap = {};
 
   List<Map<String, dynamic>> checkedList = [];
+  List<Map<String, dynamic>> checkLeafNodeList = [];
+
+  List<Map<String, dynamic>> leafNodeList = [];
+  List<Map<String, dynamic>> searchFilteredItems = [];
 
   Map<String, dynamic> allCheckedNode = {};
 
@@ -101,6 +112,12 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
   Map<String, dynamic>? commonCheckedNode;
 
   List<Map<String, dynamic>> _breadcrumbList = [];
+
+  final TextEditingController searchController = TextEditingController();
+
+  String? projectSearchKeyword;
+
+  final ScrollController _breadcrumbController = ScrollController();
 
   @override
   initState() {
@@ -175,8 +192,6 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
                 if (widget.config.nullCheckedNodeName != null) {
                   return Column(
                     children: [
-                      _buildTreeNode(allCheckedNode),
-                      _buildListDivider(),
                       _buildTreeNode(treeNode),
                       _buildListDivider(),
                       _buildTreeNode(nullCheckedNode),
@@ -228,7 +243,10 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => _selectCheckedBox(treeNode),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _selectCheckedBox(treeNode);
+                  },
                   child: _buildCheckBoxIcon(treeNode),
                 ),
                 const SizedBox(width: 8),
@@ -280,16 +298,19 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
   Expanded _buildCheckBoxLabel(Map<String, dynamic> treeNode) {
     final isChecked = treeNode['checked'] != CheckStatus.unChecked;
     return Expanded(
-      child: Text(
-        '${treeNode[widget.config.label]}',
-        maxLines: 2,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-            fontSize: 16,
-            color:
-                isChecked ? const Color(0xFFD97F00) : const Color(0xFF434343),
-            fontWeight: isChecked ? FontWeight.bold : FontWeight.normal),
+      child: HighlightText(
+        text: '${treeNode[widget.config.label]}',
+        textStyle: TextStyle(
+          color: isChecked ? const Color(0xFFD97F00) : const Color(0xFF434343),
+          fontWeight: isChecked ? FontWeight.bold : FontWeight.normal,
+          fontSize: 16,
+        ),
+        lightText: projectSearchKeyword ?? '',
+        lightStyle: const TextStyle(
+          color: Color(0xFFD97F00),
+          fontWeight: FontWeight.normal,
+          fontSize: 16,
+        ),
       ),
     );
   }
@@ -318,6 +339,12 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
 
   /// @desc 选中选框
   _selectCheckedBox(Map<String, dynamic> treeNode) {
+    if (projectSearchKeyword?.isNotEmpty == true) {
+      searchController.clear();
+      setState(() {
+        projectSearchKeyword = null;
+      });
+    }
     final CheckStatus checked = treeNode['checked'];
     if (treeNode == allCheckedNode) {
       if (checked == CheckStatus.unChecked) {
@@ -371,6 +398,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
     final stack = MStack();
     final checkedList = <Map<String, dynamic>>[];
     stack.push(sourceTreeMap);
+    leafNodeList.clear();
     while (stack.top > 0) {
       final node = stack.pop();
       for (final item in (node[widget.config.children] ?? [])) {
@@ -378,6 +406,13 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
       }
       if (node['checked'] == CheckStatus.checked) {
         checkedList.add(node);
+      }
+
+      if (node.containsKey('projectId') &&
+          node.containsKey('type') &&
+          node['type'] == 2 &&
+          node['projectId'] != 'null') {
+        leafNodeList.add(node);
       }
     }
 
@@ -402,6 +437,15 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
       }
     });
     this.checkedList = checkedList;
+    checkLeafNodeList.clear();
+    for (var element in checkedList) {
+      if (element.containsKey('projectId') &&
+          element.containsKey('type') &&
+          element['type'] == 4 &&
+          element['projectId'] != 'null') {
+        checkLeafNodeList.add(element);
+      }
+    }
   }
 
   void _updateParentNode(Map<String, dynamic> dataModel) {
@@ -437,20 +481,57 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 468,
-      color: Colors.white,
-      child: Column(
-        children: [
-          _buildBreadcrumb(),
-          _buildTreeRootList(),
-          _buildToolBar(),
-        ],
-      ),
-    );
+    final searchHintText = widget.config.searchHintTextSuffix;
+    return searchHintText != null
+        ? Column(
+            children: [
+              SearchWidget(
+                hintText: '搜索$searchHintText',
+                searchController: searchController,
+                onSearchInputChanged: (value) => _onSearchValueChanged(value),
+                onSearchInputSubmitted: (value) => _onSearchValueChanged(value),
+                onClearTap: () {
+                  searchController.clear();
+                  setState(() {
+                    projectSearchKeyword = null;
+                  });
+                },
+              ),
+              Container(
+                height: 398,
+                color: Colors.white,
+                child: IndexedStack(
+                  index: projectSearchKeyword?.isNotEmpty == true ? 1 : 0,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        _buildBreadcrumb(),
+                        _buildTreeRootList(),
+                        _buildToolBar(),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        _buildSearchList(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        : Container(
+            height: 468,
+            color: Colors.white,
+            child: Column(
+              children: [
+                _buildBreadcrumb(),
+                _buildTreeRootList(),
+                _buildToolBar(),
+              ],
+            ),
+          );
   }
-
-  final ScrollController _breadcrumbController = ScrollController();
 
   Widget _buildBreadcrumb() {
     if (_breadcrumbList.isNotEmpty) {
@@ -522,9 +603,7 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
   }
 
   Container _buildToolBar() {
-    final isNeedReset = (commonCheckedNode == null &&
-            allCheckedNode['checked'] == CheckStatus.unChecked) ||
-        (commonCheckedNode != null && !checkedList.contains(commonCheckedNode));
+    final searchMode = widget.config.searchHintTextSuffix?.isNotEmpty == true;
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -538,37 +617,35 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextButton(
-            onPressed: isNeedReset
-                ? () {
-                    if (commonCheckedNode != null) {
-                      nullCheckedNode['checked'] = CheckStatus.unChecked;
-                      _selectCheckedBox(commonCheckedNode!);
-                    } else {
-                      _selectCheckedBox(allCheckedNode);
-                    }
-                    setState(() {
-                      _breadcrumbList = _breadcrumbList.take(1).toList();
-                    });
-                  }
-                : null,
-            style: TextButton.styleFrom(padding: const EdgeInsets.all(10)),
-            child: Text(
-              '重置',
-              style: TextStyle(
-                  color: isNeedReset
-                      ? const Color(0xFF767676)
-                      : const Color(0xFFAAAAAA),
-                  fontWeight: isNeedReset ? FontWeight.bold : FontWeight.normal,
-                  fontSize: 18),
-            ),
+          Row(
+            children: [
+              searchMode
+                  ? _clickableDropDownButton(
+                      checkLeafNodeList.isEmpty
+                          ? '已选 全部 '
+                          : '已选 ${checkLeafNodeList.length}',
+                      Get.isBottomSheetOpen ?? false,
+                      checkLeafNodeList.isNotEmpty,
+                      () => checkLeafNodeList.isEmpty
+                          ? null
+                          : _showCalendarBottomSheet(),
+                    )
+                  : const SizedBox.shrink(),
+              (!searchMode || checkLeafNodeList.isNotEmpty)
+                  ? Row(
+                      children: [
+                        _buildResetButton(),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
+            ],
           ),
           ElevatedButton(
             onPressed: () => widget.onChecked(sourceTreeMap, checkedList,
                 nullCheckedNode['checked'] == CheckStatus.checked),
             style: TextButton.styleFrom(
                 padding:
-                const EdgeInsets.symmetric(vertical: 12.5, horizontal: 63),
+                    const EdgeInsets.symmetric(vertical: 12.5, horizontal: 63),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6)),
                 backgroundColor: const Color(0xFFFF9F08)),
@@ -578,6 +655,229 @@ class _FlutterTreeProState extends State<FlutterTreePro> {
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildResetButton() {
+    final isNeedReset = (commonCheckedNode == null &&
+            allCheckedNode['checked'] == CheckStatus.unChecked) ||
+        (commonCheckedNode != null && !checkedList.contains(commonCheckedNode));
+    return TextButton(
+      onPressed: isNeedReset
+          ? () {
+              if (commonCheckedNode != null) {
+                nullCheckedNode['checked'] = CheckStatus.unChecked;
+                _selectCheckedBox(commonCheckedNode!);
+              } else {
+                _selectCheckedBox(allCheckedNode);
+              }
+              setState(() {
+                _breadcrumbList = _breadcrumbList.take(1).toList();
+              });
+            }
+          : null,
+      style: TextButton.styleFrom(padding: const EdgeInsets.all(10)),
+      child: Text(
+        '重置',
+        style: TextStyle(
+            color:
+                isNeedReset ? const Color(0xFF767676) : const Color(0xFFAAAAAA),
+            fontWeight: isNeedReset ? FontWeight.bold : FontWeight.normal,
+            fontSize: 18),
+      ),
+    );
+  }
+
+  _clickableDropDownButton(
+    String value,
+    bool isOpen,
+    bool isNotNull,
+    GestureTapCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: isOpen || isNotNull
+                    ? const Color(0xFFD97F00)
+                    : const Color(0xFFAAAAAA),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            isOpen
+                ? Assets.images.common.iconArrowDropDownActive
+                    .image(width: 16, height: 16)
+                : Assets.images.common.iconArrowDropDown
+                    .image(width: 16, height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildSearchList() {
+    return Expanded(
+      flex: 3,
+      child: searchFilteredItems.isEmpty == true
+          ? Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 120),
+              child: Text(
+                '未找到相关${widget.config.searchHintTextSuffix}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Color(0xFF767676), fontSize: 16),
+              ),
+            )
+          : ListView.separated(
+              itemBuilder: (BuildContext context, int index) {
+                return _buildTreeNode(searchFilteredItems[index]);
+              },
+              separatorBuilder: (context, index) {
+                return const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0xFFF0F0F0),
+                  indent: 20,
+                  endIndent: 20,
+                );
+              },
+              itemCount: searchFilteredItems.length,
+            ),
+    );
+  }
+
+  _onSearchValueChanged(String value) {
+    setState(() {
+      projectSearchKeyword = value;
+      if (value.isBlank ?? true) {
+        searchFilteredItems.assignAll(leafNodeList);
+      } else {
+        final newFilteredItems = <Map<String, dynamic>>[];
+        for (final element in leafNodeList) {
+          if (element[widget.config.label].contains(value) ?? false) {
+            newFilteredItems.add(element);
+          }
+        }
+        searchFilteredItems.assignAll(newFilteredItems);
+      }
+    });
+  }
+
+  _showCalendarBottomSheet() {
+    Get.bottomSheet(
+      StatefulBuilder(builder: (context, setBottomSheetState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildCheckedLabelWidget(),
+            _buildCheckedListViewWidget(setBottomSheetState),
+          ],
+        );
+      }),
+      backgroundColor: Colors.white,
+      barrierColor: const Color(0xB3000000),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  _buildCheckedLabelWidget() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xFFF0F0F0))),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '已选 ${checkLeafNodeList.length}',
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          IconButton(
+            onPressed: Get.back,
+            icon: ImageIcon(Assets.images.common.iconClose.image().image),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            iconSize: 24,
+            color: const Color(0xFF777777),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildCheckedListViewWidget(StateSetter setBottomSheetState) {
+    return SizedBox(
+      height: 0.75.sh,
+      child: ListView.separated(
+          itemBuilder: (BuildContext context, int index) =>
+              _buildCheckedListViewItemWidget(index, setBottomSheetState),
+          separatorBuilder: (BuildContext context, int index) =>
+              _buildListDivider(),
+          itemCount: checkLeafNodeList.length),
+    );
+  }
+
+  _buildCheckedListViewItemWidget(int index, StateSetter setBottomSheetState) {
+    final nodeItem = checkLeafNodeList[index];
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              '${nodeItem[widget.config.label]}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Color(0xFF434343),
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              _selectCheckedBox(nodeItem);
+              setBottomSheetState(() {});
+            },
+            behavior: HitTestBehavior.translucent,
+            child: const Padding(
+              padding: EdgeInsets.all(2.0),
+              child: Text(
+                '移除',
+                style: TextStyle(
+                  color: Color(0xFF767676),
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
             ),
           ),
         ],

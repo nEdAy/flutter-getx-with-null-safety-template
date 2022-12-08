@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_log/interceptor/dio_log_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 
 import '../config/flavor.dart';
 import 'interceptors/interceptors.dart';
@@ -67,5 +68,6 @@ class HttpManager {
         canShowLog: kDebugMode,
       )
     ]);
+    dio.addSentry(captureFailedRequests: true);
   }
 }

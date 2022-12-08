@@ -9,11 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sentry_logging/sentry_logging.dart';
 
 import 'api/connectivity_manager.dart';
 import 'config/flavor.dart';
 import 'global.dart';
 import 'routes/app_pages.dart';
+import 'utils/error_utils.dart';
 import 'widgets/developer_widget.dart';
 
 void main() {
@@ -21,16 +23,16 @@ void main() {
     await Sentry.init(
       (options) {
         options
-          ..dsn =
-              'https://8f96c596bcb0404e80650df83e5cb944@o1149022.ingest.sentry.io/6257332'
-          // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-          // We recommend adjusting this value in production.
-          ..tracesSampleRate = 1.0;
+          ..dsn = sentryDSN
+          ..addIntegration(LoggingIntegration())
+          ..tracesSampleRate = 1.0 // needed for Dio `networkTracing` feature
+          ..debug = kDebugMode
+          ..sendDefaultPii = true;
       },
     );
     // Init your App.
     await Global.init().then(
-      (e) => runApp(
+          (_) => runApp(
         DevicePreview(
           enabled: kDebugMode,
           builder: (context) => const MyApp(),

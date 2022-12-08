@@ -24,9 +24,6 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (FlavorConfig.isProduction() && !kDebugMode) {
-      return widget.child ?? const SizedBox.shrink();
-    }
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Overlay(
@@ -34,20 +31,22 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
           OverlayEntry(builder: (_) => widget.child ?? const SizedBox.shrink()),
           OverlayEntry(
             builder: (_) {
-              return Positioned(
-                left: offset.dx,
-                top: offset.dy,
-                child: Draggable(
-                  childWhenDragging: Container(),
-                  feedback: _developerWidget(),
-                  child: _developerWidget(),
-                  onDragEnd: (DraggableDetails detail) {
-                    setState(() {
-                      offset = detail.offset;
-                    });
-                  },
-                ),
-              );
+              return FlavorConfig.isProduction() && !kDebugMode
+                  ? const SizedBox.shrink()
+                  : Positioned(
+                      left: offset.dx,
+                      top: offset.dy,
+                      child: Draggable(
+                        childWhenDragging: Container(),
+                        feedback: _developerWidget(),
+                        child: _developerWidget(),
+                        onDragEnd: (DraggableDetails detail) {
+                          setState(() {
+                            offset = detail.offset;
+                          });
+                        },
+                      ),
+                    );
             },
           ),
           OverlayEntry(
