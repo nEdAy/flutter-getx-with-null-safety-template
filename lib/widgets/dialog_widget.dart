@@ -13,6 +13,7 @@ class DialogWidget extends Dialog {
 
   final String titleText;
   final AlignmentGeometry titleAlignment;
+  final TextAlign titleTextAlign;
   final Widget? contentWidget;
   final String negativeButtonText;
   final String positiveButtonText;
@@ -26,6 +27,7 @@ class DialogWidget extends Dialog {
     super.key,
     required this.titleText,
     this.titleAlignment = Alignment.center,
+    this.titleTextAlign = TextAlign.start,
     this.contentWidget,
     this.negativeButtonText = '取消',
     this.positiveButtonText = '确认提交',
@@ -55,10 +57,11 @@ class DialogWidget extends Dialog {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 60,
+                  // height: 60,
                   alignment: titleAlignment,
                   child: Text(
                     titleText,
+                    textAlign: titleTextAlign,
                     style: TextStyle(
                       fontSize: contentWidget == null ? 20 : 22,
                       fontWeight: FontWeight.bold,

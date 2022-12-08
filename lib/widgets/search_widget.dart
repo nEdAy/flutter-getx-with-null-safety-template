@@ -8,6 +8,8 @@ class SearchWidget extends StatefulWidget {
     super.key,
     required this.hintText,
     required this.searchController,
+    this.keyboardType = TextInputType.text,
+    this.horizontal = 20.0,
     this.onSearchInputChanged,
     this.onSearchInputSubmitted,
     this.prefix,
@@ -17,6 +19,8 @@ class SearchWidget extends StatefulWidget {
 
   final String hintText;
   final TextEditingController searchController;
+  final TextInputType? keyboardType;
+  final double horizontal;
   final ValueChanged<String>? onSearchInputChanged;
   final ValueChanged<String>? onSearchInputSubmitted;
   final GestureTapCallback onClearTap;
@@ -41,10 +45,11 @@ class _SearchWidgetState extends State<SearchWidget> {
       width: context.width,
       alignment: Alignment.center,
       height: 70,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: widget.horizontal),
       color: Colors.white,
       child: TextField(
         controller: widget.searchController,
+        keyboardType: widget.keyboardType,
         autofocus: widget.autofocus ?? false,
         focusNode: _focusNode,
         style: const TextStyle(

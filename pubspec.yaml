@@ -12,19 +12,25 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-#
-# This version is used _only_ for the Runner app, which is used if you just do
-# a `flutter run` or a `flutter make-host-app-editable`. It has no impact
-# on any other native host app that you embed your Flutter project into.
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: '>=2.18.4 <3.0.0'
 
-isar_version: &isar_version ^3.0.2
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+
+isar_version: &isar_version 3.0.5
+sentry_version: &sentry_version ^6.17.0
 
 dependencies:
   flutter:
@@ -41,7 +47,7 @@ dependencies:
   # HTTP client Log
   flutter_pretty_dio_logger: ^2.0.3
   # Dio network inspector
-  dio_log : ^2.0.4
+  dio_log: ^2.0.4
   # Json generation
   json_annotation: ^4.7.0
   # Log
@@ -49,14 +55,20 @@ dependencies:
   # Loading/Toast/Notification
   bot_toast: ^4.0.3
   # Sentry
-  sentry: ^6.11.2
+  sentry: *sentry_version
+  sentry_logging: *sentry_version
+  sentry_dio: *sentry_version
+  # Device Info
+  device_info_plus: ^8.0.0
+  # Package Info
+  package_info_plus: ^3.0.2
   # Pull to Refresh
   pull_to_refresh:
     git:
       url: https://github.com/miquelbeltran/flutter_pulltorefresh
       ref: 6d7fbdd
   # Extended Image
-  extended_image: ^6.3.0
+  extended_image: ^6.3.2
   # Screen Util
   flutter_screenutil: ^5.6.0
   # Scrollable Positioned List
@@ -78,17 +90,23 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
   # Build Runner
-  build_runner: ^2.2.0
+  build_runner: ^2.3.2
   # Flutter gen runner
-  flutter_gen_runner: ^5.0.1
+  flutter_gen_runner: ^5.1.0+1
   # HTTP client generator
   retrofit_generator: ^4.2.0
   # Json serializable
   json_serializable: ^6.5.2
   # Fully async NoSQL database
   isar_generator: *isar_version
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

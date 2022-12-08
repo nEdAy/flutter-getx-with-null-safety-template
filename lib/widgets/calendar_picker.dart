@@ -141,6 +141,8 @@ class _CalendarPickerState extends State<CalendarPicker> {
           IconButton(
             onPressed: Get.back,
             icon: ImageIcon(Assets.images.common.iconClose.image().image),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
             iconSize: 24,
             color: const Color(0xFF777777),
           ),
@@ -177,7 +179,7 @@ class _CalendarPickerState extends State<CalendarPicker> {
               ),
             ),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () {
               widget.onCalendarConfirmClick(widget.calendarController);
               Get.back();

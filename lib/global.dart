@@ -1,15 +1,20 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_template/store/store_manager.dart';
 import 'package:flutter_template/store/user_info.dart';
+import 'package:flutter_template/utils/error_utils.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'channel/get_user_info.dart';
+import 'config/app_info_utils.dart';
+import 'config/device_info.dart';
 import 'config/flavor.dart';
 import 'config/user_info.dart';
 
@@ -37,8 +42,8 @@ class Global {
   static Future _initServices() async {
     Logger().i('starting services ...');
 
-    /// 这里是你放get_storage、hive、shared_pref初始化的地方。
-    /// 或者moor连接，或者其他什么异步的东西。
+    // 异步初始化
+    await Get.putAsync(() => InfoService().init());
     await Get.putAsync(() => StoreService().init());
     await Get.putAsync(() => FlavorService().init());
     await Get.putAsync(() => UserInfoService().init());
@@ -47,9 +52,33 @@ class Global {
   }
 }
 
+class InfoService extends GetxService {
+  Future<InfoService> init() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    PackageInfoConfig(packageInfo: packageInfo);
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo? androidInfo;
+    IosDeviceInfo? iosInfo;
+    if (Platform.isAndroid) {
+      androidInfo = await deviceInfo.androidInfo;
+    }
+    if (Platform.isIOS) {
+      iosInfo = await deviceInfo.iosInfo;
+    }
+    DeviceInfoConfig(androidInfo: androidInfo, iosInfo: iosInfo);
+
+    ErrorUtils.configureTag();
+    return this;
+  }
+}
+
 class StoreService extends GetxService {
   Future<StoreService> init() async {
-    final isar = await Isar.open([UserInfoSchema]);
+    final isar = await Isar.open(
+      [UserInfoSchema],
+      maxSizeMiB: 256,
+    );
     StoreManager(isar: isar);
     return this;
   }

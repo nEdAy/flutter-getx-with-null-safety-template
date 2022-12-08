@@ -160,10 +160,10 @@ class Indicator extends StatelessWidget {
   final int itemCount;
 
   /// 普通的颜色
-  final Color normalColor = Colors.blue;
+  final Color normalColor = const Color(0x66FFFFFF);
 
   /// 选中的颜色
-  final Color selectedColor = Colors.red;
+  final Color selectedColor = const Color(0xE6FFFFFF);
 
   /// 点的大小
   final double size = 8;
