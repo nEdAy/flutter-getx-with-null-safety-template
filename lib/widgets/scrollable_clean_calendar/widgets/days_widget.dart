@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 import '../controllers/clean_calendar_controller.dart';
@@ -12,9 +14,9 @@ class DaysWidget extends StatelessWidget {
   final double calendarMainAxisSpacing;
   final Layout? layout;
   final Widget Function(
-    BuildContext context,
-    DayValues values,
-  )? dayBuilder;
+      BuildContext context,
+      DayValues values,
+      )? dayBuilder;
   final Color? selectedBackgroundColor;
   final Color? backgroundColor;
   final Color? selectedBackgroundColorBetween;
@@ -49,8 +51,8 @@ class DaysWidget extends StatelessWidget {
     // What it means? The first weekday does not change, but the start weekday have changed,
     // so in the layout we need to change where the calendar first day is going to start.
     int monthPositionStartDay = (cleanCalendarController.weekdayStart -
-            DateTime.daysPerWeek -
-            DateTime(month.year, month.month).weekday)
+        DateTime.daysPerWeek -
+        DateTime(month.year, month.month).weekday)
         .abs();
     monthPositionStartDay = monthPositionStartDay > DateTime.daysPerWeek
         ? monthPositionStartDay - DateTime.daysPerWeek
@@ -81,7 +83,7 @@ class DaysWidget extends StatelessWidget {
           if (cleanCalendarController.rangeMinDate != null &&
               cleanCalendarController.rangeMaxDate != null) {
             isSelected = day
-                    .isSameDayOrAfter(cleanCalendarController.rangeMinDate!) &&
+                .isSameDayOrAfter(cleanCalendarController.rangeMinDate!) &&
                 day.isSameDayOrBefore(cleanCalendarController.rangeMaxDate!);
           } else {
             isSelected =
@@ -138,42 +140,42 @@ class DaysWidget extends StatelessWidget {
   Widget _pattern(BuildContext context, DayValues values) {
     Color bgColor = backgroundColor ?? Theme.of(context).colorScheme.surface;
     TextStyle txtStyle =
-        (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
+    (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
       color: backgroundColor != null
           ? backgroundColor!.computeLuminance() > .5
-              ? Colors.black
-              : Colors.white
+          ? Colors.black
+          : Colors.white
           : Theme.of(context).colorScheme.onSurface,
     );
 
     if (values.isSelected) {
       if ((values.selectedMinDate != null &&
-              values.day.isSameDay(values.selectedMinDate!)) ||
+          values.day.isSameDay(values.selectedMinDate!)) ||
           (values.selectedMaxDate != null &&
               values.day.isSameDay(values.selectedMaxDate!))) {
         bgColor =
             selectedBackgroundColor ?? Theme.of(context).colorScheme.primary;
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color: selectedBackgroundColor != null
-              ? selectedBackgroundColor!.computeLuminance() > .5
+              color: selectedBackgroundColor != null
+                  ? selectedBackgroundColor!.computeLuminance() > .5
                   ? Colors.black
                   : Colors.white
-              : Theme.of(context).colorScheme.onPrimary,
-        );
+                  : Theme.of(context).colorScheme.onPrimary,
+            );
       } else {
         bgColor = selectedBackgroundColorBetween ??
             Theme.of(context).colorScheme.primary.withOpacity(.3);
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color: selectedBackgroundColor != null &&
+              color: selectedBackgroundColor != null &&
                   selectedBackgroundColor == selectedBackgroundColorBetween
-              ? selectedBackgroundColor!.computeLuminance() > .5
+                  ? selectedBackgroundColor!.computeLuminance() > .5
                   ? Colors.black
                   : Colors.white
-              : selectedBackgroundColor ??
+                  : selectedBackgroundColor ??
                   Theme.of(context).colorScheme.primary,
-        );
+            );
       }
     } else if (values.day.isSameDay(values.minDate)) {
       bgColor = Colors.transparent;
@@ -198,10 +200,10 @@ class DaysWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
         border: values.day.isSameDay(values.minDate)
             ? Border.all(
-                color: selectedBackgroundColor ??
-                    Theme.of(context).colorScheme.primary,
-                width: 2,
-              )
+          color: selectedBackgroundColor ??
+              Theme.of(context).colorScheme.primary,
+          width: 2,
+        )
             : null,
       ),
       child: Text(
@@ -216,11 +218,11 @@ class DaysWidget extends StatelessWidget {
     BorderRadiusGeometry? borderRadius;
     Color bgColor = Colors.transparent;
     TextStyle txtStyle =
-        (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
+    (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
       color: backgroundColor != null
           ? backgroundColor!.computeLuminance() > .5
-              ? Colors.black
-              : Colors.white
+          ? Colors.black
+          : Colors.white
           : Theme.of(context).colorScheme.onSurface,
       fontWeight: values.day.isSameDay(DateTime.now()) ? FontWeight.bold : null,
     );
@@ -239,20 +241,20 @@ class DaysWidget extends StatelessWidget {
       }
 
       if ((values.selectedMinDate != null &&
-              values.day.isSameDay(values.selectedMinDate!)) ||
+          values.day.isSameDay(values.selectedMinDate!)) ||
           (values.selectedMaxDate != null &&
               values.day.isSameDay(values.selectedMaxDate!))) {
         bgColor =
             selectedBackgroundColor ?? Theme.of(context).colorScheme.primary;
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color: selectedBackgroundColor != null
-              ? selectedBackgroundColor!.computeLuminance() > .5
+              color: selectedBackgroundColor != null
+                  ? selectedBackgroundColor!.computeLuminance() > .5
                   ? Colors.black
                   : Colors.white
-              : Theme.of(context).colorScheme.onPrimary,
-          fontWeight: FontWeight.bold,
-        );
+                  : Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+            );
 
         if (values.selectedMinDate == values.selectedMaxDate) {
           borderRadius = BorderRadius.circular(radius);
@@ -274,15 +276,14 @@ class DaysWidget extends StatelessWidget {
             Theme.of(context).colorScheme.primary.withOpacity(.3);
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color:
+              color:
               selectedBackgroundColor ?? Theme.of(context).colorScheme.primary,
-          // fontWeight: values.isFirstDayOfWeek || values.isLastDayOfWeek
-          //     ? FontWeight.bold
-          //     : null,
-        );
+              // fontWeight: values.isFirstDayOfWeek || values.isLastDayOfWeek
+              //     ? FontWeight.bold
+              //     : null,
+            );
       }
-    } else if (values.day.isSameDay(values.minDate)) {
-    } else if (values.day.isBefore(values.minDate) ||
+    } else if (values.day.isSameDay(values.minDate)) {} else if (values.day.isBefore(values.minDate) ||
         values.day.isAfter(values.maxDate)) {
       txtStyle = (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
         color: dayDisableColor ??
