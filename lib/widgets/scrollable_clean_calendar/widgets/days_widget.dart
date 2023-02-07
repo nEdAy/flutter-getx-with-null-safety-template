@@ -222,9 +222,7 @@ class DaysWidget extends StatelessWidget {
               ? Colors.black
               : Colors.white
           : Theme.of(context).colorScheme.onSurface,
-      // fontWeight: values.isFirstDayOfWeek || values.isLastDayOfWeek
-      //     ? FontWeight.bold
-      //     : null,
+      fontWeight: values.day.isSameDay(DateTime.now()) ? FontWeight.bold : null,
     );
 
     if (values.isSelected) {
@@ -296,6 +294,8 @@ class DaysWidget extends StatelessWidget {
       );
     }
 
+    final showText = values.day.isSameDay(DateTime.now()) ? '今天' : values.text;
+
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -303,7 +303,7 @@ class DaysWidget extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: Text(
-        values.text,
+        showText,
         textAlign: TextAlign.center,
         style: txtStyle,
       ),

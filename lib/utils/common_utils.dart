@@ -4,6 +4,22 @@ import 'package:intl/intl.dart';
 import '../config/user_info.dart';
 import 'date_util.dart';
 
+List<String>? splitString(String? value, {Pattern pattern = ','}) {
+  if (value != null && value.isNotEmpty) {
+    return value.split(pattern);
+  } else {
+    return null;
+  }
+}
+
+String? splitListToString(List<String>? value, {String pattern = ','}) {
+  if (value != null && value.isNotEmpty) {
+    return value.join(pattern);
+  } else {
+    return null;
+  }
+}
+
 /// 解决中文和英文提前自动换行问题
 extension FixAutoLines on String {
   String fixAutoLines() {
@@ -41,11 +57,11 @@ Color getExpiredTimeTextColor(String? expiredTime, {String? dateFormat}) {
     }
     final expiredDate = format.parse(expiredTime);
     final now = DateTime.now().toLocal();
-    final differenceInDays = expiredDate.difference(now).inDays;
-    if (differenceInDays >= 0) {
-      if (differenceInDays <= 1) {
-        return const Color(0xFFFF0068);
-      } else if (differenceInDays <= 3) {
+    final differenceInHours = expiredDate.difference(now).inHours;
+    if (differenceInHours >= 0) {
+      if (differenceInHours <= 24) {
+        return const Color(0xFFD91D00);
+      } else if (differenceInHours <= 72) {
         return const Color(0xFFD97F00);
       }
     }
