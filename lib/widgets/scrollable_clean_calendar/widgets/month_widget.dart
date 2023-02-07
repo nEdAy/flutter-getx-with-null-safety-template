@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -5,7 +7,6 @@ import '../utils/enums.dart';
 import '../utils/extensions.dart';
 
 class MonthWidget extends StatelessWidget {
-
   const MonthWidget({
     super.key,
     required this.month,

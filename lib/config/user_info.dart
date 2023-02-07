@@ -6,7 +6,7 @@ class UserInfoConfig {
     required UserInfo userInfo,
   }) {
     _instance = UserInfoConfig._internal(userInfo);
-    ErrorUtils.configureUser();
+    ErrorUtils.configureUser(userInfo);
     return _instance;
   }
 

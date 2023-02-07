@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sentry/sentry_io.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 
 import 'api/connectivity_manager.dart';
@@ -23,11 +24,12 @@ void main() {
     await Sentry.init(
       (options) {
         options
-          ..dsn = sentryDSN
+          ..dsn = ErrorUtils.getSentryDSN()
           ..addIntegration(LoggingIntegration())
           ..tracesSampleRate = 1.0 // needed for Dio `networkTracing` feature
           ..debug = kDebugMode
-          ..sendDefaultPii = true;
+          ..sendDefaultPii = true
+          ..beforeSend = ErrorUtils.beforeSend;
       },
     );
     // Init your App.

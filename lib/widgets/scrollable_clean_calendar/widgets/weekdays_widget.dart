@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 import '../controllers/clean_calendar_controller.dart';
@@ -5,7 +7,6 @@ import '../utils/enums.dart';
 import '../utils/extensions.dart';
 
 class WeekdaysWidget extends StatelessWidget {
-
   const WeekdaysWidget({
     super.key,
     required this.showWeekdays,
@@ -57,7 +58,7 @@ class WeekdaysWidget extends StatelessWidget {
       child: Text(
         weekday.capitalize(),
         style: textStyle ??
-            Theme.of(context).textTheme.bodyText1!.copyWith(
+            Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -75,13 +76,13 @@ class WeekdaysWidget extends StatelessWidget {
         weekday.capitalize(),
         style: textStyle ??
             Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .color!
-                      .withOpacity(.4),
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(.4),
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }

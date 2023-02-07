@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,9 +26,9 @@ class HomeView extends GetView<HomeController> {
                 'You have pushed the button this many times:',
               ),
               Obx(() => Text(
-                    '${controller.count}',
-                    style: Theme.of(context).textTheme.headline4,
-                  )),
+                '${controller.count}',
+                style: Theme.of(context).textTheme.headline4,
+              )),
               Card(
                 margin: const EdgeInsets.all(10.0),
                 child: Container(
@@ -35,18 +37,18 @@ class HomeView extends GetView<HomeController> {
                   child: ListTile(
                     leading: Assets.images.flutterLogo.image(),
                     title: Obx(() => Text(
-                          '${controller.hitokoto}',
-                          textAlign: TextAlign.left,
-                          softWrap: true,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        )),
+                      '${controller.hitokoto}',
+                      textAlign: TextAlign.left,
+                      softWrap: true,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    )),
                     subtitle: Obx(() => Text(
-                          '—— 「${controller.from}」',
-                          textAlign: TextAlign.right,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )),
+                      '—— 「${controller.from}」',
+                      textAlign: TextAlign.right,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
                     trailing: IconButton(
                       icon: const Icon(Icons.refresh),
                       color: Colors.blue,

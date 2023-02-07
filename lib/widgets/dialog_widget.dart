@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../gen/assets.gen.dart';
 import 'button_widget.dart';
 
 class DialogWidget extends Dialog {
@@ -21,7 +22,9 @@ class DialogWidget extends Dialog {
   final int positiveButtonBackgroundColor;
   final int positiveButtonSideColor;
   final GestureTapCallback? onNegativeButtonTextPressed;
-  final GestureTapCallback onPositiveButtonPressed;
+  final GestureTapCallback? onPositiveButtonPressed;
+  final bool noDismiss;
+  final bool close;
 
   const DialogWidget({
     super.key,
@@ -34,8 +37,10 @@ class DialogWidget extends Dialog {
     this.positiveButtonTextColor = 0xFF000000,
     this.positiveButtonBackgroundColor = 0xFFFF9F08,
     this.positiveButtonSideColor = 0xFFFF9F08,
+    this.noDismiss = false,
+    this.close = false,
     this.onNegativeButtonTextPressed,
-    required this.onPositiveButtonPressed,
+    this.onPositiveButtonPressed,
   });
 
   _buildDialogWidget() {
@@ -56,61 +61,91 @@ class DialogWidget extends Dialog {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  // height: 60,
-                  alignment: titleAlignment,
-                  child: Text(
-                    titleText,
-                    textAlign: titleTextAlign,
-                    style: TextStyle(
-                      fontSize: contentWidget == null ? 20 : 22,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF000000),
-                    ),
-                  ),
-                ),
-                contentWidget ?? const SizedBox.shrink(),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ButtonWidget(
-                        negativeButtonText,
-                        0xFF000000,
-                        18,
-                        FontWeight.normal,
-                        0,
-                        12.5,
-                        0xFFFFFFFF,
-                        sideColor: 0xE6E6E6E6,
-                        sideWidth: 1,
-                        borderRadius: 6,
-                        onPressed: () {
-                          Get.back();
-                          onNegativeButtonTextPressed?.call();
-                        },
+                close
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            // height: 60,
+                            alignment: Alignment.center,
+                            child: Text(
+                              titleText,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: contentWidget == null ? 20 : 22,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF000000),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => Get.back(),
+                            icon: ImageIcon(
+                                Assets.images.common.iconClose.image().image),
+                            iconSize: 24,
+                          )
+                        ],
+                      )
+                    : Container(
+                        // height: 60,
+                        alignment: titleAlignment,
+                        child: Text(
+                          titleText,
+                          textAlign: titleTextAlign,
+                          style: TextStyle(
+                            fontSize: contentWidget == null ? 20 : 22,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
                       ),
-                    ),
+                contentWidget ?? const SizedBox.shrink(),
+                close ? const SizedBox.shrink() : const SizedBox(height: 20),
+                close
+                    ? const SizedBox.shrink()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ButtonWidget(
+                              negativeButtonText,
+                              0xFF000000,
+                              18,
+                              FontWeight.normal,
+                              0,
+                              12.5,
+                              0xFFFFFFFF,
+                              sideColor: 0xE6E6E6E6,
+                              sideWidth: 1,
+                              borderRadius: 6,
+                              onPressed: () {
+                                Get.back();
+                                onNegativeButtonTextPressed?.call();
+                              },
+                            ),
+                          ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: ButtonWidget(
                         positiveButtonText,
-                        positiveButtonTextColor,
-                        18,
-                        FontWeight.bold,
-                        0,
-                        12.5,
-                        positiveButtonBackgroundColor,
-                        sideColor: positiveButtonSideColor,
-                        sideWidth: 0,
-                        borderRadius: 6,
-                        onPressed: () {
-                          Get.back();
-                          onPositiveButtonPressed();
-                        },
-                      ),
+                              positiveButtonTextColor,
+                              18,
+                              FontWeight.bold,
+                              0,
+                              12.5,
+                              positiveButtonBackgroundColor,
+                              sideColor: positiveButtonSideColor,
+                              sideWidth: 0,
+                              borderRadius: 6,
+                              onPressed: () {
+                                if (!noDismiss) {
+                                  Get.back();
+                                }
+                                onPositiveButtonPressed?.call();
+                              },
+                            ),
                     ),
                   ],
                 ),

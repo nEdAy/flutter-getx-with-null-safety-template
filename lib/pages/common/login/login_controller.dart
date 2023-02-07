@@ -38,13 +38,13 @@ class LoginController extends GetxController {
   onLoginPressed() {
     final username = unameController.value.text;
     final password = pwdController.value.text;
-    final token = 'token';
-    final memberId = 'memberId';
-    if (token != null && memberId != null) {
-      _onAuthSuccess(username, password, token, memberId);
-    } else {
-      BotToast.showText(text: '登录失败');
-    }
+    const token = 'token';
+    const memberId = 'memberId';
+    // if (token != null && memberId != null) {
+    _onAuthSuccess(username, password, token, memberId);
+    // } else {
+    //   BotToast.showText(text: '登录失败');
+    // }
   }
 
   _onAuthSuccess(
