@@ -35,7 +35,7 @@ class LoginController extends GetxController {
     }
   }
 
-  onLoginPressed() {
+  void onLoginPressed() {
     final username = unameController.value.text;
     final password = pwdController.value.text;
     const token = 'token';
@@ -47,7 +47,7 @@ class LoginController extends GetxController {
     // }
   }
 
-  _onAuthSuccess(
+  void _onAuthSuccess(
       String username, String password, String token, String memberId) {
     final route = this.route;
     if (route != null) {

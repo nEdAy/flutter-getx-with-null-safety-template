@@ -10,8 +10,8 @@ import 'rest_client.dart';
 
 class HttpManager {
   // 超时时间 60s
-  static const connectTimeout = 60000;
-  static const receiveTimeout = 60000;
+  static const connectTimeout = 60;
+  static const receiveTimeout = 60;
 
   static final Map<String, dynamic> _optHeader = {
     'accept-language': 'zh-cn',
@@ -34,8 +34,8 @@ class HttpManager {
 
   BaseOptions _createBaseOptions() {
     return BaseOptions(
-      connectTimeout: connectTimeout,
-      receiveTimeout: receiveTimeout,
+      connectTimeout: Duration(seconds: connectTimeout),
+      receiveTimeout: Duration(seconds: receiveTimeout),
       baseUrl: FlavorConfig.instance.values.baseUrl,
       headers: _optHeader,
       validateStatus: (status) {

@@ -78,6 +78,7 @@ class StoreService extends GetxService {
     final isar = await Isar.open(
       [UserInfoSchema],
       maxSizeMiB: 256,
+      directory: '',
     );
     StoreManager(isar: isar);
     return this;

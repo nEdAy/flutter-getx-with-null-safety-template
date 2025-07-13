@@ -32,7 +32,7 @@ class LoadingInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     cancelLoading(err.requestOptions);
     super.onError(err, handler);
   }

@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
               ),
               Obx(() => Text(
                 '${controller.count}',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               )),
               Card(
                 margin: const EdgeInsets.all(10.0),

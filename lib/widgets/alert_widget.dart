@@ -9,13 +9,12 @@ class AlertWidget extends StatelessWidget {
   final VoidCallback? submitCallBack;
 
   const AlertWidget(
-      {Key? key,
+      {super.key,
       required this.title,
       this.cancelCallBack,
       this.submitCallBack,
       required this.submitTitle,
-      required this.cancelTitle})
-      : super(key: key);
+      required this.cancelTitle});
 
   @override
   Widget build(BuildContext context) {

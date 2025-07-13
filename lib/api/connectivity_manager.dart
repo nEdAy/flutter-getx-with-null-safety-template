@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 
 class ConnectionManagerController extends GetxController {
   final isOnline = true.obs;
-  final InternetConnectionChecker _connectivity = InternetConnectionChecker();
+  final InternetConnectionChecker _connectivity = InternetConnectionChecker.instance;
   late StreamSubscription<InternetConnectionStatus> _streamSubscription;
 
   @override
@@ -27,7 +27,7 @@ class ConnectionManagerController extends GetxController {
     return _updateState(connectivityResult);
   }
 
-  _updateState(InternetConnectionStatus status) {
+  void _updateState(InternetConnectionStatus status) {
     switch (status) {
       case InternetConnectionStatus.connected:
         Logger().d('Data connection is available.');
@@ -36,6 +36,9 @@ class ConnectionManagerController extends GetxController {
       case InternetConnectionStatus.disconnected:
         Logger().d('You are disconnected from the internet.');
         isOnline.value = false;
+        break;
+      case InternetConnectionStatus.slow:
+        // TODO: Handle this case.
         break;
     }
   }

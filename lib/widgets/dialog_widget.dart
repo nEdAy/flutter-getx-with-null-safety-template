@@ -43,7 +43,7 @@ class DialogWidget extends Dialog {
     this.onPositiveButtonPressed,
   });
 
-  _buildDialogWidget() {
+  ConstrainedBox _buildDialogWidget() {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: 1.sh * 0.75,

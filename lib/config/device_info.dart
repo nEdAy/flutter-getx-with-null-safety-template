@@ -82,15 +82,15 @@ class DeviceInfoConfig {
       return {};
     }
     return <String, dynamic>{
-      '设备名': '${data.name}',
-      '操作系统名': '${data.systemName}',
-      '系统版本': '${data.systemVersion}',
-      '设备型号': '${data.model}',
-      '设备名(本地)': '${data.localizedModel}',
+      '设备名': data.name,
+      '操作系统名': data.systemName,
+      '系统版本': data.systemVersion,
+      '设备型号': data.model,
+      '设备名(本地)': data.localizedModel,
       '当前设备唯一值': '${data.identifierForVendor}',
       '是否真机': '${data.isPhysicalDevice}',
-      '版本号': '${data.utsname.version}',
-      '硬件类型': '${data.utsname.machine}',
+      '版本号': data.utsname.version,
+      '硬件类型': data.utsname.machine,
     };
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../gen/assets.gen.dart';
 
-showCenterToast(
+void showCenterToast(
   String text, {
   bool isShowImage = true,
   ImageProvider? imageProvider,

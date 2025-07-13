@@ -23,7 +23,7 @@ class HandleErrorInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
       BotToast.showText(text: '登录过期，请重新登录');
       Future.delayed(const Duration(seconds: 1), () {

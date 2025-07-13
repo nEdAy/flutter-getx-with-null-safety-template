@@ -35,16 +35,16 @@ class ButtonWidget extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
         ),
-        backgroundColor: MaterialStateProperty.all(Color(backgroundColor)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(Color(backgroundColor)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
-        side: MaterialStateProperty.all(
+        side: WidgetStateProperty.all(
           BorderSide(
             color: Color(sideColor),
             width: sideWidth,

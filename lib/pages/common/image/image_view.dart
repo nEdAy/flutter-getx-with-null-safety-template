@@ -69,7 +69,6 @@ class ImageView extends GetView<ImageController> {
                   mode: ExtendedImageMode.gesture,
                   headers: controller.headers,
                   cache: controller.enableMemoryCache ?? true,
-                  enableMemoryCache: controller.enableMemoryCache ?? true,
                   clearMemoryCacheWhenDispose:
                       controller.clearMemoryCacheWhenDispose ?? false,
                   initGestureConfigHandler: (ExtendedImageState state) =>
@@ -103,7 +102,6 @@ class ImageView extends GetView<ImageController> {
                   file,
                   fit: BoxFit.contain,
                   mode: ExtendedImageMode.gesture,
-                  enableMemoryCache: controller.enableMemoryCache ?? false,
                   clearMemoryCacheWhenDispose:
                       controller.clearMemoryCacheWhenDispose ?? true,
                   initGestureConfigHandler: (ExtendedImageState state) =>

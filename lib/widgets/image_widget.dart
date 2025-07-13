@@ -76,7 +76,6 @@ class _ImageWidgetState extends State<ImageWidget> {
       shape: widget.shape ?? BoxShape.rectangle,
       borderRadius: widget.borderRadius,
       cache: widget.enableMemoryCache ?? true,
-      enableMemoryCache: widget.enableMemoryCache ?? true,
       clearMemoryCacheWhenDispose: widget.clearMemoryCacheWhenDispose ?? false,
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {
@@ -97,7 +96,6 @@ class _ImageWidgetState extends State<ImageWidget> {
       width: widget.width,
       height: widget.height,
       fit: BoxFit.cover,
-      enableMemoryCache: widget.enableMemoryCache ?? false,
       clearMemoryCacheWhenDispose: widget.clearMemoryCacheWhenDispose ?? true,
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {

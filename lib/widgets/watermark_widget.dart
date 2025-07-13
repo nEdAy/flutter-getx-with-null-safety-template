@@ -43,9 +43,9 @@ class WatermarkWidget extends StatelessWidget {
     return list;
   }
 
-  _handleTextStyle(bool isReverseColor) {
+  TextStyle _handleTextStyle(bool isReverseColor) {
     // 根据屏幕 devicePixelRatio 对文本样式中长度相关的一些值乘以devicePixelRatio
-    final devicePixelRatio = MediaQueryData.fromWindow(window).devicePixelRatio;
+    final devicePixelRatio = MediaQueryData.fromView(window).devicePixelRatio;
     var style = TextStyle(
         color:
             isReverseColor ? const Color(0x0A000000) : const Color(0x14FFFFFF),

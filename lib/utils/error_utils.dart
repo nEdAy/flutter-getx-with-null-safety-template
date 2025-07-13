@@ -13,11 +13,11 @@ class ErrorUtils {
   static const _releaseSentryDSN =
       'http://80793351cec347488f5bcc3ef3e57082@172.17.44.99:9000/5';
 
-  static getSentryDSN() {
+  static String getSentryDSN() {
     return !kDebugMode ? _releaseSentryDSN : _debugSentryDSN;
   }
 
-  static configureUser(UserInfo userInfo) {
+  static void configureUser(UserInfo userInfo) {
     Sentry.configureScope((Scope scope) {
       scope.setUser(SentryUser(
         username: userInfo.oaAccount,
@@ -31,7 +31,7 @@ class ErrorUtils {
     });
   }
 
-  static configureTag() {
+  static void configureTag() {
     Sentry.configureScope((Scope scope) {
       scope
         ..setTag('Version', PackageInfoConfig.getVersion())..setTag(
@@ -59,8 +59,7 @@ class ErrorUtils {
     'Connection closed while receiving data',
   ];
 
-  static FutureOr<SentryEvent?> beforeSend(SentryEvent event,
-      {dynamic hint}) async {
+  static FutureOr<SentryEvent?> beforeSend(SentryEvent event, dynamic hint) async {
     final exceptions = event.exceptions;
     if (exceptions != null) {
       for (var exception in exceptions) {
