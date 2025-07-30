@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:sentry/sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../config/app_info_utils.dart';
-import '../config/device_info.dart';
-import '../store/user_info.dart';
+import '../config/package_info_config.dart';
+import '../config/device_info_config.dart';
 
 class ErrorUtils {
   static const _debugSentryDSN =
@@ -17,31 +16,23 @@ class ErrorUtils {
     return !kDebugMode ? _releaseSentryDSN : _debugSentryDSN;
   }
 
-  static void configureUser(UserInfo userInfo) {
+  static void configureUser(String username, String token) {
     Sentry.configureScope((Scope scope) {
-      scope.setUser(SentryUser(
-        username: userInfo.oaAccount,
-        name: userInfo.userName,
-        data: {
-          'LoginPhone': userInfo.loginPhone,
-          'MemberId': userInfo.memberId,
-          'Token': userInfo.token,
-        },
-      ));
+      scope.setUser(SentryUser(username: username, data: {'Token': token}));
     });
   }
 
   static void configureTag() {
     Sentry.configureScope((Scope scope) {
       scope
-        ..setTag('Version', PackageInfoConfig.getVersion())..setTag(
-          'BuildNumber', PackageInfoConfig.getBuildNumber())..setTag(
-          'DeviceModel', DeviceInfoConfig.deviceModel())..setTag(
-          'DeviceManufacturer', DeviceInfoConfig.deviceManufacturer())..setTag(
-          'DeviceSystemVersion', DeviceInfoConfig.deviceSystemVersion());
-      scope..setExtra(
-          'PackageInfo', PackageInfoConfig.packageInfoMap())..setExtra(
-          'DeviceInfo', DeviceInfoConfig.deviceInfoMap());
+        ..setTag('Version', PackageInfoConfig.getVersion())
+        ..setTag('BuildNumber', PackageInfoConfig.getBuildNumber())
+        ..setTag('DeviceModel', DeviceInfoConfig.deviceModel())
+        ..setTag('DeviceManufacturer', DeviceInfoConfig.deviceManufacturer())
+        ..setTag('DeviceSystemVersion', DeviceInfoConfig.deviceSystemVersion());
+      scope
+        ..setContexts('PackageInfo', PackageInfoConfig.packageInfoMap())
+        ..setContexts('DeviceInfo', DeviceInfoConfig.deviceInfoMap());
     });
   }
 
@@ -59,7 +50,10 @@ class ErrorUtils {
     'Connection closed while receiving data',
   ];
 
-  static FutureOr<SentryEvent?> beforeSend(SentryEvent event, dynamic hint) async {
+  static FutureOr<SentryEvent?> beforeSend(
+    SentryEvent event,
+    dynamic hint,
+  ) async {
     final exceptions = event.exceptions;
     if (exceptions != null) {
       for (var exception in exceptions) {

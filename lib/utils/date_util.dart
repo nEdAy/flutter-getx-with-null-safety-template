@@ -1,4 +1,4 @@
-// ignore_for_file: require_trailing_commas
+// ignore_for_file: require_trailing_commas, constant_identifier_names
 
 import 'package:intl/intl.dart';
 import 'package:quiver/time.dart';
@@ -43,7 +43,7 @@ class DateStrOption {
 }
 
 /// month->days.
-const Map<int, int> MONTH_DAY = {
+const Map<int, int> monthDayMapping = {
   1: 31,
   2: 28,
   3: 31,
@@ -201,7 +201,7 @@ class DateUtil {
     final int month = dateTime.month;
     int days = dateTime.day;
     for (int i = 1; i < month; i++) {
-      days = days + MONTH_DAY[i]!;
+      days = days + monthDayMapping[i]!;
     }
     if (isLeapYearByYear(year) && month > 2) {
       days = days + 1;

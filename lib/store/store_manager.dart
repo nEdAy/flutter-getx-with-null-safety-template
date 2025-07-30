@@ -1,38 +1,21 @@
-import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:isar/isar.dart';
-
-import 'user_info.dart';
+const kLastUsername = 'lastUsername';
+const kAccessToken = 'accessToken';
+const kRefreshToken = 'refreshToken';
 
 class StoreManager {
-  final Isar isar;
-
+  final SharedPreferencesWithCache pref;
   static late StoreManager _instance;
 
-  factory StoreManager({
-    required Isar isar,
-  }) {
-    _instance = StoreManager._internal(isar);
+  factory StoreManager({required SharedPreferencesWithCache pref}) {
+    _instance = StoreManager._internal(pref);
     return _instance;
   }
 
-  StoreManager._internal(this.isar);
+  StoreManager._internal(this.pref);
 
   static StoreManager get instance {
     return _instance;
-  }
-
-  /// 【同步】获取用户信息
-  UserInfo? getUserInfoSync() {
-    final userInfo = isar.userInfos.where().findFirstSync();
-    return userInfo;
-  }
-
-  /// 【异步】存储用户信息
-  Future<void> putUserInfo(UserInfo userInfo) async {
-    await isar.writeTxn(() async {
-      await isar.userInfos.clear();
-      await isar.userInfos.put(userInfo);
-    });
   }
 }

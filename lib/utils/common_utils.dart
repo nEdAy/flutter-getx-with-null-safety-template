@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../config/user_info.dart';
+import '../store/store_manager.dart';
 import 'date_util.dart';
 
 List<String>? splitString(String? value, {Pattern pattern = ','}) {
@@ -28,22 +28,23 @@ extension FixAutoLines on String {
 }
 
 Color colorReverse(Color oldColor) {
-  final newRed = 255 - oldColor.red;
-  final newGreen = 255 - oldColor.green;
-  final newBlue = 255 - oldColor.red;
-  final newColor =
-      oldColor.withRed(newRed).withGreen(newGreen).withBlue(newBlue);
+  final newRed = 255 - (oldColor.r * 255.0).round() & 0xff;
+  final newGreen = 255 - (oldColor.g * 255.0).round() & 0xff;
+  final newBlue = 255 - (oldColor.b * 255.0).round() & 0xff;
+  final newColor = oldColor
+      .withRed(newRed)
+      .withGreen(newGreen)
+      .withBlue(newBlue);
   return newColor;
 }
 
 String watermarkStr() {
-  final userInfo = UserInfoConfig.instance.userInfo;
-  final userName = userInfo.userName;
-  final loginPhone = userInfo.loginPhone;
-  final oaAccount = userInfo.oaAccount;
-  final timestampStr =
-      DateUtil.formatDate(DateTime.now(), format: DateFormats.y_mo_d_h_m);
-  final watermarkStr = '$userName $loginPhone\n$oaAccount $timestampStr';
+  final lastUsername = StoreManager.instance.pref.getString(kLastUsername);
+  final timestampStr = DateUtil.formatDate(
+    DateTime.now(),
+    format: DateFormats.y_mo_d_h_m,
+  );
+  final watermarkStr = '$lastUsername\n$timestampStr';
   return watermarkStr;
 }
 

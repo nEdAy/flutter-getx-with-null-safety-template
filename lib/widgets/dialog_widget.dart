@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '../gen/assets.gen.dart';
 import 'button_widget.dart';
 
 class DialogWidget extends Dialog {
   @override
-  Widget? get child => _buildDialogWidget();
+  Widget? get child => _buildDialogWidget(context);
 
   @override
   EdgeInsets? get insetPadding => const EdgeInsets.symmetric(horizontal: 20);
 
+  final BuildContext context;
   final String titleText;
   final AlignmentGeometry titleAlignment;
   final TextAlign titleTextAlign;
@@ -28,6 +29,7 @@ class DialogWidget extends Dialog {
 
   const DialogWidget({
     super.key,
+    required this.context,
     required this.titleText,
     this.titleAlignment = Alignment.center,
     this.titleTextAlign = TextAlign.start,
@@ -43,11 +45,9 @@ class DialogWidget extends Dialog {
     this.onPositiveButtonPressed,
   });
 
-  ConstrainedBox _buildDialogWidget() {
+  ConstrainedBox _buildDialogWidget(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: 1.sh * 0.75,
-      ),
+      constraints: BoxConstraints(maxHeight: 1.sh * 0.75),
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -80,11 +80,12 @@ class DialogWidget extends Dialog {
                             ),
                           ),
                           IconButton(
-                            onPressed: () => Get.back(),
+                            onPressed: () => context.pop(),
                             icon: ImageIcon(
-                                Assets.images.common.iconClose.image().image),
+                              Assets.images.common.iconClose.image().image,
+                            ),
                             iconSize: 24,
-                          )
+                          ),
                         ],
                       )
                     : Container(
@@ -121,15 +122,15 @@ class DialogWidget extends Dialog {
                               sideWidth: 1,
                               borderRadius: 6,
                               onPressed: () {
-                                Get.back();
+                                context.pop();
                                 onNegativeButtonTextPressed?.call();
                               },
                             ),
                           ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ButtonWidget(
-                        positiveButtonText,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ButtonWidget(
+                              positiveButtonText,
                               positiveButtonTextColor,
                               18,
                               FontWeight.bold,
@@ -141,14 +142,14 @@ class DialogWidget extends Dialog {
                               borderRadius: 6,
                               onPressed: () {
                                 if (!noDismiss) {
-                                  Get.back();
+                                  context.pop();
                                 }
                                 onPositiveButtonPressed?.call();
                               },
                             ),
-                    ),
-                  ],
-                ),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),

@@ -4,58 +4,51 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_template/store/store_manager.dart';
-import 'package:flutter_template/store/user_info.dart';
-import 'package:flutter_template/utils/error_utils.dart';
-import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
-import 'channel/get_user_info.dart';
-import 'config/app_info_utils.dart';
-import 'config/device_info.dart';
-import 'config/flavor.dart';
-import 'config/user_info.dart';
+import 'config/package_info_config.dart';
+import 'config/device_info_config.dart';
+import 'env/env_switcher.dart';
+import 'store/store_manager.dart';
+import 'utils/error_utils.dart';
 
-/// 全局配置
+const appName = 'Template';
+const defaultDesignSize = Size(360, 690);
+
+const apiUrl = "api_url";
+const productionBaseUrl = 'https://v1.hitokoto.cn/';
+const testingBaseUrl = 'https://international.v1.hitokoto.cn';
+
+final talker = TalkerFlutter.init();
+
+/// Global configuration
 class Global {
   /// init
   static Future<dynamic> init() async {
-    // 确保初始化
+    // Ensure initialization
     WidgetsFlutterBinding.ensureInitialized();
 
-    // Android 状态栏为透明的沉浸
+    // Android status bar is transparent immersion
     if (!kIsWeb && Platform.isAndroid) {
-      const systemUiOverlayStyle =
-          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      const systemUiOverlayStyle = SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      );
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
 
-    // 等待服务初始化
-    await _initServices();
-  }
-
-  /// 在你运行Flutter应用之前，让你的服务初始化是一个明智之举。
-  /// 因为你可以控制执行流程（也许你需要加载一些主题配置，apiKey，由用户自定义的语言等，所以在运行ApiService之前加载SettingService。
-  /// 所以GetMaterialApp()不需要重建，可以直接取值。
-  static Future _initServices() async {
-    Logger().i('starting services ...');
-
-    // 异步初始化
-    await Get.putAsync(() => InfoService().init());
-    await Get.putAsync(() => StoreService().init());
-    await Get.putAsync(() => FlavorService().init());
-    await Get.putAsync(() => UserInfoService().init());
-
-    Logger().i('All services started...');
+    // Service Initialization
+    await ConfigService().init();
+    await EnvService().init();
+    await StoreService().init();
   }
 }
 
-class InfoService extends GetxService {
-  Future<InfoService> init() async {
+class ConfigService {
+  Future<void> init() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    PackageInfoConfig(packageInfo: packageInfo);
+    PackageInfoConfig(packageInfo);
 
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo? androidInfo;
@@ -69,59 +62,31 @@ class InfoService extends GetxService {
     DeviceInfoConfig(androidInfo: androidInfo, iosInfo: iosInfo);
 
     ErrorUtils.configureTag();
-    return this;
   }
 }
 
-class StoreService extends GetxService {
-  Future<StoreService> init() async {
-    final isar = await Isar.open(
-      [UserInfoSchema],
-      maxSizeMiB: 256,
-      directory: '',
-    );
-    StoreManager(isar: isar);
-    return this;
+class EnvService {
+  Future<void> init() async {
+    /// Initializes the environment switcher and loads the last saved environment.
+    EnvSwitcher.loadCurrentEnv();
+    EnvSwitcher.addEnvironment(DefaultEnv.production.name, {
+      apiUrl: productionBaseUrl,
+    });
+    EnvSwitcher.addEnvironment(DefaultEnv.staging.name, {
+      apiUrl: testingBaseUrl,
+    });
+    EnvSwitcher.addEnvironment(DefaultEnv.development.name, {
+      apiUrl: testingBaseUrl,
+    });
   }
 }
 
-class FlavorService extends GetxService {
-  Future<FlavorService> init() async {
-    final flavorInfoMap = {}; // await GetFlavorInfo.getFlavorInfo();
-    final flavor = flavorInfoMap['flavor'] ?? prod;
-    final baseUrl = flavorInfoMap['baseUrl'] ?? prodBaseUrl;
-    FlavorConfig(flavor: flavor, values: FlavorValues(baseUrl: baseUrl));
-    return this;
-  }
-}
-
-class UserInfoService extends GetxService {
-  Future<UserInfoService> init() async {
-    final userInfoMap = await GetUserInfo.getUserInfo();
-    var oaAccount = '';
-    String? password;
-    var token = '';
-    var memberId = '';
-    if (userInfoMap != null) {
-      token = userInfoMap['accessToken'] ?? '';
-      memberId = userInfoMap['memberId'] ?? '';
-      oaAccount = userInfoMap['oaAccount'] ?? '';
-    } else {
-      final userInfo = StoreManager.instance.getUserInfoSync();
-      if (userInfo != null) {
-        oaAccount = userInfo.oaAccount ?? '';
-        password = userInfo.password;
-        token = userInfo.token ?? '';
-        memberId = userInfo.memberId ?? '';
-      }
-    }
-    final userInfo = UserInfo(
-      oaAccount: oaAccount,
-      password: password,
-      token: token,
-      memberId: memberId,
-    );
-    UserInfoConfig(userInfo: userInfo);
-    return this;
+class StoreService {
+  Future<void> init() async {
+    final SharedPreferencesWithCache prefsWithCache =
+        await SharedPreferencesWithCache.create(
+          cacheOptions: const SharedPreferencesWithCacheOptions(),
+        );
+    StoreManager(pref: prefsWithCache);
   }
 }

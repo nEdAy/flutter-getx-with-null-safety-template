@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 import '../gen/assets.gen.dart';
 
@@ -43,9 +42,9 @@ class _SearchWidgetState extends State<SearchWidget> {
     final onSearchInputChanged = widget.onSearchInputChanged;
     final onSearchInputSubmitted = widget.onSearchInputSubmitted;
     return Container(
-      width: context.width,
-      alignment: Alignment.center,
+      width: 1.sw,
       height: 70.h,
+      alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: widget.horizontal),
       color: Colors.white,
       child: TextField(

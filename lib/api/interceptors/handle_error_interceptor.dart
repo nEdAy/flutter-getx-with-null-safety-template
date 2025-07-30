@@ -1,8 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 
-import '../../channel/back_to_native.dart';
-
 class HandleErrorInterceptor extends InterceptorsWrapper {
   final String tokenHeader = 'access-token';
 
@@ -12,12 +10,11 @@ class HandleErrorInterceptor extends InterceptorsWrapper {
     ResponseInterceptorHandler handler,
   ) {
     if (response.statusCode == 401 || response.statusCode == 403) {
-      BotToast.showText(text: '登录过期，请重新登录');
+      BotToast.showText(text: 'Session timeout, please login again');
       Future.delayed(const Duration(seconds: 1), () {
-        BackToNativeChannel.backToNative(isLogout: true);
       });
     } else if (response.statusCode != 200) {
-      BotToast.showText(text: '请求服务器异常');
+      BotToast.showText(text: 'Server exception');
     }
     super.onResponse(response, handler);
   }
@@ -25,12 +22,11 @@ class HandleErrorInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
-      BotToast.showText(text: '登录过期，请重新登录');
+      BotToast.showText(text: 'Session timeout, please login again');
       Future.delayed(const Duration(seconds: 1), () {
-        BackToNativeChannel.backToNative(isLogout: true);
       });
     } else {
-      BotToast.showText(text: '请求服务器异常');
+      BotToast.showText(text: 'Server exception');
     }
     super.onError(err, handler);
   }

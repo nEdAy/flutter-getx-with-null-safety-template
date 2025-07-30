@@ -1,5 +1,3 @@
-// ignore_for_file: require_trailing_commas
-
 import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';

@@ -1,11 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dio_log/http_log_list_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import 'package:template/env/env_switcher.dart';
 
-import '../config/flavor.dart';
+import '../global.dart';
+import '../routes/app_pages.dart';
 import 'watermark_widget.dart';
 
 class DeveloperWidget extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
           OverlayEntry(builder: (_) => widget.child ?? const SizedBox.shrink()),
           OverlayEntry(
             builder: (_) {
-              return FlavorConfig.isProduction() && !kDebugMode
+              return !EnvSwitcher.isDevelopment() && !kDebugMode
                   ? const SizedBox.shrink()
                   : Positioned(
                       left: offset.dx,
@@ -49,9 +50,7 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
                     );
             },
           ),
-          OverlayEntry(
-            builder: (context) => const WatermarkWidget(),
-          ),
+          OverlayEntry(builder: (context) => const WatermarkWidget()),
         ],
       ),
     );
@@ -61,10 +60,18 @@ class _DeveloperWidgetState extends State<DeveloperWidget> {
     return FloatingActionButton(
       onPressed: () {
         BotToast.closeAllLoading();
-        Get.to(HttpLogListWidget.new);
+        // Navigator.of(navigatorGlobalKey.currentContext!).push(
+        //     MaterialPageRoute(
+        //       builder: (context) => HttpLogListWidget(),
+        //     )
+        // );
+        Navigator.of(navigatorGlobalKey.currentContext!).push(
+            MaterialPageRoute(
+              builder: (context) => TalkerScreen(talker: talker),
+            )
+        );
       },
       tooltip: 'Dio Log',
-      backgroundColor: FlavorConfig.instance.color,
       child: const Icon(Icons.wifi),
     );
   }
